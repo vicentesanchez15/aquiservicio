@@ -25,16 +25,57 @@
 
 </head>
 <body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>Comida en Navolato</h1>
+        <p>Busca por nombre, colonia o tipo.</p>
+      </div>
+      <a class="btn" href="/">Inicio</a>
+    </div>
 
-<h1>Comida en Navolato</h1>
+    <div class="search">
+      <input id="q" type="search" inputmode="search" placeholder="Ej: tacos, centro, mariscos…" autocomplete="off">
+    </div>
 
-<div class="card">
-  <h3>Tacos El Güero</h3>
-  <p>Colonia Centro</p>
-  <a href="https://wa.me/521XXXXXXXXXX?text=Hola%20vi%20tu%20negocio%20en%20Aquiservicio">WhatsApp</a>
-</div>
+    <div id="list">
 
-<a href="/">← Volver</a>
+      <div class="card item" data-tags="tacos taqueria centro pastor">
+        <p class="name">Tacos El Güero</p>
+        <p class="meta">Centro • 6pm–1am</p>
+        <div class="row">
+          <a class="btn wa" href="https://wa.me/521XXXXXXXXXX?text=Hola%20vi%20tu%20negocio%20en%20Aquiservicio%20(Tacos%20El%20G%C3%BCero)">WhatsApp</a>
+          <a class="btn" href="https://maps.google.com/?q=Tacos+El+Guero+Navolato">Mapa</a>
+        </div>
+      </div>
 
+      <div class="card item" data-tags="mariscos ceviche pescados centro">
+        <p class="name">Mariscos La Playa</p>
+        <p class="meta">Centro • 12pm–6pm</p>
+        <div class="row">
+          <a class="btn wa" href="https://wa.me/521XXXXXXXXXX?text=Hola%20vi%20tu%20negocio%20en%20Aquiservicio%20(Mariscos%20La%20Playa)">WhatsApp</a>
+          <a class="btn" href="https://maps.google.com/?q=Mariscos+La+Playa+Navolato">Mapa</a>
+        </div>
+      </div>
+
+    </div>
+
+    <a class="btn back" href="/anunciarme.html">➕ Anunciarme</a>
+    <a class="btn back" href="/no-encontre.html">🔎 No encontré</a>
+  </div>
+
+<script>
+  const q = document.getElementById('q');
+  const items = Array.from(document.querySelectorAll('.item'));
+  function run(){
+    const s = (q.value || '').trim().toLowerCase();
+    for (const el of items){
+      const hay = (el.innerText + ' ' + (el.dataset.tags||'')).toLowerCase();
+      el.classList.toggle('hide', s && !hay.includes(s));
+    }
+  }
+  q.addEventListener('input', run);
+</script>
 </body>
+
 </html>
