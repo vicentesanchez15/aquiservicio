@@ -4,40 +4,280 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Aquiservicio</title>
-  <style>
-  :root{--b:#eaeaea;--t:#111;--m:#555}
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;background:#fff;color:var(--t)}
-  .wrap{max-width:720px;margin:0 auto;padding:18px}
-  h1{margin:6px 0 6px;font-size:22px}
-  p{margin:0 0 14px;color:var(--m)}
-  .top{display:flex;gap:10px;align-items:center;justify-content:space-between}
-  .btn{display:inline-block;padding:12px 14px;border:1px solid var(--b);border-radius:14px;text-decoration:none;color:var(--t);font-weight:700}
-  .search{position:sticky;top:0;background:#fff;padding:10px 0 10px;border-bottom:1px solid var(--b);z-index:9}
-  input{width:100%;padding:14px 14px;border:1px solid var(--b);border-radius:14px;font-size:16px;outline:none}
-  .card{border:1px solid var(--b);border-radius:16px;padding:14px;margin:12px 0}
-  .name{font-weight:800;margin:0 0 6px}
-  .meta{margin:0 0 10px;color:var(--m);font-size:14px}
-  .row{display:flex;gap:10px;flex-wrap:wrap}
-  .wa{flex:1;min-width:140px;text-align:center}
-  .back{display:inline-block;margin-top:12px}
-  .hide{display:none!important}
-</style>
+  <meta name="description" content="Encuentra comida y servicios por ciudad. Hecho para Sinaloa." />
 
+  <style>
+    :root{
+      --bg:#ffffff;
+      --txt:#0f172a;
+      --mut:#475569;
+      --bd:rgba(15, 23, 42, .10);
+      --sh:0 20px 70px rgba(2, 6, 23, .10);
+      --r:18px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans";
+      background: radial-gradient(1200px 700px at 20% 0%, rgba(2,6,23,.05), transparent 60%),
+                  radial-gradient(900px 600px at 80% 10%, rgba(2,6,23,.04), transparent 55%),
+                  var(--bg);
+      color:var(--txt);
+    }
+
+    .wrap{max-width:920px;margin:0 auto;padding:18px}
+    .card{
+      border:1px solid var(--bd);
+      border-radius:calc(var(--r) + 6px);
+      box-shadow: var(--sh);
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+      transform: translateY(10px);
+      opacity: 0;
+      animation: in .45s ease-out forwards;
+    }
+
+    @keyframes in{
+      to{transform: translateY(0); opacity:1}
+    }
+
+    header{
+      padding:18px 18px 6px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .logo{
+      width:44px;height:44px;border-radius:14px;
+      border:1px solid var(--bd);
+      background:#fff;
+      display:grid;place-items:center;
+      overflow:hidden;
+      flex:0 0 auto;
+    }
+    .logo img{width:100%;height:100%;object-fit:contain;padding:6px}
+    .title{min-width:0}
+    .title b{display:block;letter-spacing:.2px}
+    .title span{display:block;color:var(--mut);font-size:13px;margin-top:2px}
+
+    .pill{
+      border:1px solid var(--bd);
+      border-radius:999px;
+      padding:10px 12px;
+      font-weight:800;
+      background:#fff;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      user-select:none;
+    }
+
+    main{padding:12px 18px 18px}
+    h1{margin:8px 0 6px;font-size:26px;letter-spacing:-.4px}
+    .lead{margin:0 0 16px;color:var(--mut);font-size:15px;line-height:1.4}
+
+    .controls{
+      margin-top:12px;
+      padding:12px;
+      border:1px solid var(--bd);
+      border-radius: var(--r);
+      background:#fff;
+    }
+
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    label{font-size:12px;color:var(--mut);font-weight:800;display:block;margin:0 0 6px}
+
+    select{
+      width:100%;
+      padding:14px 14px;
+      border:1px solid var(--bd);
+      border-radius:14px;
+      background:#fff;
+      font-size:16px;
+      outline:none;
+      transition: transform .08s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    select:focus{
+      border-color: rgba(15,23,42,.25);
+      box-shadow: 0 0 0 4px rgba(15,23,42,.06);
+    }
+
+    .actions{margin-top:12px;display:grid;grid-template-columns:1fr;gap:10px}
+    @media (min-width: 520px){
+      .actions{grid-template-columns:1fr 1fr}
+    }
+
+    .btn{
+      border:1px solid var(--bd);
+      border-radius: 18px;
+      padding:16px 14px;
+      text-decoration:none;
+      color:var(--txt);
+      font-weight:1000;
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      transition: transform .10s ease, box-shadow .20s ease, border-color .20s ease;
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btn:active{transform: translateY(0)}
+    .btn .sub{font-size:13px;color:var(--mut);font-weight:800}
+    .btn .icon{font-size:18px}
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(2,6,23,.06), rgba(2,6,23,.02));
+      border-color: rgba(15,23,42,.14);
+    }
+
+    .links{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .link{
+      flex:1;
+      min-width:160px;
+      text-align:center;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid var(--bd);
+      text-decoration:none;
+      color:var(--txt);
+      font-weight:900;
+      background:#fff;
+      transition: transform .10s ease, box-shadow .20s ease;
+    }
+    .link:hover{transform: translateY(-1px)}
+    .foot{
+      margin-top:14px;
+      font-size:12px;
+      color:var(--mut);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      padding:0 2px;
+    }
+
+    /* micro-animación suave al cambiar ciudad */
+    .pulse{
+      animation: pulse .25s ease;
+    }
+    @keyframes pulse{
+      0%{transform: scale(1)}
+      50%{transform: scale(1.01)}
+      100%{transform: scale(1)}
+    }
+  </style>
 </head>
+
 <body>
   <div class="wrap">
-    <h1>AQUISERVICIO</h1>
-    <p>Comida y servicios en Navolato.</p>
+    <div class="card" id="card">
+      <header>
+        <div class="brand">
+          <div class="logo">
+            <!-- Cambia logo.png por logo.svg si es tu caso -->
+            <img src="/assets/logo sin fondo.svg" alt="Aquiservicio">
+          </div>
+          <div class="title">
+            <b>AQUISERVICIO</b>
+            <span>Comida y servicios, rápido.</span>
+          </div>
+        </div>
 
-    <a class="btn" href="/comida.html">🍔 COMIDA</a>
-    <a class="btn" href="/servicios.html">🔧 SERVICIOS</a>
+        <div class="pill" aria-label="Estado">
+          <span>📍</span>
+          <span id="cityPill">Navolato</span>
+        </div>
+      </header>
 
-    <div class="small">
-      <a href="/anunciarme.html">➕ Anunciarme</a>
-      <a href="/no-encontre.html">🔎 No encontré</a>
+      <main>
+        <h1>Encuentra lo que ocupas</h1>
+        <p class="lead">Elige tu ciudad y entra directo a <b>Comida</b> o <b>Servicios</b>. Sin vueltas.</p>
+
+        <div class="controls">
+          <label for="city">Ciudad</label>
+          <select id="city">
+            <option value="navolato" selected>Navolato</option>
+            <option value="culiacan">Culiacán</option>
+            <option value="altata">Altata</option>
+            <option value="villa-angel-flores">Villa Ángel Flores</option>
+          </select>
+
+          <div class="actions">
+            <a class="btn primary" id="goFood" href="/comida.html">
+              <div>
+                <div>🍔 COMIDA</div>
+                <div class="sub">Taquerías, mariscos, etc.</div>
+              </div>
+              <div class="icon">→</div>
+            </a>
+
+            <a class="btn" id="goServices" href="/servicios.html">
+              <div>
+                <div>🔧 SERVICIOS</div>
+                <div class="sub">Plomeros, mandados, etc.</div>
+              </div>
+              <div class="icon">→</div>
+            </a>
+          </div>
+
+          <div class="links">
+            <a class="link" id="goAdvertise" href="/anunciarme.html">➕ Quiero anunciarme</a>
+            <a class="link" id="goSuggest" href="/no-encontre.html">💡 Sugerencias</a>
+          </div>
+        </div>
+
+        <div class="foot">
+          <span>Hecho para Sinaloa</span>
+          <span id="hint">Tip: guarda en tu pantalla de inicio</span>
+        </div>
+      </main>
     </div>
-
-    <div class="footer">Hecho para Navolato</div>
   </div>
+
+  <script>
+    // Guardamos ciudad seleccionada para usarla después en comida/servicios (V1)
+    const city = document.getElementById('city');
+    const cityPill = document.getElementById('cityPill');
+    const card = document.getElementById('card');
+
+    const cityLabel = {
+      "navolato":"Navolato",
+      "culiacan":"Culiacán",
+      "altata":"Altata",
+      "villa-angel-flores":"Villa Ángel Flores"
+    };
+
+    function setCity(val){
+      localStorage.setItem("aq_city", val);
+      cityPill.textContent = cityLabel[val] || "Navolato";
+      card.classList.remove("pulse");
+      void card.offsetWidth;
+      card.classList.add("pulse");
+    }
+
+    // Cargar ciudad guardada
+    const saved = localStorage.getItem("aq_city");
+    if(saved && cityLabel[saved]){
+      city.value = saved;
+      setCity(saved);
+    } else {
+      setCity(city.value);
+    }
+
+    city.addEventListener("change", () => setCity(city.value));
+
+    // Tip móvil (solo texto)
+    // Después si quieres lo hacemos PWA de verdad (V2).
+  </script>
 </body>
 </html>
