@@ -1,282 +1,286 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Aquiservicio</title>
-  <meta name="description" content="Encuentra comida y servicios por ciudad. Hecho para Sinaloa." />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aquiservicio</title>
+<meta name="description" content="Encuentra comida y servicios por ciudad.">
 
-  <style>
-    :root{
-      --bg:#ffffff;
-      --txt:#0f172a;
-      --mut:#475569;
-      --bd:rgba(15, 23, 42, .10);
-      --sh:0 20px 70px rgba(2, 6, 23, .10);
-      --r:18px;
-    }
+<style>
+:root{
+  --bg:#ffffff;
+  --txt:#0f172a;
+  --mut:#475569;
+  --bd:rgba(15,23,42,.10);
+  --sh:0 20px 60px rgba(2,6,23,.08);
+  --r:18px;
+}
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans";
-      background: radial-gradient(1200px 700px at 20% 0%, rgba(2,6,23,.05), transparent 60%),
-                  radial-gradient(900px 600px at 80% 10%, rgba(2,6,23,.04), transparent 55%),
-                  var(--bg);
-      color:var(--txt);
-    }
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:
+    radial-gradient(1000px 600px at 10% 0%, rgba(2,6,23,.05), transparent 60%),
+    radial-gradient(900px 600px at 90% 10%, rgba(2,6,23,.04), transparent 55%),
+    var(--bg);
+  color:var(--txt);
+}
 
-    .wrap{max-width:920px;margin:0 auto;padding:18px}
-    .card{
-      border:1px solid var(--bd);
-      border-radius:calc(var(--r) + 6px);
-      box-shadow: var(--sh);
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(10px);
-      overflow:hidden;
-      transform: translateY(10px);
-      opacity: 0;
-      animation: in .45s ease-out forwards;
-    }
+.wrap{max-width:900px;margin:0 auto;padding:18px}
 
-    @keyframes in{
-      to{transform: translateY(0); opacity:1}
-    }
+.card{
+  border:1px solid var(--bd);
+  border-radius:calc(var(--r) + 6px);
+  box-shadow:var(--sh);
+  background:#fff;
+  overflow:hidden;
+  animation: fadeIn .4s ease-out;
+}
 
-    header{
-      padding:18px 18px 6px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-    }
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(10px)}
+  to{opacity:1; transform:translateY(0)}
+}
 
-    .brand{display:flex;align-items:center;gap:12px;min-width:0}
-    .logo{
-      width:44px;height:44px;border-radius:14px;
-      border:1px solid var(--bd);
-      background:#fff;
-      display:grid;place-items:center;
-      overflow:hidden;
-      flex:0 0 auto;
-    }
-    .logo img{width:100%;height:100%;object-fit:contain;padding:6px}
-    .title{min-width:0}
-    .title b{display:block;letter-spacing:.2px}
-    .title span{display:block;color:var(--mut);font-size:13px;margin-top:2px}
+header{
+  padding:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
 
-    .pill{
-      border:1px solid var(--bd);
-      border-radius:999px;
-      padding:10px 12px;
-      font-weight:800;
-      background:#fff;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      user-select:none;
-    }
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 
-    main{padding:12px 18px 18px}
-    h1{margin:8px 0 6px;font-size:26px;letter-spacing:-.4px}
-    .lead{margin:0 0 16px;color:var(--mut);font-size:15px;line-height:1.4}
+.logo{
+  width:50px;
+  height:50px;
+  border-radius:14px;
+  border:1px solid var(--bd);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#fff;
+}
 
-    .controls{
-      margin-top:12px;
-      padding:12px;
-      border:1px solid var(--bd);
-      border-radius: var(--r);
-      background:#fff;
-    }
+.logo img{
+  width:80%;
+  height:80%;
+  object-fit:contain;
+}
 
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    label{font-size:12px;color:var(--mut);font-weight:800;display:block;margin:0 0 6px}
+.title b{
+  display:block;
+  letter-spacing:.3px;
+}
 
-    select{
-      width:100%;
-      padding:14px 14px;
-      border:1px solid var(--bd);
-      border-radius:14px;
-      background:#fff;
-      font-size:16px;
-      outline:none;
-      transition: transform .08s ease, box-shadow .18s ease, border-color .18s ease;
-    }
-    select:focus{
-      border-color: rgba(15,23,42,.25);
-      box-shadow: 0 0 0 4px rgba(15,23,42,.06);
-    }
+.title span{
+  display:block;
+  font-size:13px;
+  color:var(--mut);
+  margin-top:2px;
+}
 
-    .actions{margin-top:12px;display:grid;grid-template-columns:1fr;gap:10px}
-    @media (min-width: 520px){
-      .actions{grid-template-columns:1fr 1fr}
-    }
+.pill{
+  border:1px solid var(--bd);
+  border-radius:999px;
+  padding:10px 14px;
+  font-weight:800;
+  background:#fff;
+  font-size:14px;
+}
 
-    .btn{
-      border:1px solid var(--bd);
-      border-radius: 18px;
-      padding:16px 14px;
-      text-decoration:none;
-      color:var(--txt);
-      font-weight:1000;
-      background:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      transition: transform .10s ease, box-shadow .20s ease, border-color .20s ease;
-    }
-    .btn:hover{transform: translateY(-1px)}
-    .btn:active{transform: translateY(0)}
-    .btn .sub{font-size:13px;color:var(--mut);font-weight:800}
-    .btn .icon{font-size:18px}
-    .btn.primary{
-      background: linear-gradient(180deg, rgba(2,6,23,.06), rgba(2,6,23,.02));
-      border-color: rgba(15,23,42,.14);
-    }
+main{padding:0 18px 20px}
 
-    .links{
-      margin-top:14px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .link{
-      flex:1;
-      min-width:160px;
-      text-align:center;
-      padding:12px 12px;
-      border-radius: 14px;
-      border:1px solid var(--bd);
-      text-decoration:none;
-      color:var(--txt);
-      font-weight:900;
-      background:#fff;
-      transition: transform .10s ease, box-shadow .20s ease;
-    }
-    .link:hover{transform: translateY(-1px)}
-    .foot{
-      margin-top:14px;
-      font-size:12px;
-      color:var(--mut);
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      padding:0 2px;
-    }
+h1{
+  font-size:26px;
+  margin:6px 0;
+  letter-spacing:-.4px;
+}
 
-    /* micro-animación suave al cambiar ciudad */
-    .pulse{
-      animation: pulse .25s ease;
-    }
-    @keyframes pulse{
-      0%{transform: scale(1)}
-      50%{transform: scale(1.01)}
-      100%{transform: scale(1)}
-    }
-  </style>
+.lead{
+  font-size:15px;
+  color:var(--mut);
+  margin-bottom:16px;
+}
+
+.controls{
+  border:1px solid var(--bd);
+  border-radius:var(--r);
+  padding:14px;
+  background:#fff;
+}
+
+label{
+  font-size:12px;
+  font-weight:800;
+  color:var(--mut);
+}
+
+select{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--bd);
+  font-size:16px;
+  margin-top:6px;
+  margin-bottom:14px;
+  outline:none;
+}
+
+.actions{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+
+@media (min-width:520px){
+  .actions{grid-template-columns:1fr 1fr}
+}
+
+.btn{
+  border:1px solid var(--bd);
+  border-radius:18px;
+  padding:16px;
+  text-decoration:none;
+  font-weight:900;
+  color:var(--txt);
+  background:#fff;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:all .15s ease;
+}
+
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:scale(.99)}
+
+.btn.primary{
+  background:linear-gradient(180deg, rgba(2,6,23,.05), rgba(2,6,23,.02));
+}
+
+.sub{
+  font-size:13px;
+  color:var(--mut);
+  font-weight:700;
+}
+
+.links{
+  margin-top:14px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.link{
+  flex:1;
+  min-width:160px;
+  text-align:center;
+  padding:12px;
+  border-radius:14px;
+  border:1px solid var(--bd);
+  text-decoration:none;
+  color:var(--txt);
+  font-weight:900;
+  background:#fff;
+}
+
+.foot{
+  margin-top:14px;
+  font-size:12px;
+  color:var(--mut);
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="card" id="card">
-      <header>
-        <div class="brand">
-          <div class="logo">
-            <img src="/assets/logo.svg" alt="Aquiservicio">
-          </div>
-          <div class="title">
-            <b>AQUISERVICIO</b>
-            <span>Comida y servicios, rápido.</span>
-          </div>
+
+<div class="wrap">
+  <div class="card">
+
+    <header>
+      <div class="brand">
+        <div class="logo">
+          <img src="assets/logo.svg" alt="Aquiservicio">
+        </div>
+        <div class="title">
+          <b>AQUISERVICIO</b>
+          <span>Comida y servicios rápidos</span>
+        </div>
+      </div>
+
+      <div class="pill" id="cityPill">Navolato</div>
+    </header>
+
+    <main>
+      <h1>Encuentra lo que ocupas</h1>
+      <p class="lead">Selecciona tu ciudad y entra directo a comida o servicios.</p>
+
+      <div class="controls">
+        <label>Ciudad</label>
+        <select id="city">
+          <option value="Navolato">Navolato</option>
+          <option value="Culiacán">Culiacán</option>
+          <option value="Altata">Altata</option>
+        </select>
+
+        <div class="actions">
+          <a class="btn primary" href="comida.html">
+            <div>
+              🍔 COMIDA
+              <div class="sub">Restaurantes y más</div>
+            </div>
+            →
+          </a>
+
+          <a class="btn" href="servicios.html">
+            <div>
+              🔧 SERVICIOS
+              <div class="sub">Profesionales locales</div>
+            </div>
+            →
+          </a>
         </div>
 
-        <div class="pill" aria-label="Estado">
-          <span>📍</span>
-          <span id="cityPill">Navolato</span>
+        <div class="links">
+          <a class="link" href="anunciarme.html">➕ Quiero anunciarme</a>
+          <a class="link" href="no-encontre.html">💡 Sugerencias</a>
         </div>
-      </header>
+      </div>
 
-      <main>
-        <h1>Encuentra lo que ocupas</h1>
-        <p class="lead">Elige tu ciudad y entra directo a <b>Comida</b> o <b>Servicios</b>. Sin vueltas.</p>
+      <div class="foot">
+        <span>Hecho para Sinaloa</span>
+        <span>Versión inicial</span>
+      </div>
 
-        <div class="controls">
-          <label for="city">Ciudad</label>
-          <select id="city">
-            <option value="navolato" selected>Navolato</option>
-            <option value="culiacan">Culiacán</option>
-            <option value="altata">Altata</option>
-            <option value="villa-angel-flores">Villa Ángel Flores</option>
-          </select>
+    </main>
 
-          <div class="actions">
-            <a class="btn primary" id="goFood" href="/comida.html">
-              <div>
-                <div>🍔 COMIDA</div>
-                <div class="sub">Taquerías, mariscos, etc.</div>
-              </div>
-              <div class="icon">→</div>
-            </a>
-
-            <a class="btn" id="goServices" href="/servicios.html">
-              <div>
-                <div>🔧 SERVICIOS</div>
-                <div class="sub">Plomeros, mandados, etc.</div>
-              </div>
-              <div class="icon">→</div>
-            </a>
-          </div>
-
-          <div class="links">
-            <a class="link" id="goAdvertise" href="/anunciarme.html">➕ Quiero anunciarme</a>
-            <a class="link" id="goSuggest" href="/no-encontre.html">💡 Sugerencias</a>
-          </div>
-        </div>
-
-        <div class="foot">
-          <span>Hecho para Sinaloa</span>
-          <span id="hint">Tip: guarda en tu pantalla de inicio</span>
-        </div>
-      </main>
-    </div>
   </div>
+</div>
 
-  <script>
-    // Guardamos ciudad seleccionada para usarla después en comida/servicios (V1)
-    const city = document.getElementById('city');
-    const cityPill = document.getElementById('cityPill');
-    const card = document.getElementById('card');
+<script>
+const citySelect = document.getElementById("city");
+const cityPill = document.getElementById("cityPill");
 
-    const cityLabel = {
-      "navolato":"Navolato",
-      "culiacan":"Culiacán",
-      "altata":"Altata",
-      "villa-angel-flores":"Villa Ángel Flores"
-    };
+citySelect.addEventListener("change", function(){
+  cityPill.textContent = this.value;
+  localStorage.setItem("aq_city", this.value);
+});
 
-    function setCity(val){
-      localStorage.setItem("aq_city", val);
-      cityPill.textContent = cityLabel[val] || "Navolato";
-      card.classList.remove("pulse");
-      void card.offsetWidth;
-      card.classList.add("pulse");
-    }
+const savedCity = localStorage.getItem("aq_city");
+if(savedCity){
+  citySelect.value = savedCity;
+  cityPill.textContent = savedCity;
+}
+</script>
 
-    // Cargar ciudad guardada
-    const saved = localStorage.getItem("aq_city");
-    if(saved && cityLabel[saved]){
-      city.value = saved;
-      setCity(saved);
-    } else {
-      setCity(city.value);
-    }
-
-    city.addEventListener("change", () => setCity(city.value));
-
-    // Tip móvil (solo texto)
-    // Después si quieres lo hacemos PWA de verdad (V2).
-  </script>
 </body>
 </html>
