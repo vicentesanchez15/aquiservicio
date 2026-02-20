@@ -7,7 +7,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -27,8 +27,8 @@
       --thanksBg:rgba(56,189,248,.16);
       --thanksBd:rgba(56,189,248,.28);
 
-      /* Azul “de la página” para el BIENVENIDOS */
-      --welcomeBlue:#0b1220; /* azul elegante */
+      /* ✅ Azul medianoche REAL (se ve azul, no negro) */
+      --welcomeBlue:#0f2f6b;
     }
     *{box-sizing:border-box}
     body{
@@ -60,7 +60,6 @@
 
     .main{padding:18px 12px 20px}
 
-    /* ✅ Header centrado con: Logo -> Municipio -> Gracias -> BIENVENIDOS */
     .hero{
       text-align:center;
       padding:6px 8px 10px;
@@ -70,80 +69,108 @@
       gap:10px;
     }
 
-    /* Logo arriba, centrado, 10% más chico */
+    /* ✅ Logo: un poquito más a la izquierda (arreglé tu typo) */
     .wordmark{
-      width: min(450px, 86vw); /* antes 720px, ~10% menos */
+      width: min(450px, 86vw);
       height:auto;
       display:block;
       margin: 0 auto;
-      ftransform: translateX(-8px);
+      transform: translateX(-10px); /* ← más a la izquierda */
+      filter: drop-shadow(0 16px 40px rgba(2,6,23,.14));
     }
 
-    /* Selector debajo del logo */
+    /* ✅ Selector: más grande + centrado + profesional */
     .municipalityBox{
+      width:100%;
+      max-width:720px;            /* más ancho */
+      margin:0 auto;
       display:flex;
+      flex-direction:column;
       align-items:center;
       gap:10px;
-      width: min(520px, 92vw);
-      justify-content:center;
-      margin-top:2px;
+      padding:0 6px;              /* para que no se pegue en móvil */
     }
     .municipalityBox label{
-      font-size:12px;
-      font-weight:800;
-      color: var(--mut);
-      white-space:nowrap;
+      font-size:14px;             /* más grande */
+      font-weight:900;
+      color: rgba(15,23,42,.75);
+      letter-spacing:.06em;
     }
+
+    select{
+      width:100%;
+      appearance:none;             /* look más pro */
+      -webkit-appearance:none;
+      -moz-appearance:none;
+
+      padding:16px 44px 16px 16px; /* alto + espacio para flecha */
+      font-size:17px;
+      font-weight:900;
+      border-radius:18px;
+
+      border:1px solid rgba(15,23,42,.14);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,1), rgba(255,255,255,.96)),
+        radial-gradient(900px 200px at 10% 0%, rgba(56,189,248,.12), transparent 60%);
+      box-shadow: 0 10px 28px rgba(2,6,23,.08);
+      outline:none;
+      cursor:pointer;
+      position:relative;
+    }
+
+    /* Flechita a la derecha (pro) */
     .municipalityBox{
-  width:100%;
-  max-width:560px;
-  margin:0 auto;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:10px;
-}
-
-select{
-  width:100%;
-  max-width:100%;
-}
-    select:focus{
-      box-shadow:0 0 0 4px var(--glow);
-      border-color: rgba(56,189,248,.35);
+      position:relative;
+    }
+    .municipalityBox::after{
+      content:"▾";
+      position:absolute;
+      right:22px;
+      bottom:18px;
+      font-size:16px;
+      font-weight:900;
+      color: rgba(15,23,42,.55);
+      pointer-events:none;
     }
 
-    /* Gracias */
+    select:focus{
+      box-shadow:0 0 0 4px var(--glow), 0 10px 28px rgba(2,6,23,.10);
+      border-color: rgba(56,189,248,.45);
+    }
+
+    /* ✅ Gracias: con emojis (confianza) */
     .thanks{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  font-size:10px;          /* ✅ más pequeño */
-  font-weight:900;
-  letter-spacing:.28px;
-  color: var(--thanksText);
-  background: var(--thanksBg);
-  border:1px solid var(--thanksBd);
-  padding:6px 9px;         /* ✅ más pequeño */
-  border-radius:999px;
-  backdrop-filter: blur(8px);
-  user-select:none;
-  white-space:nowrap;
-  animation: floaty 2.2s ease-in-out infinite;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.30px;
+      color: var(--thanksText);
+      background: var(--thanksBg);
+      border:1px solid var(--thanksBd);
+      padding:7px 10px;
+      border-radius:999px;
+      backdrop-filter: blur(8px);
+      user-select:none;
+      white-space:nowrap;
+      animation: floaty 2.2s ease-in-out infinite;
     }
     @keyframes floaty{
       0%,100%{transform:translateY(0)}
-      50%{transform:translateY(-7px)}
+      50%{transform:translateY(-6px)}
     }
 
-    /* BIENVENIDOS */
+    /* ✅ BIENVENIDOS: azul medianoche + más grande + tipografía con más personalidad */
     .welcome{
       margin:0;
+      font-family: "Poppins", Inter, system-ui, Arial;
       font-weight:900;
-      letter-spacing: .22em;
-      font-size: 18px;
+      letter-spacing:.16em;
+      font-size:30px;
       color: var(--welcomeBlue);
       text-transform: uppercase;
+      text-shadow: 0 10px 30px rgba(15,47,107,.10);
     }
 
     .subtitle{
@@ -154,7 +181,6 @@ select{
       font-weight:650;
     }
 
-    /* Botones grandes centrados */
     .btnGrid{
       display:grid;
       grid-template-columns: 1fr;
@@ -213,7 +239,6 @@ select{
       margin-top:6px;
     }
 
-    /* Botones chicos centrados */
     .smallActions{
       margin-top:12px;
       display:flex;
@@ -252,13 +277,28 @@ select{
       margin-right:auto;
       text-align:left;
     }
-    .rules h3{
-      margin:0 0 8px;
-      font-size:16px;
-      font-weight:900;
+
+    /* ✅ Título reglas EXACTO como pediste: REGLAS arriba, abajo (para mantener la calidad), centrado */
+    .rulesTitle{
       text-align:center;
-      letter-spacing:.2px;
+      margin:0 0 10px;
     }
+    .rt1{
+      font-family: "Poppins", Inter, system-ui, Arial;
+      font-weight:900;
+      letter-spacing:.16em;
+      font-size:18px; /* un poco más grande */
+      color:rgba(15,23,42,.98);
+      text-transform:uppercase;
+    }
+    .rt2{
+      margin-top:4px;
+      font-weight:900;
+      font-size:12.5px;
+      color:rgba(15,23,42,.70);
+      text-transform:none;
+    }
+
     .rules b{color:rgba(15,23,42,.98)}
     .rules ul{margin:10px 0 0; padding-left:18px}
     .rules li{margin:7px 0}
@@ -269,6 +309,12 @@ select{
       font-size:12px;
       color: rgba(255,255,255,.65);
       font-weight:700;
+    }
+
+    @media (max-width:520px){
+      .municipalityBox{padding:0 2px;}
+      .wordmark{transform: translateX(-6px);}
+      .welcome{font-size:28px;}
     }
   </style>
 </head>
@@ -307,8 +353,8 @@ select{
             </select>
           </div>
 
-          <!-- ✅ Gracias -->
-          <div class="thanks">MUCHAS GRACIAS POR SU APOYO</div>
+          <!-- ✅ Gracias (con emojis) -->
+          <div class="thanks">🙏✨ MUCHAS GRACIAS POR SU APOYO 🤝💙</div>
 
           <!-- ✅ Bienvenidos -->
           <p class="welcome">BIENVENIDOS</p>
@@ -352,7 +398,11 @@ select{
         </div>
 
         <div class="rules">
-          <h3>REGLAS (para mantener la calidad)</h3>
+          <div class="rulesTitle">
+            <div class="rt1">REGLAS</div>
+            <div class="rt2">(para mantener la calidad)</div>
+          </div>
+
           <ul>
             <li><b>Publicación sujeta a revisión</b>: se publica solo si cumple reglas.</li>
             <li><b>Pago al recibir</b> (si aplica): al entregar o al recoger, según el negocio.</li>
