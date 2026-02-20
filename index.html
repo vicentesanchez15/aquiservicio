@@ -58,7 +58,7 @@
     }
     @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-    .main{padding:18px 16px 20px}
+    .main{padding:18px 12px 20px}
 
     /* ✅ Header centrado con: Logo -> Municipio -> Gracias -> BIENVENIDOS */
     .hero{
@@ -75,7 +75,7 @@
       width: min(500px, 88vw); /* antes 720px, ~10% menos */
       height:auto;
       display:block;
-      margin: 2px auto 0;
+      margin: 0 auto;
       filter: drop-shadow(0 16px 40px rgba(2,6,23,.14));
     }
 
@@ -94,16 +94,20 @@
       color: var(--mut);
       white-space:nowrap;
     }
-    select{
-      border:1px solid rgba(15,23,42,.12);
-      background:#fff;
-      border-radius:999px;
-      padding:10px 12px;
-      font-size:14px;
-      font-weight:800;
-      outline:none;
-      width: 100%;
-    }
+    .municipalityBox{
+  width:100%;
+  max-width:560px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+}
+
+select{
+  width:100%;
+  max-width:100%;
+}
     select:focus{
       box-shadow:0 0 0 4px var(--glow);
       border-color: rgba(56,189,248,.35);
