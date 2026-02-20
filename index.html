@@ -13,6 +13,7 @@
     :root{
       --navy:#0b1220;
       --navy2:#0f1a33;
+
       --txt:#0f172a;
       --mut:#64748b;
 
@@ -21,6 +22,11 @@
       --glow:rgba(56,189,248,.22);
       --shadow:0 20px 70px rgba(2,6,23,.18);
       --r:20px;
+
+      /* Color para el texto animado (no blanco) */
+      --thanksText:#0f172a;
+      --thanksBg:rgba(56,189,248,.16);
+      --thanksBd:rgba(56,189,248,.28);
     }
     *{box-sizing:border-box}
     body{
@@ -50,63 +56,14 @@
     }
     @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
+    /* Top bar */
     .top{
       padding:14px 16px;
       display:flex;
       align-items:center;
-      justify-content:space-between;
+      justify-content:flex-end; /* solo selector a la derecha */
       gap:12px;
       border-bottom:1px solid rgba(15,23,42,.08);
-    }
-
-    /* ✅ Logo centrado siempre */
-    .brand{
-      flex:1;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-    }
-
-    /* ✅ Logo más grande + contenedor transparente */
-    .logo{
-      width:96px;height:96px;           /* <- más grande */
-      border-radius:28px;
-      border:1px solid rgba(15,23,42,.10);
-      background: transparent;          /* <- sin fondo */
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      box-shadow: 0 18px 60px rgba(2,6,23,.14);
-    }
-    .logo img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      display:block;
-    }
-
-    /* ✅ mini animación “gracias” (sutil) */
-    .thanks{
-      position:absolute;
-      top: -10px;
-      right: 8px;
-      font-size:12px;
-      font-weight:900;
-      color: rgba(255,255,255,.92);
-      background: rgba(56,189,248,.18);
-      border:1px solid rgba(56,189,248,.30);
-      padding:8px 10px;
-      border-radius:999px;
-      backdrop-filter: blur(8px);
-      animation: floaty 2.2s ease-in-out infinite;
-      user-select:none;
-      white-space:nowrap;
-    }
-    @keyframes floaty{
-      0%,100%{transform:translateY(0)}
-      50%{transform:translateY(-6px)}
     }
 
     .municipalityBox{
@@ -130,7 +87,7 @@
       font-size:14px;
       font-weight:800;
       outline:none;
-      width: 210px;
+      width: 230px;
     }
     select:focus{
       box-shadow:0 0 0 4px var(--glow);
@@ -139,21 +96,57 @@
 
     .main{padding:18px 16px 20px}
 
-    .hero{text-align:center;padding:6px 8px 10px}
-    .hero h1{
-      margin:10px 0 6px;
-      font-size:26px;
-      letter-spacing:-.4px;
-      font-weight:900;
+    /* Bloque “animación” + logo grande */
+    .hero{
+      text-align:center;
+      padding:6px 8px 10px;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
     }
-    .hero p{
+
+    .thanks{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:13px;
+      font-weight:900;
+      letter-spacing:.3px;
+      color: var(--thanksText);
+      background: var(--thanksBg);
+      border:1px solid var(--thanksBd);
+      padding:10px 14px;
+      border-radius:999px;
+      backdrop-filter: blur(8px);
+      user-select:none;
+      white-space:nowrap;
+      animation: floaty 2.2s ease-in-out infinite;
+    }
+    @keyframes floaty{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-7px)}
+    }
+
+    /* ✅ LOGO SVG horizontal (216x1036): lo hacemos responsive */
+    .wordmark{
+      width: min(720px, 92vw); /* grande pero no se sale */
+      height: auto;
+      display:block;
+      margin: 2px auto 0;
+      filter: drop-shadow(0 16px 40px rgba(2,6,23,.14));
+    }
+
+    .subtitle{
       margin:0;
-      color: rgba(15,23,42,.74);
+      color: rgba(15,23,42,.72);
       font-size:14.5px;
       line-height:1.45;
       font-weight:650;
     }
 
+    /* Botones grandes centrados */
     .btnGrid{
       display:grid;
       grid-template-columns: 1fr;
@@ -212,6 +205,7 @@
       margin-top:6px;
     }
 
+    /* Botones chicos centrados */
     .smallActions{
       margin-top:12px;
       display:flex;
@@ -235,7 +229,7 @@
       background: linear-gradient(180deg, rgba(2,6,23,.06), rgba(2,6,23,.02));
     }
 
-    /* ✅ Reglas más visibles + centradas + otro color */
+    /* Reglas visibles */
     .rules{
       margin-top:16px;
       border-radius: 22px;
@@ -270,11 +264,10 @@
     }
 
     @media (max-width:520px){
-      .top{flex-direction:column;align-items:stretch;}
-      .brand{order:1}
-      .municipalityBox{order:2;justify-content:center;}
+      .top{justify-content:center}
       select{width:100%}
-      .thanks{right:0;left:0;margin:auto;width:max-content}
+      .municipalityBox{width:100%; justify-content:center}
+      .wordmark{width: 92vw;}
     }
   </style>
 </head>
@@ -284,13 +277,6 @@
     <div class="card">
 
       <div class="top">
-        <div class="brand" aria-label="Aquiservicio">
-          <div class="logo">
-            <img src="assets/logo.svg" alt="Aquiservicio">
-          </div>
-          <div class="thanks">✨ Gracias por apoyar lo local</div>
-        </div>
-
         <div class="municipalityBox">
           <label for="city">Municipio</label>
           <select id="city">
@@ -318,8 +304,14 @@
 
       <div class="main">
         <div class="hero">
-          <h1>Bienvenido a aquiservicio.com</h1>
-          <p>Entra directo a <b>Comida</b> o <b>Servicios</b> en tu zona.</p>
+          <div class="thanks">MUCHAS GRACIAS POR SU APOYO</div>
+
+          <!-- ✅ Logo grande abajo (solo letras, transparente) -->
+          <img class="wordmark" src="assets/logo.svg" alt="aquiservicio.com">
+
+          <p class="subtitle">
+            Elige lo que necesitas: <b>Comida</b>, <b>Servicios</b> o <b>Marketplace</b>.
+          </p>
         </div>
 
         <div class="btnGrid">
@@ -356,7 +348,7 @@
         </div>
 
         <div class="rules">
-          <h3>Reglas claras (para que funcione bien)</h3>
+          <h3>Reglas (para mantener la calidad)</h3>
           <ul>
             <li><b>Publicación sujeta a revisión</b>: se publica solo si cumple reglas.</li>
             <li><b>Pago al recibir</b> (si aplica): al entregar o al recoger, según el negocio.</li>
