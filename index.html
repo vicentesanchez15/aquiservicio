@@ -28,7 +28,7 @@
       --thanksBd:rgba(56,189,248,.28);
 
       /* Azul “de la página” para el BIENVENIDOS */
-      --welcomeBlue:#1b4fd7; /* azul elegante */
+      --welcomeBlue:#0b1220; /* azul elegante */
     }
     *{box-sizing:border-box}
     body{
@@ -76,7 +76,7 @@
       height:auto;
       display:block;
       margin: 0 auto;
-      filter: drop-shadow(0 16px 40px rgba(2,6,23,.14));
+      ftransform: translateX(-8px);
     }
 
     /* Selector debajo del logo */
@@ -115,21 +115,21 @@ select{
 
     /* Gracias */
     .thanks{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-size:13px;
-      font-weight:900;
-      letter-spacing:.3px;
-      color: var(--thanksText);
-      background: var(--thanksBg);
-      border:1px solid var(--thanksBd);
-      padding:10px 14px;
-      border-radius:999px;
-      backdrop-filter: blur(8px);
-      user-select:none;
-      white-space:nowrap;
-      animation: floaty 2.2s ease-in-out infinite;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:10px;          /* ✅ más pequeño */
+  font-weight:900;
+  letter-spacing:.28px;
+  color: var(--thanksText);
+  background: var(--thanksBg);
+  border:1px solid var(--thanksBd);
+  padding:6px 9px;         /* ✅ más pequeño */
+  border-radius:999px;
+  backdrop-filter: blur(8px);
+  user-select:none;
+  white-space:nowrap;
+  animation: floaty 2.2s ease-in-out infinite;
     }
     @keyframes floaty{
       0%,100%{transform:translateY(0)}
