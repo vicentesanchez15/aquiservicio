@@ -23,10 +23,12 @@
       --shadow:0 20px 70px rgba(2,6,23,.18);
       --r:20px;
 
-      /* Color para el texto animado (no blanco) */
       --thanksText:#0f172a;
       --thanksBg:rgba(56,189,248,.16);
       --thanksBd:rgba(56,189,248,.28);
+
+      /* Azul “de la página” para el BIENVENIDOS */
+      --welcomeBlue:#1b4fd7; /* azul elegante */
     }
     *{box-sizing:border-box}
     body{
@@ -56,22 +58,35 @@
     }
     @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-    /* Top bar */
-    .top{
-      padding:14px 16px;
+    .main{padding:18px 16px 20px}
+
+    /* ✅ Header centrado con: Logo -> Municipio -> Gracias -> BIENVENIDOS */
+    .hero{
+      text-align:center;
+      padding:6px 8px 10px;
       display:flex;
+      flex-direction:column;
       align-items:center;
-      justify-content:flex-end; /* solo selector a la derecha */
-      gap:12px;
-      border-bottom:1px solid rgba(15,23,42,.08);
+      gap:10px;
     }
 
+    /* Logo arriba, centrado, 10% más chico */
+    .wordmark{
+      width: min(650px, 92vw); /* antes 720px, ~10% menos */
+      height:auto;
+      display:block;
+      margin: 2px auto 0;
+      filter: drop-shadow(0 16px 40px rgba(2,6,23,.14));
+    }
+
+    /* Selector debajo del logo */
     .municipalityBox{
       display:flex;
       align-items:center;
       gap:10px;
-      min-width: 220px;
-      justify-content:flex-end;
+      width: min(520px, 92vw);
+      justify-content:center;
+      margin-top:2px;
     }
     .municipalityBox label{
       font-size:12px;
@@ -87,26 +102,14 @@
       font-size:14px;
       font-weight:800;
       outline:none;
-      width: 230px;
+      width: 100%;
     }
     select:focus{
       box-shadow:0 0 0 4px var(--glow);
       border-color: rgba(56,189,248,.35);
     }
 
-    .main{padding:18px 16px 20px}
-
-    /* Bloque “animación” + logo grande */
-    .hero{
-      text-align:center;
-      padding:6px 8px 10px;
-      position:relative;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:10px;
-    }
-
+    /* Gracias */
     .thanks{
       display:inline-flex;
       align-items:center;
@@ -129,13 +132,14 @@
       50%{transform:translateY(-7px)}
     }
 
-    /* ✅ LOGO SVG horizontal (216x1036): lo hacemos responsive */
-    .wordmark{
-      width: min(720px, 92vw); /* grande pero no se sale */
-      height: auto;
-      display:block;
-      margin: 2px auto 0;
-      filter: drop-shadow(0 16px 40px rgba(2,6,23,.14));
+    /* BIENVENIDOS */
+    .welcome{
+      margin:0;
+      font-weight:900;
+      letter-spacing: .22em;
+      font-size: 18px;
+      color: var(--welcomeBlue);
+      text-transform: uppercase;
     }
 
     .subtitle{
@@ -262,52 +266,48 @@
       color: rgba(255,255,255,.65);
       font-weight:700;
     }
-
-    @media (max-width:520px){
-      .top{justify-content:center}
-      select{width:100%}
-      .municipalityBox{width:100%; justify-content:center}
-      .wordmark{width: 92vw;}
-    }
   </style>
 </head>
 
 <body>
   <div class="shell">
     <div class="card">
-
-      <div class="top">
-        <div class="municipalityBox">
-          <label for="city">Municipio</label>
-          <select id="city">
-            <option value="Navolato" selected>Navolato (Disponible)</option>
-            <option value="Culiacán" disabled>Culiacán (Próximamente)</option>
-            <option value="Mazatlán" disabled>Mazatlán (Próximamente)</option>
-            <option value="Ahome" disabled>Ahome (Próximamente)</option>
-            <option value="Guasave" disabled>Guasave (Próximamente)</option>
-            <option value="Angostura" disabled>Angostura (Próximamente)</option>
-            <option value="El Fuerte" disabled>El Fuerte (Próximamente)</option>
-            <option value="Mocorito" disabled>Mocorito (Próximamente)</option>
-            <option value="Sinaloa" disabled>Sinaloa (Próximamente)</option>
-            <option value="Badiraguato" disabled>Badiraguato (Próximamente)</option>
-            <option value="Cosalá" disabled>Cosalá (Próximamente)</option>
-            <option value="Elota" disabled>Elota (Próximamente)</option>
-            <option value="Escuinapa" disabled>Escuinapa (Próximamente)</option>
-            <option value="Rosario" disabled>Rosario (Próximamente)</option>
-            <option value="San Ignacio" disabled>San Ignacio (Próximamente)</option>
-            <option value="Salvador Alvarado" disabled>Salvador Alvarado (Próximamente)</option>
-            <option value="Concordia" disabled>Concordia (Próximamente)</option>
-            <option value="Choix" disabled>Choix (Próximamente)</option>
-          </select>
-        </div>
-      </div>
-
       <div class="main">
+
         <div class="hero">
+          <!-- ✅ Logo arriba -->
+          <img class="wordmark" src="assets/logo.svg" alt="aquiservicio.com">
+
+          <!-- ✅ Municipio debajo -->
+          <div class="municipalityBox">
+            <label for="city">Municipio</label>
+            <select id="city">
+              <option value="Navolato" selected>Navolato (Disponible)</option>
+              <option value="Culiacán" disabled>Culiacán (Próximamente)</option>
+              <option value="Mazatlán" disabled>Mazatlán (Próximamente)</option>
+              <option value="Ahome" disabled>Ahome (Próximamente)</option>
+              <option value="Guasave" disabled>Guasave (Próximamente)</option>
+              <option value="Angostura" disabled>Angostura (Próximamente)</option>
+              <option value="El Fuerte" disabled>El Fuerte (Próximamente)</option>
+              <option value="Mocorito" disabled>Mocorito (Próximamente)</option>
+              <option value="Sinaloa" disabled>Sinaloa (Próximamente)</option>
+              <option value="Badiraguato" disabled>Badiraguato (Próximamente)</option>
+              <option value="Cosalá" disabled>Cosalá (Próximamente)</option>
+              <option value="Elota" disabled>Elota (Próximamente)</option>
+              <option value="Escuinapa" disabled>Escuinapa (Próximamente)</option>
+              <option value="Rosario" disabled>Rosario (Próximamente)</option>
+              <option value="San Ignacio" disabled>San Ignacio (Próximamente)</option>
+              <option value="Salvador Alvarado" disabled>Salvador Alvarado (Próximamente)</option>
+              <option value="Concordia" disabled>Concordia (Próximamente)</option>
+              <option value="Choix" disabled>Choix (Próximamente)</option>
+            </select>
+          </div>
+
+          <!-- ✅ Gracias -->
           <div class="thanks">MUCHAS GRACIAS POR SU APOYO</div>
 
-          <!-- ✅ Logo grande abajo (solo letras, transparente) -->
-          <img class="wordmark" src="assets/logo.svg" alt="aquiservicio.com">
+          <!-- ✅ Bienvenidos -->
+          <p class="welcome">BIENVENIDOS</p>
 
           <p class="subtitle">
             Elige lo que necesitas: <b>Comida</b>, <b>Servicios</b> o <b>Marketplace</b>.
@@ -348,7 +348,7 @@
         </div>
 
         <div class="rules">
-          <h3>Reglas (para mantener la calidad)</h3>
+          <h3>REGLAS (para mantener la calidad)</h3>
           <ul>
             <li><b>Publicación sujeta a revisión</b>: se publica solo si cumple reglas.</li>
             <li><b>Pago al recibir</b> (si aplica): al entregar o al recoger, según el negocio.</li>
