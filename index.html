@@ -23,12 +23,10 @@
       --shadow:0 20px 70px rgba(2,6,23,.18);
       --r:20px;
 
+      /* ✅ Animación (BIENVENIDOS) */
       --thanksText:#0f172a;
       --thanksBg:rgba(56,189,248,.16);
       --thanksBd:rgba(56,189,248,.28);
-
-      /* ✅ Azul medianoche REAL (se ve azul, no negro) */
-      --welcomeBlue:#0f2f6b;
     }
     *{box-sizing:border-box}
     body{
@@ -69,59 +67,58 @@
       gap:10px;
     }
 
-    /* ✅ Logo: un poquito más a la izquierda (arreglé tu typo) */
+    /* ✅ Logo más a la izquierda */
     .wordmark{
       width: min(450px, 86vw);
       height:auto;
       display:block;
       margin: 0 auto;
-      transform: translateX(-10px); /* ← más a la izquierda */
+      transform: translateX(-16px); /* ← más a la izquierda */
       filter: drop-shadow(0 16px 40px rgba(2,6,23,.14));
     }
 
-    /* ✅ Selector: más grande + centrado + profesional */
+    /* ✅ Selector: grande + centrado */
     .municipalityBox{
       width:100%;
-      max-width:720px;            /* más ancho */
+      max-width:720px;
       margin:0 auto;
       display:flex;
       flex-direction:column;
       align-items:center;
       gap:10px;
-      padding:0 6px;              /* para que no se pegue en móvil */
-    }
-    .municipalityBox label{
-      font-size:14px;             /* más grande */
-      font-weight:900;
-      color: rgba(15,23,42,.75);
-      letter-spacing:.06em;
+      padding:0 6px;
+      position:relative;
     }
 
+    /* ✅ MUNICIPIO en mayúsculas */
+    .municipalityBox label{
+      font-size:14px;
+      font-weight:900;
+      color: rgba(15,23,42,.75);
+      letter-spacing:.10em;
+      text-transform:uppercase;
+    }
+
+    /* ✅ Selector SIN azul claro: fondo gris-azulado oscuro elegante */
     select{
       width:100%;
-      appearance:none;             /* look más pro */
+      appearance:none;
       -webkit-appearance:none;
       -moz-appearance:none;
 
-      padding:16px 44px 16px 16px; /* alto + espacio para flecha */
+      padding:16px 44px 16px 16px;
       font-size:17px;
       font-weight:900;
       border-radius:18px;
 
-      border:1px solid rgba(15,23,42,.14);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,1), rgba(255,255,255,.96)),
-        radial-gradient(900px 200px at 10% 0%, rgba(56,189,248,.12), transparent 60%);
-      box-shadow: 0 10px 28px rgba(2,6,23,.08);
+      border:1px solid rgba(15,23,42,.16);
+      background: linear-gradient(180deg, rgba(15,23,42,.10), rgba(15,23,42,.06)); /* oscuro/pro */
+      color: rgba(15,23,42,.95);
+      box-shadow: 0 10px 28px rgba(2,6,23,.10);
       outline:none;
       cursor:pointer;
-      position:relative;
     }
 
-    /* Flechita a la derecha (pro) */
-    .municipalityBox{
-      position:relative;
-    }
     .municipalityBox::after{
       content:"▾";
       position:absolute;
@@ -129,27 +126,28 @@
       bottom:18px;
       font-size:16px;
       font-weight:900;
-      color: rgba(15,23,42,.55);
+      color: rgba(15,23,42,.60);
       pointer-events:none;
     }
 
     select:focus{
-      box-shadow:0 0 0 4px var(--glow), 0 10px 28px rgba(2,6,23,.10);
+      box-shadow:0 0 0 4px var(--glow), 0 10px 28px rgba(2,6,23,.12);
       border-color: rgba(56,189,248,.45);
     }
 
-    /* ✅ Gracias: con emojis (confianza) */
+    /* ✅ Animación ahora es BIENVENIDOS, más grande + emojis confianza */
     .thanks{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      font-size:11px;
+      font-family: "Poppins", Inter, system-ui, Arial;
+      font-size:16px;          /* más grande */
       font-weight:900;
-      letter-spacing:.30px;
+      letter-spacing:.08em;
       color: var(--thanksText);
       background: var(--thanksBg);
       border:1px solid var(--thanksBd);
-      padding:7px 10px;
+      padding:10px 14px;
       border-radius:999px;
       backdrop-filter: blur(8px);
       user-select:none;
@@ -159,18 +157,6 @@
     @keyframes floaty{
       0%,100%{transform:translateY(0)}
       50%{transform:translateY(-6px)}
-    }
-
-    /* ✅ BIENVENIDOS: azul medianoche + más grande + tipografía con más personalidad */
-    .welcome{
-      margin:0;
-      font-family: "Poppins", Inter, system-ui, Arial;
-      font-weight:900;
-      letter-spacing:.16em;
-      font-size:30px;
-      color: var(--welcomeBlue);
-      text-transform: uppercase;
-      text-shadow: 0 10px 30px rgba(15,47,107,.10);
     }
 
     .subtitle{
@@ -262,7 +248,6 @@
       background: linear-gradient(180deg, rgba(2,6,23,.06), rgba(2,6,23,.02));
     }
 
-    /* Reglas visibles */
     .rules{
       margin-top:16px;
       border-radius: 22px;
@@ -278,7 +263,6 @@
       text-align:left;
     }
 
-    /* ✅ Título reglas EXACTO como pediste: REGLAS arriba, abajo (para mantener la calidad), centrado */
     .rulesTitle{
       text-align:center;
       margin:0 0 10px;
@@ -287,7 +271,7 @@
       font-family: "Poppins", Inter, system-ui, Arial;
       font-weight:900;
       letter-spacing:.16em;
-      font-size:18px; /* un poco más grande */
+      font-size:18px;
       color:rgba(15,23,42,.98);
       text-transform:uppercase;
     }
@@ -296,7 +280,6 @@
       font-weight:900;
       font-size:12.5px;
       color:rgba(15,23,42,.70);
-      text-transform:none;
     }
 
     .rules b{color:rgba(15,23,42,.98)}
@@ -313,8 +296,8 @@
 
     @media (max-width:520px){
       .municipalityBox{padding:0 2px;}
-      .wordmark{transform: translateX(-6px);}
-      .welcome{font-size:28px;}
+      .wordmark{transform: translateX(-12px);}
+      .thanks{font-size:14px;}
     }
   </style>
 </head>
@@ -325,10 +308,8 @@
       <div class="main">
 
         <div class="hero">
-          <!-- ✅ Logo arriba -->
           <img class="wordmark" src="assets/logo.svg" alt="aquiservicio.com">
 
-          <!-- ✅ Municipio debajo -->
           <div class="municipalityBox">
             <label for="city">Municipio</label>
             <select id="city">
@@ -353,14 +334,10 @@
             </select>
           </div>
 
-          <!-- ✅ Gracias (con emojis) -->
-          <div class="thanks">🙏✨ MUCHAS GRACIAS POR SU APOYO 🤝💙</div>
-
-          <!-- ✅ Bienvenidos -->
-          <p class="welcome">BIENVENIDOS</p>
+          <div class="thanks"> BIENVENIDOS • MUCHO GUSTO </div>
 
           <p class="subtitle">
-            Elige lo que necesitas: <b>Comida</b>, <b>Servicios</b> o <b>Marketplace</b>.
+            Busca lo que necesitas: <b>Comida</b>, <b>Servicios</b> o <b>Marketplace</b>.
           </p>
         </div>
 
