@@ -1,82 +1,466 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Servicios - Aquiservicio</title>
-<style>
-  :root{--b:#eaeaea;--t:#111;--m:#555}
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;background:#fff;color:var(--t)}
-  .wrap{max-width:720px;margin:0 auto;padding:18px}
-  h1{margin:6px 0 6px;font-size:22px}
-  p{margin:0 0 14px;color:var(--m)}
-  .top{display:flex;gap:10px;align-items:center;justify-content:space-between}
-  .btn{display:inline-block;padding:12px 14px;border:1px solid var(--b);border-radius:14px;text-decoration:none;color:var(--t);font-weight:700}
-  .search{position:sticky;top:0;background:#fff;padding:10px 0 10px;border-bottom:1px solid var(--b);z-index:9}
-  input{width:100%;padding:14px 14px;border:1px solid var(--b);border-radius:14px;font-size:16px;outline:none}
-  .card{border:1px solid var(--b);border-radius:16px;padding:14px;margin:12px 0}
-  .name{font-weight:800;margin:0 0 6px}
-  .meta{margin:0 0 10px;color:var(--m);font-size:14px}
-  .row{display:flex;gap:10px;flex-wrap:wrap}
-  .wa{flex:1;min-width:140px;text-align:center}
-  .back{display:inline-block;margin-top:12px}
-  .hide{display:none!important}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Servicios - Aquiservicio</title>
+  <meta name="description" content="Servicios por ciudad y colonia.">
 
+  <style>
+    :root{
+      --bg:#ffffff;
+      --txt:#0f172a;
+      --mut:#475569;
+      --bd:rgba(15,23,42,.10);
+      --sh:0 18px 55px rgba(2,6,23,.08);
+      --r:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(900px 600px at 10% 0%, rgba(2,6,23,.05), transparent 60%),
+        radial-gradient(900px 600px at 90% 10%, rgba(2,6,23,.04), transparent 55%),
+        var(--bg);
+      color:var(--txt);
+    }
+    .wrap{max-width:900px;margin:0 auto;padding:18px}
+
+    .card{
+      border:1px solid var(--bd);
+      border-radius:calc(var(--r) + 6px);
+      box-shadow:var(--sh);
+      background:#fff;
+      overflow:hidden;
+      animation: fadeIn .35s ease-out;
+    }
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+    header{
+      padding:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:44px;height:44px;border-radius:14px;border:1px solid var(--bd);
+      display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden
+    }
+    .logo img{width:80%;height:80%;object-fit:contain}
+    .title b{display:block;letter-spacing:.3px}
+    .title span{display:block;font-size:13px;color:var(--mut);margin-top:2px}
+
+    .pill{
+      border:1px solid var(--bd);
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:900;
+      background:#fff;
+      font-size:14px;
+      white-space:nowrap;
+    }
+
+    main{padding:0 18px 18px}
+    h1{margin:4px 0 6px;font-size:22px;letter-spacing:-.3px}
+    .lead{margin:0 0 14px;color:var(--mut);font-size:14px}
+
+    .controls{
+      position:sticky;top:0;background:#fff;
+      padding:12px 0 12px;
+      border-top:1px solid var(--bd);
+      border-bottom:1px solid var(--bd);
+      z-index:10;
+    }
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    label{font-size:12px;font-weight:900;color:var(--mut);display:block;margin:0 0 6px}
+
+    select,input{
+      width:100%;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid var(--bd);
+      font-size:16px;
+      outline:none;
+      background:#fff;
+    }
+    select:focus,input:focus{
+      border-color: rgba(15,23,42,.20);
+      box-shadow: 0 0 0 4px rgba(15,23,42,.06);
+    }
+
+    .list{padding:14px 0 0}
+    .item{
+      border:1px solid var(--bd);
+      border-radius:18px;
+      padding:14px;
+      margin:12px 0;
+      background:#fff;
+    }
+    .name{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      font-weight:1000;
+    }
+    .badge{
+      font-size:12px;
+      border:1px solid var(--bd);
+      padding:4px 10px;
+      border-radius:999px;
+      font-weight:900;
+      color:#111;
+    }
+    .badge.ok{border-color:#cfe8d5}
+    .meta{margin:6px 0 10px;color:var(--mut);font-size:14px}
+    .status{font-weight:1000}
+    .status.open{color:#0b7a28}
+    .status.closed{color:#9b2c2c}
+
+    .btn{
+      border:1px solid var(--bd);
+      border-radius:16px;
+      padding:12px 14px;
+      text-decoration:none;
+      font-weight:900;
+      color:var(--txt);
+      background:#fff;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition: transform .12s ease;
+    }
+    .btn:active{transform:scale(.99)}
+    .btn.primary{
+      background:linear-gradient(180deg, rgba(2,6,23,.05), rgba(2,6,23,.02));
+    }
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    .actions .btn{flex:1;min-width:150px}
+
+    .empty{
+      border:1px dashed rgba(15,23,42,.22);
+      border-radius:18px;
+      padding:16px;
+      background:#fff;
+      margin-top:14px;
+    }
+    .empty b{display:block;margin-bottom:6px}
+    .footerLinks{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
+    .footerLinks a{flex:1;min-width:160px;text-align:center}
+
+    /* Panel "Ver más" */
+    dialog{border:none;border-radius:18px;width:min(920px, 96vw);padding:0;box-shadow:0 20px 80px rgba(0,0,0,.2)}
+    dialog::backdrop{background:rgba(0,0,0,.35)}
+    .sheet{max-height:86vh;overflow:auto;background:#fff;border-radius:18px}
+    .sheetTop{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--bd);padding:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:2}
+    .sheetTitle{font-weight:1000}
+    .sheetBody{padding:14px}
+    .kvs{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0}
+    .kv{border:1px solid var(--bd);border-radius:14px;padding:12px}
+    .kv b{display:block;margin-bottom:4px}
+    .products{margin-top:12px}
+    .prod{border:1px solid var(--bd);border-radius:14px;padding:12px;margin:10px 0;display:flex;justify-content:space-between;gap:10px}
+    .prod small{color:var(--mut)}
+  </style>
 </head>
+
 <body>
   <div class="wrap">
-    <div class="top">
-      <div>
-        <h1>Servicios en Navolato</h1>
-        <p>Busca por nombre, colonia o tipo.</p>
-      </div>
-      <a class="btn" href="/">Inicio</a>
-    </div>
-
-    <div class="search">
-      <input id="q" type="search" inputmode="search" placeholder="Ej: Plomero, centro, Carpintero…" autocomplete="off">
-    </div>
-
-    <div id="list">
-
-      <div class="card item" data-tags="plomero">
-        <p class="name">plomero</p>
-        <p class="meta">Centro • 6pm–1am</p>
-        <div class="row">
-          <a class="btn wa" href="https://wa.me/521XXXXXXXXXX?text=Hola%20vi%20tu%20negocio%20en%20Aquiservicio%20(Tacos%20El%20G%C3%BCero)">WhatsApp</a>
-          <a class="btn" href="https://maps.google.com/?q=Tacos+El+Guero+Navolato">Mapa</a>
+    <div class="card">
+      <header>
+        <div class="brand">
+          <div class="logo"><img src="assets/logo.svg" alt="Aquiservicio"></div>
+          <div class="title">
+            <b>AQUISERVICIO</b>
+            <span>Servicios cerca de ti</span>
+          </div>
         </div>
-      </div>
+        <div class="pill" id="cityPill">Ciudad</div>
+      </header>
 
-      <div class="card item" data-tags="mariscos ceviche pescados centro">
-        <p class="name">Mariscos La Playa</p>
-        <p class="meta">Centro • 12pm–6pm</p>
-        <div class="row">
-          <a class="btn wa" href="https://wa.me/521XXXXXXXXXX?text=Hola%20vi%20tu%20negocio%20en%20Aquiservicio%20(Mariscos%20La%20Playa)">WhatsApp</a>
-          <a class="btn" href="https://maps.google.com/?q=Mariscos+La+Playa+Navolato">Mapa</a>
+      <main>
+        <h1 id="pageTitle">Servicios</h1>
+        <p class="lead">Filtra por colonia o busca por oficio/nombre.</p>
+
+        <div class="controls">
+          <div class="row">
+            <div style="flex:1;min-width:220px">
+              <label for="colonia">Colonia</label>
+              <select id="colonia">
+                <option value="">Todas</option>
+              </select>
+            </div>
+            <div style="flex:2;min-width:240px">
+              <label for="q">Buscar</label>
+              <input id="q" type="search" inputmode="search" placeholder="Ej: plomero, eléctrico, mandados…" autocomplete="off">
+            </div>
+          </div>
         </div>
-      </div>
 
+        <div class="list" id="list"></div>
+
+        <div id="empty" class="empty" style="display:none">
+          <b>No hay servicios cargados en esta ciudad todavía.</b>
+          <div>Si quieres agregar tu servicio o sugerir uno, usa estos botones:</div>
+          <div class="footerLinks">
+            <a class="btn primary" href="/anunciarme.html">➕ Quiero anunciarme</a>
+            <a class="btn" href="/no-encontre.html">💡 Sugerencias</a>
+          </div>
+        </div>
+
+        <div id="bottomLinks" class="footerLinks" style="margin-top:14px">
+          <a class="btn primary" href="/anunciarme.html">➕ Quiero anunciarme</a>
+          <a class="btn" href="/no-encontre.html">💡 Sugerencias</a>
+          <a class="btn" href="/">← Inicio</a>
+        </div>
+      </main>
     </div>
-
-    <a class="btn back" href="/anunciarme.html">➕ Anunciarme</a>
-    <a class="btn back" href="/no-encontre.html">🔎 No encontré</a>
   </div>
 
+  <!-- Panel perfil -->
+  <dialog id="dlg">
+    <div class="sheet">
+      <div class="sheetTop">
+        <button class="btn" id="backBtn">← Volver</button>
+        <div class="sheetTitle" id="pTitle">Perfil</div>
+        <span id="pBadge" class="badge ok" style="display:none">Verificado</span>
+      </div>
+      <div class="sheetBody" id="pBody"></div>
+    </div>
+  </dialog>
+
 <script>
-  const q = document.getElementById('q');
-  const items = Array.from(document.querySelectorAll('.item'));
-  function run(){
-    const s = (q.value || '').trim().toLowerCase();
-    for (const el of items){
-      const hay = (el.innerText + ' ' + (el.dataset.tags||'')).toLowerCase();
-      el.classList.toggle('hide', s && !hay.includes(s));
+  // ✅ Pon tu WhatsApp Business (para "Reclamar")
+  const ADMIN_WA = "521XXXXXXXXXX"; // <-- cámbialo
+
+  // ✅ Ciudad elegida desde el inicio
+  const city = localStorage.getItem("aq_city") || "Navolato";
+
+  document.getElementById("cityPill").textContent = city;
+  document.getElementById("pageTitle").textContent = `Servicios en ${city}`;
+
+  // ✅ Datos (V1 manual). Agrega más objetos aquí.
+  // open/close en 24h. Si cierra después de medianoche: overnight:true
+  const businesses = [
+    {
+      id:"plomero-juan",
+      type:"servicio",
+      city:"Navolato",
+      name:"Plomero Juan",
+      colonia:"Centro",
+      tags:"plomero tuberia fugas boiler",
+      phone:"6671111111",
+      whatsapp:"5216671111111",
+      address:"Servicio a domicilio (Centro y alrededores)",
+      maps:"",
+      open:"08:00",
+      close:"20:00",
+      overnight:false,
+      verified:false,
+      topProducts:[
+        {name:"Reparación de fugas", note:"Cotización por WhatsApp"},
+        {name:"Instalación de boiler", note:"Servicio a domicilio"},
+      ]
+    },
+    {
+      id:"electricista-luis",
+      type:"servicio",
+      city:"Navolato",
+      name:"Electricista Luis",
+      colonia:"Infonavit",
+      tags:"electricista corto circuito cableado contactos",
+      phone:"6672222222",
+      whatsapp:"5216672222222",
+      address:"Navolato e Infonavit",
+      maps:"",
+      open:"09:00",
+      close:"18:00",
+      overnight:false,
+      verified:true,
+      topProducts:[
+        {name:"Instalación de contactos", note:"Rápido"},
+        {name:"Revisión de corto", note:"Diagnóstico"},
+      ]
+    }
+  ];
+
+  const list = document.getElementById("list");
+  const emptyBox = document.getElementById("empty");
+  const q = document.getElementById("q");
+  const coloniaSel = document.getElementById("colonia");
+
+  function parseHM(hm){
+    const [h,m] = hm.split(":").map(Number);
+    return h*60 + m;
+  }
+  function fmtDelta(mins){
+    const m = Math.max(0, Math.round(mins));
+    const hh = Math.floor(m/60);
+    const mm = m%60;
+    if (hh <= 0) return `${mm} min`;
+    return `${hh}h ${mm}m`;
+  }
+  function statusFor(b){
+    if(!b.open || !b.close) return {label:"Horario no disponible", cls:""};
+    const now = new Date();
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const o = parseHM(b.open);
+    const c = parseHM(b.close);
+
+    if(!b.overnight){
+      if(nowMin >= o && nowMin < c){
+        return {label:`Cierra en ${fmtDelta(c-nowMin)}`, cls:"open"};
+      } else {
+        const nextOpen = (nowMin < o) ? (o-nowMin) : (24*60 - nowMin + o);
+        return {label:`Abre en ${fmtDelta(nextOpen)}`, cls:"closed"};
+      }
+    }
+
+    const isOpen = (nowMin >= o) || (nowMin < c);
+    if(isOpen){
+      const minsToClose = (nowMin < c) ? (c-nowMin) : (24*60 - nowMin + c);
+      return {label:`Cierra en ${fmtDelta(minsToClose)}`, cls:"open"};
+    } else {
+      const minsToOpen = (o - nowMin);
+      return {label:`Abre en ${fmtDelta(minsToOpen)}`, cls:"closed"};
     }
   }
-  q.addEventListener('input', run);
+
+  function cityBusinesses(){
+    return businesses.filter(b => b.type==="servicio" && (b.city||"") === city);
+  }
+
+  function buildColonias(data){
+    const cols = [...new Set(data.map(b=>b.colonia).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+    coloniaSel.innerHTML = `<option value="">Todas</option>`;
+    for(const c of cols){
+      const opt = document.createElement("option");
+      opt.value = c;
+      opt.textContent = c;
+      coloniaSel.appendChild(opt);
+    }
+  }
+
+  // Panel
+  const dlg = document.getElementById("dlg");
+  const backBtn = document.getElementById("backBtn");
+  const pTitle = document.getElementById("pTitle");
+  const pBody = document.getElementById("pBody");
+  const pBadge = document.getElementById("pBadge");
+  backBtn.onclick = ()=>dlg.close();
+
+  function openProfile(b){
+    pTitle.textContent = b.name;
+    pBadge.style.display = b.verified ? "inline-block" : "none";
+
+    const st = statusFor(b);
+    const claimMsg =
+      `Quiero reclamar este servicio en Aquiservicio.%0A%0A` +
+      `Servicio: ${encodeURIComponent(b.name)}%0A` +
+      `Ciudad: ${encodeURIComponent(city)}%0A` +
+      `Colonia: ${encodeURIComponent(b.colonia||"")}%0A` +
+      `Mi nombre:%0A` +
+      `Prueba/Link:`;
+
+    pBody.innerHTML = `
+      <div class="kvs">
+        <div class="kv"><b>Estado</b><span class="status ${st.cls}">${st.label}</span></div>
+        <div class="kv"><b>Colonia</b>${b.colonia || "—"}</div>
+        <div class="kv"><b>Detalles</b>${b.address || "—"}</div>
+      </div>
+
+      <div class="actions">
+        ${b.whatsapp ? `<a class="btn primary" href="https://wa.me/${b.whatsapp}?text=${encodeURIComponent("Hola, vi tu servicio en Aquiservicio: "+b.name+". ¿Me cotizas?")}">Cotizar por WhatsApp</a>` : ``}
+        ${b.phone ? `<a class="btn" href="tel:${b.phone}">Llamar</a>` : ``}
+        ${b.maps ? `<a class="btn" href="${b.maps}" target="_blank" rel="noopener">Ver en mapa</a>` : ``}
+      </div>
+
+      <div class="products">
+        <h3 style="margin:16px 0 8px">Servicios más pedidos</h3>
+        ${(b.topProducts||[]).map(p=>`
+          <div class="prod">
+            <div><b>${p.name}</b><br><small>${p.note||""}</small></div>
+          </div>
+        `).join("") || `<div class="prod"><div><b>Sin lista aún</b><br><small>Pronto añadiremos los más pedidos.</small></div></div>`}
+      </div>
+
+      <div style="margin-top:14px">
+        <a class="btn" href="https://wa.me/${ADMIN_WA}?text=${claimMsg}">Reclamar servicio</a>
+      </div>
+      <p style="margin:12px 0 0;color:var(--mut);font-size:13px">
+        Reclamo pendiente de revisión. Si se aprueba, se habilitan cambios (horarios/detalles/verificado).
+      </p>
+    `;
+    dlg.showModal();
+  }
+
+  function render(){
+    const dataCity = cityBusinesses();
+
+    if(dataCity.length === 0){
+      list.innerHTML = "";
+      emptyBox.style.display = "block";
+      return;
+    }
+    emptyBox.style.display = "none";
+
+    buildColonias(dataCity);
+
+    const s = (q.value||"").trim().toLowerCase();
+    const col = coloniaSel.value;
+
+    const filtered = dataCity.filter(b=>{
+      const hay = (b.name+" "+(b.tags||"")+" "+(b.colonia||"")).toLowerCase();
+      const okText = !s || hay.includes(s);
+      const okCol = !col || b.colonia === col;
+      return okText && okCol;
+    });
+
+    list.innerHTML = "";
+
+    if(filtered.length === 0){
+      list.innerHTML = `
+        <div class="empty">
+          <b>No hay resultados con ese filtro.</b>
+          <div>Prueba otra colonia o borra la búsqueda.</div>
+        </div>
+      `;
+      return;
+    }
+
+    for(const b of filtered){
+      const st = statusFor(b);
+      const el = document.createElement("div");
+      el.className = "item";
+      el.innerHTML = `
+        <div class="name">
+          <span>${b.name}</span>
+          ${b.verified ? `<span class="badge ok">Verificado</span>` : ``}
+        </div>
+        <div class="meta">${b.colonia || "—"} • <span class="status ${st.cls}">${st.label}</span></div>
+        <div class="actions">
+          ${b.whatsapp ? `<a class="btn primary" href="https://wa.me/${b.whatsapp}?text=${encodeURIComponent("Hola, vi tu servicio en Aquiservicio: "+b.name+". ¿Me cotizas?")}">WhatsApp</a>` : ``}
+          ${b.phone ? `<a class="btn" href="tel:${b.phone}">Llamar</a>` : ``}
+          <button class="btn" data-open="${b.id}">Ver más</button>
+        </div>
+      `;
+      list.appendChild(el);
+    }
+
+    document.querySelectorAll("[data-open]").forEach(btn=>{
+      btn.onclick = ()=>{
+        const b = businesses.find(x=>x.id===btn.getAttribute("data-open"));
+        if(b) openProfile(b);
+      };
+    });
+  }
+
+  q.addEventListener("input", render);
+  coloniaSel.addEventListener("change", render);
+
+  render();
+  setInterval(render, 60 * 1000);
 </script>
 </body>
-
 </html>
-
