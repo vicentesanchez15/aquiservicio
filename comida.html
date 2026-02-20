@@ -3,471 +3,840 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Comida - Aquiservicio</title>
-  <meta name="description" content="Comida por ciudad y colonia.">
+  <title>Comida • Aquiservicio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#ffffff;
+      --navy:#0b1220;
+      --navy2:#0f1a33;
       --txt:#0f172a;
-      --mut:#475569;
-      --bd:rgba(15,23,42,.10);
-      --sh:0 18px 55px rgba(2,6,23,.08);
-      --r:18px;
+      --mut:#64748b;
+
+      --card:rgba(255,255,255,.94);
+      --shadow:0 20px 70px rgba(2,6,23,.18);
+      --glow:rgba(56,189,248,.22);
+      --r:20px;
+
+      --blueMidnight:#0f2f6b;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--txt);
       background:
-        radial-gradient(900px 600px at 10% 0%, rgba(2,6,23,.05), transparent 60%),
-        radial-gradient(900px 600px at 90% 10%, rgba(2,6,23,.04), transparent 55%),
-        var(--bg);
-      color:var(--txt);
-    }
-    .wrap{max-width:900px;margin:0 auto;padding:18px}
-
-    .card{
-      border:1px solid var(--bd);
-      border-radius:calc(var(--r) + 6px);
-      box-shadow:var(--sh);
-      background:#fff;
-      overflow:hidden;
-      animation: fadeIn .35s ease-out;
-    }
-    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
-    header{
-      padding:18px;
+        radial-gradient(900px 600px at 10% 0%, rgba(56,189,248,.14), transparent 60%),
+        radial-gradient(900px 600px at 90% 10%, rgba(99,102,241,.12), transparent 55%),
+        linear-gradient(180deg, var(--navy), var(--navy2));
+      min-height:100vh;
       display:flex;
-      justify-content:space-between;
+      align-items:flex-start;
+      justify-content:center;
+      padding:14px;
+    }
+
+    .shell{width:min(980px, 100%);}
+    .card{
+      margin-top:12px;
+      background: var(--card);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: var(--shadow);
+      border-radius: calc(var(--r) + 10px);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+      animation: in .35s ease-out;
+    }
+    @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Header */
+    .top{
+      padding:14px 12px;
+      display:grid;
+      grid-template-columns: 1fr auto;
       align-items:center;
-      gap:12px;
+      gap:10px;
+      border-bottom:1px solid rgba(15,23,42,.08);
     }
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{
-      width:44px;height:44px;border-radius:14px;border:1px solid var(--bd);
-      display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden
-    }
-    .logo img{width:80%;height:80%;object-fit:contain}
-    .title b{display:block;letter-spacing:.3px}
-    .title span{display:block;font-size:13px;color:var(--mut);margin-top:2px}
 
-    .pill{
-      border:1px solid var(--bd);
+    .brandWrap{
+      display:flex;
+      justify-content:center; /* ✅ logo centrado */
+    }
+    .wordmark{
+      width:min(360px, 70vw);
+      height:auto;
+      display:block;
+      transform: translateX(-10px); /* mismo “toquecito” */
+      filter: drop-shadow(0 16px 40px rgba(2,6,23,.14));
+    }
+
+    .backBtn{
+      justify-self:end;
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
       border-radius:999px;
-      padding:10px 14px;
+      padding:10px 12px;
       font-weight:900;
-      background:#fff;
-      font-size:14px;
-      white-space:nowrap;
-    }
-
-    main{padding:0 18px 18px}
-    h1{margin:4px 0 6px;font-size:22px;letter-spacing:-.3px}
-    .lead{margin:0 0 14px;color:var(--mut);font-size:14px}
-
-    .controls{
-      position:sticky;top:0;background:#fff;
-      padding:12px 0 12px;
-      border-top:1px solid var(--bd);
-      border-bottom:1px solid var(--bd);
-      z-index:10;
-    }
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    label{font-size:12px;font-weight:900;color:var(--mut);display:block;margin:0 0 6px}
-
-    select,input{
-      width:100%;
-      padding:14px;
-      border-radius:14px;
-      border:1px solid var(--bd);
-      font-size:16px;
-      outline:none;
-      background:#fff;
-    }
-    select:focus,input:focus{
-      border-color: rgba(15,23,42,.20);
-      box-shadow: 0 0 0 4px rgba(15,23,42,.06);
-    }
-
-    .list{padding:14px 0 0}
-    .item{
-      border:1px solid var(--bd);
-      border-radius:18px;
-      padding:14px;
-      margin:12px 0;
-      background:#fff;
-    }
-    .name{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      font-weight:1000;
-    }
-    .badge{
-      font-size:12px;
-      border:1px solid var(--bd);
-      padding:4px 10px;
-      border-radius:999px;
-      font-weight:900;
-      color:#111;
-    }
-    .badge.ok{border-color:#cfe8d5}
-    .meta{margin:6px 0 10px;color:var(--mut);font-size:14px}
-    .status{font-weight:1000}
-    .status.open{color:#0b7a28}
-    .status.closed{color:#9b2c2c}
-
-    .btn{
-      border:1px solid var(--bd);
-      border-radius:16px;
-      padding:12px 14px;
+      font-size:13px;
       text-decoration:none;
-      font-weight:900;
       color:var(--txt);
-      background:#fff;
       display:inline-flex;
       align-items:center;
-      justify-content:center;
+      gap:8px;
+      box-shadow: 0 10px 28px rgba(2,6,23,.08);
+    }
+    .backBtn:active{transform:scale(.99)}
+
+    /* Controls */
+    .main{padding:14px 12px 16px}
+
+    .title{
+      margin:4px 0 10px;
+      text-align:center;
+      font-family:"Poppins", Inter, system-ui, Arial;
+      font-weight:900;
+      letter-spacing:.10em;
+      color: var(--blueMidnight);
+      text-transform:uppercase;
+      font-size:18px;
+    }
+
+    .controls{
+      display:grid;
       gap:10px;
-      transition: transform .12s ease;
+      max-width:860px;
+      margin:0 auto 12px;
     }
-    .btn:active{transform:scale(.99)}
-    .btn.primary{
-      background:linear-gradient(180deg, rgba(2,6,23,.05), rgba(2,6,23,.02));
-    }
-    .actions{display:flex;gap:10px;flex-wrap:wrap}
-    .actions .btn{flex:1;min-width:150px}
 
-    .empty{
-      border:1px dashed rgba(15,23,42,.22);
+    .selectBox{
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      position:relative;
+    }
+    .selectBox label{
+      font-size:13px;
+      font-weight:900;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      color: rgba(15,23,42,.72);
+    }
+    .selectBox::after{
+      content:"▾";
+      position:absolute;
+      right:18px;
+      bottom:14px;
+      font-size:16px;
+      font-weight:900;
+      color: rgba(15,23,42,.60);
+      pointer-events:none;
+    }
+    select{
+      width:100%;
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      padding:14px 44px 14px 14px;
+      font-size:16px;
+      font-weight:900;
       border-radius:18px;
-      padding:16px;
-      background:#fff;
-      margin-top:14px;
+      border:1px solid rgba(15,23,42,.16);
+      background: linear-gradient(180deg, rgba(15,23,42,.10), rgba(15,23,42,.06));
+      color: rgba(15,23,42,.95);
+      box-shadow: 0 10px 28px rgba(2,6,23,.10);
+      outline:none;
+      cursor:pointer;
+      max-width:860px;
     }
-    .empty b{display:block;margin-bottom:6px}
-    .footerLinks{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
-    .footerLinks a{flex:1;min-width:160px;text-align:center}
+    select:focus{
+      box-shadow:0 0 0 4px var(--glow), 0 10px 28px rgba(2,6,23,.12);
+      border-color: rgba(56,189,248,.45);
+    }
 
-    /* Panel "Ver más" */
-    dialog{border:none;border-radius:18px;width:min(920px, 96vw);padding:0;box-shadow:0 20px 80px rgba(0,0,0,.2)}
-    dialog::backdrop{background:rgba(0,0,0,.35)}
-    .sheet{max-height:86vh;overflow:auto;background:#fff;border-radius:18px}
-    .sheetTop{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--bd);padding:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:2}
-    .sheetTitle{font-weight:1000}
-    .sheetBody{padding:14px}
-    .kvs{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0}
-    .kv{border:1px solid var(--bd);border-radius:14px;padding:12px}
-    .kv b{display:block;margin-bottom:4px}
-    .products{margin-top:12px}
-    .prod{border:1px solid var(--bd);border-radius:14px;padding:12px;margin:10px 0;display:flex;justify-content:space-between;gap:10px}
-    .prod small{color:var(--mut)}
+    .searchBox{
+      width:100%;
+      max-width:860px;
+      margin:0 auto;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .search{
+      flex:1;
+      padding:14px 14px;
+      border-radius:18px;
+      border:1px solid rgba(15,23,42,.14);
+      background:#fff;
+      font-size:16px;
+      font-weight:800;
+      outline:none;
+      box-shadow: 0 10px 28px rgba(2,6,23,.06);
+    }
+    .search:focus{
+      box-shadow:0 0 0 4px var(--glow), 0 10px 28px rgba(2,6,23,.10);
+      border-color: rgba(56,189,248,.45);
+    }
+    .clearBtn{
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      border-radius:18px;
+      padding:14px 14px;
+      font-weight:900;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow: 0 10px 28px rgba(2,6,23,.06);
+    }
+    .clearBtn:active{transform:scale(.99)}
+
+    /* Grid tiles */
+    .grid{
+      max-width:860px;
+      margin:10px auto 0;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+
+    .tile{
+      position:relative;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      box-shadow: 0 14px 40px rgba(2,6,23,.10);
+      text-decoration:none;
+      color:var(--txt);
+      min-height:130px;
+      display:flex;
+      align-items:flex-end;
+    }
+    .tile img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter: saturate(1.05) contrast(1.02);
+    }
+    .tile .overlay{
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(2,6,23,.00), rgba(2,6,23,.55));
+    }
+    .tile .label{
+      position:relative;
+      padding:12px;
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+    }
+    .tile .name{
+      font-weight:900;
+      font-size:15px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#fff;
+      font-family:"Poppins", Inter, system-ui, Arial;
+    }
+    .tile .hint{
+      font-weight:800;
+      font-size:12px;
+      color: rgba(255,255,255,.82);
+    }
+
+    @media (max-width:420px){
+      .grid{gap:10px}
+      .tile{min-height:120px}
+      .tile .name{font-size:14px}
+    }
+
+    /* Results area */
+    .results{
+      max-width:860px;
+      margin:14px auto 0;
+      border-radius:18px;
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      box-shadow: 0 14px 40px rgba(2,6,23,.08);
+      overflow:hidden;
+      display:none;
+    }
+    .resultsHeader{
+      padding:12px 12px;
+      border-bottom:1px solid rgba(15,23,42,.08);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .resultsHeader .h{
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:12px;
+      color: rgba(15,23,42,.70);
+    }
+    .closeResults{
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      border-radius:999px;
+      padding:8px 10px;
+      font-weight:900;
+      font-size:12px;
+      cursor:pointer;
+    }
+
+    .list{
+      padding:12px;
+      display:grid;
+      gap:10px;
+    }
+
+    .biz{
+      border:1px solid rgba(15,23,42,.10);
+      border-radius:16px;
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      background: linear-gradient(180deg, rgba(2,6,23,.02), rgba(2,6,23,.00));
+    }
+    .bizTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .bizName{
+      font-weight:900;
+      font-size:15px;
+    }
+    .badge{
+      font-weight:900;
+      font-size:11px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(56,189,248,.35);
+      background: rgba(56,189,248,.12);
+      color: rgba(15,23,42,.85);
+      white-space:nowrap;
+    }
+    .muted{color: rgba(15,23,42,.65); font-weight:700; font-size:13px; line-height:1.35}
+
+    .bizActions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:900;
+      font-size:13px;
+      text-decoration:none;
+      color:var(--txt);
+      cursor:pointer;
+    }
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(56,189,248,.16), rgba(99,102,241,.10));
+      border-color: rgba(56,189,248,.35);
+    }
+
+    /* Animated empty state */
+    .empty{
+      display:none;
+      max-width:860px;
+      margin:14px auto 0;
+      border-radius:18px;
+      border:1px dashed rgba(15,23,42,.20);
+      background: rgba(255,255,255,.92);
+      padding:16px;
+      text-align:center;
+      color: rgba(15,23,42,.78);
+      box-shadow: 0 14px 40px rgba(2,6,23,.06);
+      animation: pop .35s ease-out;
+    }
+    @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .empty .bubble{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(56,189,248,.28);
+      background: rgba(56,189,248,.12);
+      font-weight:900;
+      animation: floaty 2.2s ease-in-out infinite;
+      margin-bottom:10px;
+    }
+    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    .empty .msg{font-weight:800; margin:6px 0 10px}
+    .empty .actions{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+
+    .foot{
+      margin:14px 0 0;
+      text-align:center;
+      font-size:12px;
+      color: rgba(255,255,255,.65);
+      font-weight:700;
+    }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+  <div class="shell">
     <div class="card">
-      <header>
-        <div class="brand">
-          <div class="logo"><img src="assets/logo.svg" alt="Aquiservicio"></div>
-          <div class="title">
-            <b>AQUISERVICIO</b>
-            <span>Comida cerca de ti</span>
-          </div>
+      <div class="top">
+        <div class="brandWrap">
+          <img class="wordmark" src="assets/logo.svg" alt="aquiservicio.com">
         </div>
-        <div class="pill" id="cityPill">Ciudad</div>
-      </header>
+        <a class="backBtn" href="index.html">← Volver al inicio</a>
+      </div>
 
-      <main>
-        <h1 id="pageTitle">Comida</h1>
-        <p class="lead">Filtra por colonia o busca por nombre/tipo.</p>
+      <div class="main">
+        <div class="title">COMIDA</div>
 
         <div class="controls">
-          <div class="row">
-            <div style="flex:1;min-width:220px">
-              <label for="colonia">Colonia</label>
-              <select id="colonia">
-                <option value="">Todas</option>
-              </select>
-            </div>
-            <div style="flex:2;min-width:240px">
-              <label for="q">Buscar</label>
-              <input id="q" type="search" inputmode="search" placeholder="Ej: tacos, mariscos, pizza…" autocomplete="off">
-            </div>
+          <div class="selectBox">
+            <label for="loc">LOCALIDAD</label>
+            <select id="loc">
+              <option value="Navolato Centro" selected>Navolato Centro</option>
+              <option value="Altata">Altata</option>
+              <option value="La Palma">La Palma</option>
+              <option value="Villa Juárez">Villa Juárez</option>
+              <option value="San Pedro">San Pedro</option>
+              <option value="Dautillos">Dautillos</option>
+              <option value="El Castillo">El Castillo</option>
+              <option value="El Tigre">El Tigre</option>
+              <option value="Las Aguamitas">Las Aguamitas</option>
+              <option value="Yameto">Yameto</option>
+            </select>
+          </div>
+
+          <div class="searchBox">
+            <input id="q" class="search" type="search" placeholder="Buscar tacos, sushi, pizza… o el nombre del negocio" autocomplete="off" />
+            <button id="clear" class="clearBtn" type="button">Limpiar</button>
           </div>
         </div>
 
-        <div class="list" id="list"></div>
+        <!-- 10 tiles (2 columnas) -->
+        <div class="grid" id="grid">
+          <a class="tile" href="#" data-action="open">
+            <img src="assets/categoria/abierto.webp" alt="Abierto ahora">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">ABIERTO AHORA</div>
+              <div class="hint">Ver quién está atendiendo</div>
+            </div>
+          </a>
 
-        <div id="empty" class="empty" style="display:none">
-          <b>No hay lugares cargados en esta ciudad todavía.</b>
-          <div>Si quieres que agreguemos un negocio o sugerir uno, usa estos botones:</div>
-          <div class="footerLinks">
-            <a class="btn primary" href="/anunciarme.html">➕ Quiero anunciarme</a>
-            <a class="btn" href="/no-encontre.html">💡 Sugerencias</a>
+          <a class="tile" href="#" data-action="promos">
+            <img src="assets/categoria/promos.webp" alt="Promociones">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">PROMOCIONES</div>
+              <div class="hint">Solo verificados</div>
+            </div>
+          </a>
+
+          <a class="tile" href="#" data-cat="tacos">
+            <img src="assets/categoria/tacos.webp" alt="Tacos">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">TACOS</div>
+              <div class="hint">Lo más pedido</div>
+            </div>
+          </a>
+
+          <a class="tile" href="#" data-cat="torta">
+            <img src="assets/categoria/torta.webp" alt="Tortas">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">TORTAS</div>
+              <div class="hint">Rápido y llenador</div>
+            </div>
+          </a>
+
+          <a class="tile" href="#" data-cat="hamburguesa">
+            <img src="assets/categoria/hamburguesa.webp" alt="Hamburguesa">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">HAMBURGUESAS</div>
+              <div class="hint">Clásico</div>
+            </div>
+          </a>
+
+          <a class="tile" href="#" data-cat="pizza">
+            <img src="assets/categoria/pizza.webp" alt="Pizza">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">PIZZA</div>
+              <div class="hint">Para compartir</div>
+            </div>
+          </a>
+
+          <a class="tile" href="#" data-cat="sushi">
+            <img src="assets/categoria/sushi.webp" alt="Sushi">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">SUSHI</div>
+              <div class="hint">Muy buscado</div>
+            </div>
+          </a>
+
+          <a class="tile" href="#" data-cat="mariscos">
+            <img src="assets/categoria/mariscos.webp" alt="Mariscos">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">MARISCOS</div>
+              <div class="hint">Costero</div>
+            </div>
+          </a>
+
+          <a class="tile" href="#" data-cat="pollo">
+            <img src="assets/categoria/pollo.webp" alt="Pollo">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">POLLO</div>
+              <div class="hint">Familiar</div>
+            </div>
+          </a>
+
+          <a class="tile" href="#" data-cat="cafe">
+            <img src="assets/categoria/cafe.webp" alt="Café">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">CAFÉ Y POSTRES</div>
+              <div class="hint">Dulce y café</div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Empty animated message -->
+        <div class="empty" id="empty">
+          <div class="bubble" id="emptyBubble">⏳</div>
+          <div class="msg" id="emptyMsg">Por el momento no hay resultados aquí.</div>
+          <div class="actions">
+            <a class="btn primary" href="registrar.html">➕ Registrar mi negocio</a>
+            <a class="btn" href="no-encontre.html">💡 Sugerencias</a>
+            <button class="btn" id="showAllBtn" type="button">Ver todos</button>
           </div>
         </div>
 
-        <div id="bottomLinks" class="footerLinks" style="margin-top:14px">
-          <a class="btn primary" href="/anunciarme.html">➕ Quiero anunciarme</a>
-          <a class="btn" href="/no-encontre.html">💡 Sugerencias</a>
-          <a class="btn" href="/">← Inicio</a>
+        <!-- Results -->
+        <div class="results" id="results">
+          <div class="resultsHeader">
+            <div class="h" id="resultsTitle">Resultados</div>
+            <button class="closeResults" id="closeResults" type="button">Cerrar ✕</button>
+          </div>
+          <div class="list" id="list"></div>
         </div>
-      </main>
+
+      </div>
     </div>
+
+    <div class="foot">Aquiservicio • Comida</div>
   </div>
 
-  <!-- Panel perfil -->
-  <dialog id="dlg">
-    <div class="sheet">
-      <div class="sheetTop">
-        <button class="btn" id="backBtn">← Volver</button>
-        <div class="sheetTitle" id="pTitle">Perfil</div>
-        <span id="pBadge" class="badge ok" style="display:none">Verificado</span>
-      </div>
-      <div class="sheetBody" id="pBody"></div>
-    </div>
-  </dialog>
+  <script>
+    // =========================
+    // DEMO DATA (para que no se vea vacío)
+    // Luego lo conectamos a Supabase.
+    // =========================
+    const DEMO = [
+      {
+        id: "tacos-juan",
+        name: "Tacos Juan",
+        verified: true,
+        localidad: "Navolato Centro",
+        category: "tacos",
+        whatsapp: "https://wa.me/526671234567",
+        delivery: true,
+        pickup: true,
+        dineIn: true,
+        promoToday: "2x1 en tacos al pastor (hoy)",
+        hours: { // 24h (Mazatlán)
+          mon: ["17:00","23:30"],
+          tue: ["17:00","23:30"],
+          wed: ["17:00","23:30"],
+          thu: ["17:00","23:30"],
+          fri: ["17:00","00:30"],
+          sat: ["17:00","00:30"],
+          sun: ["17:00","23:30"],
+        }
+      },
+      {
+        id: "sushi-koi",
+        name: "Sushi Koi",
+        verified: false,
+        localidad: "Navolato Centro",
+        category: "sushi",
+        whatsapp: "https://wa.me/526672222222",
+        delivery: true,
+        pickup: true,
+        dineIn: false,
+        promoToday: null,
+        hours: {
+          mon: ["13:00","21:30"],
+          tue: ["13:00","21:30"],
+          wed: ["13:00","21:30"],
+          thu: ["13:00","21:30"],
+          fri: ["13:00","22:30"],
+          sat: ["13:00","22:30"],
+          sun: ["13:00","21:00"],
+        }
+      },
+      {
+        id: "cafe-luna",
+        name: "Café Luna",
+        verified: true,
+        localidad: "Altata",
+        category: "cafe",
+        whatsapp: "https://wa.me/526663333333",
+        delivery: false,
+        pickup: true,
+        dineIn: true,
+        promoToday: null,
+        hours: {
+          mon: ["08:00","14:00"],
+          tue: ["08:00","14:00"],
+          wed: ["08:00","14:00"],
+          thu: ["08:00","14:00"],
+          fri: ["08:00","16:00"],
+          sat: ["08:00","16:00"],
+          sun: ["08:00","13:00"],
+        }
+      }
+    ];
 
-<script>
-  // ✅ Pon tu WhatsApp Business (para "Reclamar" y sugerencias si quieres)
-  const ADMIN_WA = "521XXXXXXXXXX"; // <-- cámbialo
+    // Helpers
+    const $ = (id) => document.getElementById(id);
+    const locSel = $("loc");
+    const qInput = $("q");
+    const clearBtn = $("clear");
+    const grid = $("grid");
+    const empty = $("empty");
+    const emptyBubble = $("emptyBubble");
+    const emptyMsg = $("emptyMsg");
+    const showAllBtn = $("showAllBtn");
+    const results = $("results");
+    const list = $("list");
+    const resultsTitle = $("resultsTitle");
+    const closeResults = $("closeResults");
 
-  // ✅ Ciudad elegida desde el inicio
-  const city = localStorage.getItem("aq_city") || "Navolato";
-
-  document.getElementById("cityPill").textContent = city;
-  document.getElementById("pageTitle").textContent = `Comida en ${city}`;
-
-  // ✅ Datos (V1 manual). Agrega más objetos aquí.
-  // open/close en 24h. Si cierra después de medianoche: overnight:true
-  const businesses = [
-    {
-      id:"tacos-el-guero",
-      type:"comida",
-      city:"Navolato",
-      name:"Tacos El Güero",
-      colonia:"Centro",
-      tags:"tacos pastor birria taqueria",
-      phone:"6671234567",
-      whatsapp:"5216671234567",
-      address:"Calle X #123, Centro",
-      maps:"https://maps.google.com/?q=Tacos+El+Guero+Navolato",
-      open:"18:00",
-      close:"01:00",
-      overnight:true,
-      verified:true,
-      topProducts:[
-        {name:"Taco al pastor", note:"El más pedido"},
-        {name:"Quesadilla", note:"Con queso gratinado"},
-        {name:"Torta", note:"Bien servida"}
-      ]
-    },
-    {
-      id:"mariscos-la-playa",
-      type:"comida",
-      city:"Navolato",
-      name:"Mariscos La Playa",
-      colonia:"Centro",
-      tags:"mariscos ceviche camaron aguachile",
-      phone:"6670000000",
-      whatsapp:"5216670000000",
-      address:"Av. Y #55, Centro",
-      maps:"https://maps.google.com/?q=Mariscos+La+Playa+Navolato",
-      open:"12:00",
-      close:"18:00",
-      overnight:false,
-      verified:false,
-      topProducts:[
-        {name:"Aguachile verde", note:"Picor a elegir"},
-        {name:"Ceviche mixto", note:"Clásico"},
-      ]
+    // Persist locality
+    const savedLoc = localStorage.getItem("aq_food_loc");
+    if(savedLoc){
+      const opt = [...locSel.options].find(o => o.value === savedLoc);
+      if(opt) locSel.value = savedLoc;
     }
-  ];
+    locSel.addEventListener("change", () => {
+      localStorage.setItem("aq_food_loc", locSel.value);
+      // si ya hay resultados abiertos, refrescamos buscador en vivo
+      if(results.style.display === "block") runSearch();
+    });
 
-  const list = document.getElementById("list");
-  const emptyBox = document.getElementById("empty");
-  const q = document.getElementById("q");
-  const coloniaSel = document.getElementById("colonia");
+    // Search handling
+    clearBtn.addEventListener("click", () => { qInput.value=""; runSearch(true); });
+    qInput.addEventListener("input", () => runSearch());
 
-  function parseHM(hm){
-    const [h,m] = hm.split(":").map(Number);
-    return h*60 + m;
-  }
-  function fmtDelta(mins){
-    const m = Math.max(0, Math.round(mins));
-    const hh = Math.floor(m/60);
-    const mm = m%60;
-    if (hh <= 0) return `${mm} min`;
-    return `${hh}h ${mm}m`;
-  }
-  function statusFor(b){
-    if(!b.open || !b.close) return {label:"Horario no disponible", cls:""};
-    const now = new Date();
-    const nowMin = now.getHours()*60 + now.getMinutes();
-    const o = parseHM(b.open);
-    const c = parseHM(b.close);
+    function normalize(s){
+      return (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    }
 
-    if(!b.overnight){
-      if(nowMin >= o && nowMin < c){
-        return {label:`Cierra en ${fmtDelta(c-nowMin)}`, cls:"open"};
+    function nowMazatlan(){
+      // Aproximación: usamos tu hora local del navegador + formato de día
+      // (en producción podemos fijar TZ con backend; por ahora va bien).
+      return new Date();
+    }
+
+    function dayKey(d){
+      const days = ["sun","mon","tue","wed","thu","fri","sat"];
+      return days[d.getDay()];
+    }
+
+    function toMinutes(hhmm){
+      const [h,m] = hhmm.split(":").map(Number);
+      return (h*60)+m;
+    }
+
+    function isOpen(biz, dateObj){
+      const dk = dayKey(dateObj);
+      const range = biz.hours?.[dk];
+      if(!range) return false;
+      const [start,end] = range;
+      const cur = dateObj.getHours()*60 + dateObj.getMinutes();
+      const s = toMinutes(start);
+      const e = toMinutes(end);
+
+      // si cierra después de medianoche
+      if(e < s){
+        return (cur >= s) || (cur <= e);
+      }
+      return (cur >= s) && (cur <= e);
+    }
+
+    function baseFilter(){
+      const loc = locSel.value;
+      const q = normalize(qInput.value.trim());
+      let arr = DEMO.filter(b => b.localidad === loc);
+
+      if(q){
+        arr = arr.filter(b => normalize(b.name).includes(q) || normalize(b.category).includes(q));
+      }
+
+      // orden: verificados primero
+      arr.sort((a,b) => (b.verified === true) - (a.verified === true));
+      return arr;
+    }
+
+    function showEmpty(icon, msg){
+      results.style.display = "none";
+      empty.style.display = "block";
+      emptyBubble.textContent = icon;
+      emptyMsg.textContent = msg;
+    }
+
+    function showResults(title, items){
+      empty.style.display = "none";
+      results.style.display = "block";
+      resultsTitle.textContent = title;
+
+      list.innerHTML = "";
+      items.forEach(b => {
+        const badges = [];
+        if(b.delivery) badges.push("🚚 Domicilio");
+        if(b.pickup) badges.push("🧾 Ordena y recoge");
+        if(b.dineIn) badges.push("🏠 Sucursal");
+
+        const el = document.createElement("div");
+        el.className = "biz";
+        el.innerHTML = `
+          <div class="bizTop">
+            <div>
+              <div class="bizName">${escapeHtml(b.name)}</div>
+              <div class="muted">${b.localidad} • ${humanCat(b.category)} ${b.verified ? "• ✅ Verificado" : ""}</div>
+            </div>
+            ${b.verified ? `<div class="badge">VERIFICADO</div>` : ""}
+          </div>
+          <div class="muted">${badges.join(" • ") || "Sin detalles por ahora"}</div>
+          <div class="bizActions">
+            <a class="btn primary" href="${b.whatsapp}" target="_blank" rel="noopener">WhatsApp</a>
+            <button class="btn" type="button" onclick="alert('Próximo: ver perfil completo')">Ver más</button>
+          </div>
+        `;
+        list.appendChild(el);
+      });
+    }
+
+    function humanCat(c){
+      const map = {
+        tacos:"Tacos", torta:"Tortas", hamburguesa:"Hamburguesas", pizza:"Pizza",
+        sushi:"Sushi", mariscos:"Mariscos", pollo:"Pollo", cafe:"Café y postres"
+      };
+      return map[c] || c;
+    }
+
+    function escapeHtml(str){
+      return (str||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+    }
+
+    closeResults.addEventListener("click", () => {
+      results.style.display = "none";
+      empty.style.display = "none";
+    });
+
+    showAllBtn.addEventListener("click", () => {
+      qInput.value = "";
+      const items = DEMO.filter(b => b.localidad === locSel.value)
+        .sort((a,b) => (b.verified === true) - (a.verified === true));
+      if(items.length === 0){
+        showEmpty("📍", "Por el momento no hay negocios registrados en esta localidad.");
       } else {
-        const nextOpen = (nowMin < o) ? (o-nowMin) : (24*60 - nowMin + o);
-        return {label:`Abre en ${fmtDelta(nextOpen)}`, cls:"closed"};
+        showResults("Todos en esta localidad", items);
+      }
+    });
+
+    // Click tiles
+    grid.addEventListener("click", (e) => {
+      const a = e.target.closest("a.tile");
+      if(!a) return;
+      e.preventDefault();
+
+      const action = a.getAttribute("data-action");
+      const cat = a.getAttribute("data-cat");
+
+      const loc = locSel.value;
+      const now = nowMazatlan();
+
+      if(action === "open"){
+        const items = DEMO.filter(b => b.localidad === loc).filter(b => isOpen(b, now))
+          .sort((a,b) => (b.verified === true) - (a.verified === true));
+        if(items.length === 0){
+          showEmpty("⏳", "Por el momento no hay negocios abiertos aquí.");
+        } else {
+          showResults("Abierto ahora", items);
+        }
+        return;
+      }
+
+      if(action === "promos"){
+        const items = DEMO.filter(b => b.localidad === loc)
+          .filter(b => b.verified && !!b.promoToday)
+          .sort((a,b) => (b.verified === true) - (a.verified === true));
+        if(items.length === 0){
+          showEmpty("🎁", "Por el momento no hay promociones disponibles.");
+        } else {
+          showResults("Promociones de hoy", items.map(b => ({...b, name: `${b.name} • ${b.promoToday}` })));
+        }
+        return;
+      }
+
+      if(cat){
+        const items = DEMO.filter(b => b.localidad === loc && b.category === cat)
+          .sort((a,b) => (b.verified === true) - (a.verified === true));
+        if(items.length === 0){
+          showEmpty("🍽️", "Por el momento no hay negocios en esta categoría aquí.");
+        } else {
+          showResults(humanCat(cat), items);
+        }
+        return;
+      }
+    });
+
+    function runSearch(forceClose=false){
+      const items = baseFilter();
+      const q = qInput.value.trim();
+
+      if(forceClose || q.length === 0){
+        // No forzamos resultados si no escribió nada
+        results.style.display = "none";
+        empty.style.display = "none";
+        return;
+      }
+
+      if(items.length === 0){
+        showEmpty("🔎", "No encontramos resultados con esa búsqueda en esta localidad.");
+      } else {
+        showResults("Resultados de búsqueda", items);
       }
     }
-
-    const isOpen = (nowMin >= o) || (nowMin < c);
-    if(isOpen){
-      const minsToClose = (nowMin < c) ? (c-nowMin) : (24*60 - nowMin + c);
-      return {label:`Cierra en ${fmtDelta(minsToClose)}`, cls:"open"};
-    } else {
-      const minsToOpen = (o - nowMin);
-      return {label:`Abre en ${fmtDelta(minsToOpen)}`, cls:"closed"};
-    }
-  }
-
-  function cityBusinesses(){
-    return businesses.filter(b => b.type==="comida" && (b.city||"") === city);
-  }
-
-  function buildColonias(data){
-    const cols = [...new Set(data.map(b=>b.colonia).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
-    // reset
-    coloniaSel.innerHTML = `<option value="">Todas</option>`;
-    for(const c of cols){
-      const opt = document.createElement("option");
-      opt.value = c;
-      opt.textContent = c;
-      coloniaSel.appendChild(opt);
-    }
-  }
-
-  // Panel
-  const dlg = document.getElementById("dlg");
-  const backBtn = document.getElementById("backBtn");
-  const pTitle = document.getElementById("pTitle");
-  const pBody = document.getElementById("pBody");
-  const pBadge = document.getElementById("pBadge");
-  backBtn.onclick = ()=>dlg.close();
-
-  function openProfile(b){
-    pTitle.textContent = b.name;
-    pBadge.style.display = b.verified ? "inline-block" : "none";
-
-    const st = statusFor(b);
-    const claimMsg =
-      `Quiero reclamar este negocio en Aquiservicio.%0A%0A` +
-      `Negocio: ${encodeURIComponent(b.name)}%0A` +
-      `Ciudad: ${encodeURIComponent(city)}%0A` +
-      `Colonia: ${encodeURIComponent(b.colonia||"")}%0A` +
-      `Mi nombre:%0A` +
-      `Prueba/Link:`;
-
-    pBody.innerHTML = `
-      <div class="kvs">
-        <div class="kv"><b>Estado</b><span class="status ${st.cls}">${st.label}</span></div>
-        <div class="kv"><b>Colonia</b>${b.colonia || "—"}</div>
-        <div class="kv"><b>Dirección</b>${b.address || "—"}</div>
-      </div>
-
-      <div class="actions">
-        ${b.whatsapp ? `<a class="btn primary" href="https://wa.me/${b.whatsapp}?text=${encodeURIComponent("Hola, vi tu negocio en Aquiservicio: "+b.name)}">Pedir por WhatsApp</a>` : ``}
-        ${b.phone ? `<a class="btn" href="tel:${b.phone}">Llamar</a>` : ``}
-        ${b.maps ? `<a class="btn" href="${b.maps}" target="_blank" rel="noopener">Ver en mapa</a>` : ``}
-      </div>
-
-      <div class="products">
-        <h3 style="margin:16px 0 8px">Más pedidos</h3>
-        ${(b.topProducts||[]).map(p=>`
-          <div class="prod">
-            <div><b>${p.name}</b><br><small>${p.note||""}</small></div>
-          </div>
-        `).join("") || `<div class="prod"><div><b>Sin productos aún</b><br><small>Pronto añadiremos los más pedidos.</small></div></div>`}
-      </div>
-
-      <div style="margin-top:14px">
-        <a class="btn" href="https://wa.me/${ADMIN_WA}?text=${claimMsg}">Reclamar negocio</a>
-      </div>
-      <p style="margin:12px 0 0;color:var(--mut);font-size:13px">
-        Reclamo pendiente de revisión. Si se aprueba, se habilitan cambios (horarios/detalles/verificado).
-      </p>
-    `;
-    dlg.showModal();
-  }
-
-  function render(){
-    const dataCity = cityBusinesses();
-
-    // Si no hay nada en la ciudad, muestra solo anunciar/sugerencias
-    if(dataCity.length === 0){
-      list.innerHTML = "";
-      emptyBox.style.display = "block";
-      return;
-    }
-    emptyBox.style.display = "none";
-
-    buildColonias(dataCity);
-
-    const s = (q.value||"").trim().toLowerCase();
-    const col = coloniaSel.value;
-
-    const filtered = dataCity.filter(b=>{
-      const hay = (b.name+" "+(b.tags||"")+" "+(b.colonia||"")).toLowerCase();
-      const okText = !s || hay.includes(s);
-      const okCol = !col || b.colonia === col;
-      return okText && okCol;
-    });
-
-    list.innerHTML = "";
-
-    // Si filtraste y no hay resultados, igual mostramos vacío pero con botones abajo (ya están)
-    if(filtered.length === 0){
-      list.innerHTML = `
-        <div class="empty">
-          <b>No hay resultados con ese filtro.</b>
-          <div>Prueba otra colonia o borra la búsqueda.</div>
-        </div>
-      `;
-      return;
-    }
-
-    for(const b of filtered){
-      const st = statusFor(b);
-      const el = document.createElement("div");
-      el.className = "item";
-      el.innerHTML = `
-        <div class="name">
-          <span>${b.name}</span>
-          ${b.verified ? `<span class="badge ok">Verificado</span>` : ``}
-        </div>
-        <div class="meta">${b.colonia || "—"} • <span class="status ${st.cls}">${st.label}</span></div>
-        <div class="actions">
-          ${b.whatsapp ? `<a class="btn primary" href="https://wa.me/${b.whatsapp}?text=${encodeURIComponent("Hola, vi tu negocio en Aquiservicio: "+b.name)}">WhatsApp</a>` : ``}
-          ${b.phone ? `<a class="btn" href="tel:${b.phone}">Llamar</a>` : ``}
-          <button class="btn" data-open="${b.id}">Ver más</button>
-        </div>
-      `;
-      list.appendChild(el);
-    }
-
-    document.querySelectorAll("[data-open]").forEach(btn=>{
-      btn.onclick = ()=>{
-        const b = businesses.find(x=>x.id===btn.getAttribute("data-open"));
-        if(b) openProfile(b);
-      };
-    });
-  }
-
-  // listeners
-  q.addEventListener("input", render);
-  coloniaSel.addEventListener("change", render);
-
-  render();
-
-  // (opcional) actualizar cada minuto el "abre/cierra"
-  setInterval(render, 60 * 1000);
-</script>
+  </script>
 </body>
 </html>
