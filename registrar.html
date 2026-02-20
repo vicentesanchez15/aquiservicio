@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Registrar mi negocio - Aquiservicio</title>
+  <meta name="description" content="Registra tu negocio para aparecer en Aquiservicio. Publicación sujeta a revisión." />
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --txt:#0f172a;
+      --mut:#475569;
+      --bd:rgba(15,23,42,.12);
+      --sh:0 18px 55px rgba(2,6,23,.08);
+      --r:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(900px 600px at 10% 0%, rgba(2,6,23,.05), transparent 60%),
+        radial-gradient(900px 600px at 90% 10%, rgba(2,6,23,.04), transparent 55%),
+        var(--bg);
+      color:var(--txt);
+    }
+    .wrap{max-width:920px;margin:0 auto;padding:18px}
+    .card{
+      border:1px solid var(--bd);
+      border-radius:calc(var(--r) + 6px);
+      box-shadow:var(--sh);
+      background:#fff;
+      overflow:hidden;
+      animation: fadeIn .35s ease-out;
+    }
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    header{
+      padding:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:44px;height:44px;border-radius:14px;border:1px solid var(--bd);
+      display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden
+    }
+    .logo img{width:80%;height:80%;object-fit:contain}
+    .title b{display:block;letter-spacing:.3px}
+    .title span{display:block;font-size:13px;color:var(--mut);margin-top:2px}
+
+    main{padding:0 18px 18px}
+    h1{margin:4px 0 6px;font-size:22px;letter-spacing:-.3px}
+    .lead{margin:0 0 14px;color:var(--mut);font-size:14px;line-height:1.4}
+
+    .panel{
+      border:1px solid var(--bd);
+      border-radius:var(--r);
+      padding:14px;
+      background:#fff;
+    }
+
+    label{font-size:12px;font-weight:900;color:var(--mut);display:block;margin:0 0 6px}
+    input, select, textarea{
+      width:100%;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid var(--bd);
+      font-size:16px;
+      outline:none;
+      background:#fff;
+    }
+    textarea{min-height:92px;resize:vertical}
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(15,23,42,.20);
+      box-shadow: 0 0 0 4px rgba(15,23,42,.06);
+    }
+
+    .grid{display:grid;grid-template-columns:1fr;gap:10px}
+    @media (min-width:700px){ .grid{grid-template-columns:1fr 1fr} }
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+
+    .btn{
+      border:1px solid var(--bd);
+      border-radius:16px;
+      padding:12px 14px;
+      text-decoration:none;
+      font-weight:1000;
+      color:var(--txt);
+      background:#fff;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition: transform .12s ease;
+      cursor:pointer;
+    }
+    .btn:active{transform:scale(.99)}
+    .btn.primary{
+      background:linear-gradient(180deg, rgba(2,6,23,.05), rgba(2,6,23,.02));
+    }
+    .btn[disabled]{opacity:.55;cursor:not-allowed}
+
+    .rules{
+      margin-top:12px;
+      padding:12px;
+      border-radius:16px;
+      border:1px dashed rgba(15,23,42,.22);
+      color:var(--mut);
+      font-size:13px;
+      line-height:1.45;
+      background:#fff;
+    }
+    .ok{
+      margin-top:12px;
+      padding:12px;
+      border-radius:16px;
+      border:1px solid rgba(11,122,40,.25);
+      background:rgba(11,122,40,.06);
+      color:#0b7a28;
+      font-weight:900;
+      display:none;
+    }
+    .err{
+      margin-top:12px;
+      padding:12px;
+      border-radius:16px;
+      border:1px solid rgba(155,44,44,.25);
+      background:rgba(155,44,44,.06);
+      color:#9b2c2c;
+      font-weight:900;
+      display:none;
+      white-space:pre-wrap;
+    }
+    .foot{
+      margin-top:12px;
+      font-size:12px;
+      color:var(--mut);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--bd);
+      background:#fff;
+      font-weight:900;
+      user-select:none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <div class="brand">
+          <div class="logo"><img src="assets/logo.svg" alt="Aquiservicio"></div>
+          <div class="title">
+            <b>AQUISERVICIO</b>
+            <span>Registro de negocio (revisión manual)</span>
+          </div>
+        </div>
+        <a class="btn" href="/">← Inicio</a>
+      </header>
+
+      <main>
+        <h1>Registrar mi negocio</h1>
+        <p class="lead">
+          Llena esto en 1 minuto. <b>Tu negocio se publica después de revisión</b>.
+        </p>
+
+        <div class="panel">
+          <form id="f">
+            <div class="grid">
+              <div>
+                <label for="type">¿Qué quieres registrar?</label>
+                <select id="type" required>
+                  <option value="comida">Comida</option>
+                  <option value="servicio">Servicio</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="municipality">Municipio</label>
+                <select id="municipality" required>
+                  <option value="Navolato">Navolato (Disponible)</option>
+                  <option value="Culiacán" disabled>Culiacán (Próximamente)</option>
+                  <option value="Mazatlán" disabled>Mazatlán (Próximamente)</option>
+                  <option value="Ahome" disabled>Ahome (Próximamente)</option>
+                  <option value="Guasave" disabled>Guasave (Próximamente)</option>
+                  <option value="El Fuerte" disabled>El Fuerte (Próximamente)</option>
+                  <option value="Angostura" disabled>Angostura (Próximamente)</option>
+                  <option value="Mocorito" disabled>Mocorito (Próximamente)</option>
+                  <option value="Sinaloa" disabled>Sinaloa (Próximamente)</option>
+                  <option value="Badiraguato" disabled>Badiraguato (Próximamente)</option>
+                  <option value="Cosalá" disabled>Cosalá (Próximamente)</option>
+                  <option value="Elota" disabled>Elota (Próximamente)</option>
+                  <option value="Escuinapa" disabled>Escuinapa (Próximamente)</option>
+                  <option value="Rosario" disabled>Rosario (Próximamente)</option>
+                  <option value="San Ignacio" disabled>San Ignacio (Próximamente)</option>
+                  <option value="Salvador Alvarado" disabled>Salvador Alvarado (Próximamente)</option>
+                  <option value="Concordia" disabled>Concordia (Próximamente)</option>
+                  <option value="Choix" disabled>Choix (Próximamente)</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="name">Nombre del negocio</label>
+                <input id="name" required placeholder="Ej: Tacos El Güero">
+              </div>
+
+              <div>
+                <label for="category">Categoría</label>
+                <input id="category" placeholder="Ej: Tacos / Mariscos / Plomero">
+              </div>
+
+              <div>
+                <label for="zone">Zona (Navolato)</label>
+                <select id="zone">
+                  <option value="">(Opcional)</option>
+                  <option>Lic. Benito Juárez</option>
+                  <option>Navolato</option>
+                  <option>Gral. Ángel Flores</option>
+                  <option>San Pedro</option>
+                  <option>Batauto</option>
+                  <option>El Castillo</option>
+                  <option>Juan Aldama</option>
+                  <option>Altata</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="colonia">Colonia</label>
+                <input id="colonia" placeholder="Ej: Centro">
+              </div>
+
+              <div>
+                <label for="whatsapp">WhatsApp (con 521...)</label>
+                <input id="whatsapp" inputmode="numeric" placeholder="Ej: 5216671234567">
+              </div>
+
+              <div>
+                <label for="phone">Teléfono (opcional)</label>
+                <input id="phone" inputmode="numeric" placeholder="Ej: 6671234567">
+              </div>
+
+              <div style="grid-column:1/-1">
+                <label for="address">Dirección (o “a domicilio”)</label>
+                <input id="address" placeholder="Ej: Calle X #123, Centro / Servicio a domicilio">
+              </div>
+
+              <div style="grid-column:1/-1">
+                <label for="maps_url">Link de Google Maps (opcional)</label>
+                <input id="maps_url" placeholder="Pega el link aquí">
+              </div>
+            </div>
+
+            <div class="grid" style="margin-top:10px">
+              <div>
+                <label for="open_time">Hora de apertura (opcional)</label>
+                <input id="open_time" type="time">
+              </div>
+              <div>
+                <label for="close_time">Hora de cierre (opcional)</label>
+                <input id="close_time" type="time">
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:10px">
+              <label class="tag"><input id="overnight" type="checkbox"> Cierra después de medianoche</label>
+              <label class="tag"><input id="has_store" type="checkbox" checked> En sucursal</label>
+              <label class="tag"><input id="has_delivery" type="checkbox"> A domicilio</label>
+              <label class="tag"><input id="has_pickup" type="checkbox"> Ordena y recoge</label>
+            </div>
+
+            <div style="margin-top:10px">
+              <label for="tags">Palabras clave (opcional)</label>
+              <input id="tags" placeholder="Ej: tacos, pastor, birria">
+            </div>
+
+            <div style="margin-top:10px">
+              <label for="notes">Notas (opcional)</label>
+              <textarea id="notes" placeholder="Ej: horario especial, días de descanso, etc."></textarea>
+            </div>
+
+            <div class="rules">
+              <b>Reglas rápidas</b><br>
+              • Publicación sujeta a revisión.<br>
+              • No contenido ofensivo o engañoso.<br>
+              • Si reclamas un negocio, debes comprobar propiedad.<br>
+              • El marketplace está <b>en proceso</b> (próximamente).<br>
+            </div>
+
+            <div class="ok" id="ok">
+              ✅ Listo: tu registro se envió. En cuanto se apruebe, aparecerá en Aquiservicio.
+            </div>
+            <div class="err" id="err"></div>
+
+            <div class="row" style="margin-top:12px">
+              <button class="btn primary" id="send" type="submit">Enviar a revisión</button>
+              <a class="btn" href="/">Cancelar</a>
+            </div>
+
+            <div class="foot">
+              <span>Hecho para que sea fácil</span>
+              <span>Tiempo: ~1 minuto</span>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Supabase JS (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    // ✅ Tus datos (ya los pusiste)
+    const SUPABASE_URL = "https://rqsyexfjszecqoedojdb.supabase.co";
+    const SUPABASE_ANON = "sb_publishable_7tEQH3atdOIWkWCpK49qKw_B8rSILgT";
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    const f = document.getElementById("f");
+    const ok = document.getElementById("ok");
+    const err = document.getElementById("err");
+    const send = document.getElementById("send");
+
+    function cleanNum(s){ return (s||"").replace(/[^\d]/g,""); }
+
+    f.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      ok.style.display = "none";
+      err.style.display = "none";
+      send.disabled = true;
+      send.textContent = "Enviando…";
+
+      try{
+        const payload = {
+          name: document.getElementById("name").value.trim(),
+          type: document.getElementById("type").value, // comida/servicio
+
+          municipality: document.getElementById("municipality").value,
+          zone: document.getElementById("zone").value || null,
+          colonia: document.getElementById("colonia").value.trim() || null,
+          category: document.getElementById("category").value.trim() || null,
+          tags: document.getElementById("tags").value.trim() || null,
+
+          whatsapp: cleanNum(document.getElementById("whatsapp").value) || null,
+          phone: cleanNum(document.getElementById("phone").value) || null,
+          address: document.getElementById("address").value.trim() || null,
+          maps_url: document.getElementById("maps_url").value.trim() || null,
+
+          open_time: document.getElementById("open_time").value || null,
+          close_time: document.getElementById("close_time").value || null,
+          overnight: document.getElementById("overnight").checked,
+
+          has_store: document.getElementById("has_store").checked,
+          has_delivery: document.getElementById("has_delivery").checked,
+          has_pickup: document.getElementById("has_pickup").checked,
+
+          notes: document.getElementById("notes").value.trim() || null,
+
+          status: "pending"
+        };
+
+        if(!payload.name) throw new Error("Falta el nombre del negocio.");
+        if(payload.municipality !== "Navolato") throw new Error("Por ahora solo Navolato está disponible.");
+
+        const { error } = await supabaseClient
+          .from("public_submissions")
+          .insert(payload);
+
+        if(error) throw error;
+
+        ok.style.display = "block";
+        f.reset();
+        // por coherencia, dejamos Navolato y defaults
+        document.getElementById("municipality").value = "Navolato";
+        document.getElementById("has_store").checked = true;
+
+      }catch(ex){
+        err.style.display = "block";
+        err.textContent = "❌ No se pudo enviar.\n" + (ex?.message || String(ex));
+      }finally{
+        send.disabled = false;
+        send.textContent = "Enviar a revisión";
+      }
+    });
+  </script>
+</body>
+</html>
