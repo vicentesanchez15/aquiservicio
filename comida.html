@@ -22,6 +22,11 @@
       --r:20px;
 
       --blueMidnight:#0f2f6b;
+
+      /* Verified green */
+      --vBorder: rgba(34,197,94,.45);
+      --vBg: rgba(34,197,94,.14);
+      --vText: rgba(15,23,42,.88);
     }
     *{box-sizing:border-box}
     body{
@@ -64,16 +69,17 @@
 
     .brandWrap{
       display:flex;
-      justify-content:center; /* ✅ logo centrado */
+      justify-content:center;
     }
     .wordmark{
       width:min(360px, 70vw);
       height:auto;
       display:block;
-      transform: translateX(-10px); /* mismo “toquecito” */
+      transform: translateX(-10px);
       filter: drop-shadow(0 16px 40px rgba(2,6,23,.14));
     }
 
+    /* ✅ “← Inicio” */
     .backBtn{
       justify-self:end;
       border:1px solid rgba(15,23,42,.10);
@@ -94,15 +100,32 @@
     /* Controls */
     .main{padding:14px 12px 16px}
 
+    /* ✅ COMIDA más grande + animación color */
     .title{
-      margin:4px 0 10px;
+      margin:6px 0 12px;
       text-align:center;
       font-family:"Poppins", Inter, system-ui, Arial;
       font-weight:900;
-      letter-spacing:.10em;
-      color: var(--blueMidnight);
+      letter-spacing:.14em;
       text-transform:uppercase;
-      font-size:18px;
+      font-size:26px;
+
+      background: linear-gradient(90deg,
+        rgba(15,47,107,.95),
+        rgba(56,189,248,.95),
+        rgba(99,102,241,.95),
+        rgba(15,47,107,.95)
+      );
+      background-size: 260% 100%;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      animation: shine 3.2s ease-in-out infinite;
+    }
+    @keyframes shine{
+      0%{background-position: 0% 50%}
+      50%{background-position: 100% 50%}
+      100%{background-position: 0% 50%}
     }
 
     .controls{
@@ -215,6 +238,7 @@
       min-height:130px;
       display:flex;
       align-items:flex-end;
+      cursor:pointer;
     }
     .tile img{
       position:absolute;
@@ -257,18 +281,19 @@
       .tile .name{font-size:14px}
     }
 
-    /* Results area */
-    .results{
-      max-width:860px;
-      margin:14px auto 0;
+    /* ✅ Inline Panel (se inserta dentro del grid para NO irse hasta el final) */
+    .panel{
+      grid-column: 1 / -1;
       border-radius:18px;
       border:1px solid rgba(15,23,42,.10);
       background:#fff;
       box-shadow: 0 14px 40px rgba(2,6,23,.08);
       overflow:hidden;
-      display:none;
+      animation: pop .25s ease-out;
     }
-    .resultsHeader{
+    @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+    .panelHeader{
       padding:12px 12px;
       border-bottom:1px solid rgba(15,23,42,.08);
       display:flex;
@@ -276,14 +301,14 @@
       justify-content:space-between;
       gap:10px;
     }
-    .resultsHeader .h{
+    .panelHeader .h{
       font-weight:900;
       letter-spacing:.08em;
       text-transform:uppercase;
       font-size:12px;
-      color: rgba(15,23,42,.70);
+      color: rgba(15,23,42,.72);
     }
-    .closeResults{
+    .panelClose{
       border:1px solid rgba(15,23,42,.10);
       background:#fff;
       border-radius:999px;
@@ -293,7 +318,7 @@
       cursor:pointer;
     }
 
-    .list{
+    .panelBody{
       padding:12px;
       display:grid;
       gap:10px;
@@ -318,17 +343,23 @@
       font-weight:900;
       font-size:15px;
     }
+    /* ✅ Verified badge GREEN */
     .badge{
       font-weight:900;
       font-size:11px;
       padding:6px 10px;
       border-radius:999px;
-      border:1px solid rgba(56,189,248,.35);
-      background: rgba(56,189,248,.12);
-      color: rgba(15,23,42,.85);
+      border:1px solid var(--vBorder);
+      background: var(--vBg);
+      color: var(--vText);
       white-space:nowrap;
     }
-    .muted{color: rgba(15,23,42,.65); font-weight:700; font-size:13px; line-height:1.35}
+    .muted{
+      color: rgba(15,23,42,.65);
+      font-weight:700;
+      font-size:13px;
+      line-height:1.35
+    }
 
     .bizActions{
       display:flex;
@@ -351,22 +382,16 @@
       border-color: rgba(56,189,248,.35);
     }
 
-    /* Animated empty state */
-    .empty{
-      display:none;
-      max-width:860px;
-      margin:14px auto 0;
-      border-radius:18px;
+    /* Empty state inside panel */
+    .emptyBox{
       border:1px dashed rgba(15,23,42,.20);
-      background: rgba(255,255,255,.92);
-      padding:16px;
+      border-radius:16px;
+      padding:14px;
       text-align:center;
       color: rgba(15,23,42,.78);
-      box-shadow: 0 14px 40px rgba(2,6,23,.06);
-      animation: pop .35s ease-out;
+      background: rgba(255,255,255,.96);
     }
-    @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-    .empty .bubble{
+    .emptyBox .bubble{
       display:inline-flex;
       gap:10px;
       align-items:center;
@@ -380,13 +405,19 @@
       margin-bottom:10px;
     }
     @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-    .empty .msg{font-weight:800; margin:6px 0 10px}
-    .empty .actions{
+    .emptyBox .msg{font-weight:800; margin:6px 0 10px}
+    .emptyBox .actions{
       display:flex;
       gap:10px;
       justify-content:center;
       flex-wrap:wrap;
       margin-top:8px;
+    }
+
+    .footerActions{
+      margin-top:14px;
+      display:flex;
+      justify-content:center;
     }
 
     .foot{
@@ -406,7 +437,7 @@
         <div class="brandWrap">
           <img class="wordmark" src="assets/logo.svg" alt="aquiservicio.com">
         </div>
-        <a class="backBtn" href="index.html">← Volver al inicio</a>
+        <a class="backBtn" href="index.html">← Inicio</a>
       </div>
 
       <div class="main">
@@ -528,26 +559,12 @@
           </a>
         </div>
 
-        <!-- Empty animated message -->
-        <div class="empty" id="empty">
-          <div class="bubble" id="emptyBubble">⏳</div>
-          <div class="msg" id="emptyMsg">Por el momento no hay resultados aquí.</div>
-          <div class="actions">
-            <a class="btn primary" href="registrar.html">➕ Registrar mi negocio</a>
-            <a class="btn" href="no-encontre.html">💡 Sugerencias</a>
-            <button class="btn" id="showAllBtn" type="button">Ver todos</button>
-          </div>
-        </div>
+        <!-- ✅ Panel inline (se inyecta aquí automáticamente) -->
 
-        <!-- Results -->
-        <div class="results" id="results">
-          <div class="resultsHeader">
-            <div class="h" id="resultsTitle">Resultados</div>
-            <button class="closeResults" id="closeResults" type="button">Cerrar ✕</button>
-          </div>
-          <div class="list" id="list"></div>
+        <!-- Footer action: “← Inicio” -->
+        <div class="footerActions">
+          <a class="backBtn" href="index.html">← Inicio</a>
         </div>
-
       </div>
     </div>
 
@@ -571,7 +588,7 @@
         pickup: true,
         dineIn: true,
         promoToday: "2x1 en tacos al pastor (hoy)",
-        hours: { // 24h (Mazatlán)
+        hours: {
           mon: ["17:00","23:30"],
           tue: ["17:00","23:30"],
           wed: ["17:00","23:30"],
@@ -625,20 +642,13 @@
       }
     ];
 
-    // Helpers
     const $ = (id) => document.getElementById(id);
+    const grid = $("grid");
     const locSel = $("loc");
     const qInput = $("q");
     const clearBtn = $("clear");
-    const grid = $("grid");
-    const empty = $("empty");
-    const emptyBubble = $("emptyBubble");
-    const emptyMsg = $("emptyMsg");
-    const showAllBtn = $("showAllBtn");
-    const results = $("results");
-    const list = $("list");
-    const resultsTitle = $("resultsTitle");
-    const closeResults = $("closeResults");
+
+    let currentPanel = null;
 
     // Persist locality
     const savedLoc = localStorage.getItem("aq_food_loc");
@@ -648,34 +658,30 @@
     }
     locSel.addEventListener("change", () => {
       localStorage.setItem("aq_food_loc", locSel.value);
-      // si ya hay resultados abiertos, refrescamos buscador en vivo
-      if(results.style.display === "block") runSearch();
+      closePanel();
     });
 
-    // Search handling
-    clearBtn.addEventListener("click", () => { qInput.value=""; runSearch(true); });
-    qInput.addEventListener("input", () => runSearch());
+    // Search (solo cuando escribes)
+    clearBtn.addEventListener("click", () => { qInput.value=""; closePanel(); });
+    qInput.addEventListener("input", () => {
+      const q = qInput.value.trim();
+      if(q.length === 0){ closePanel(); return; }
+      const items = baseFilter().filter(b => normalize(b.name).includes(normalize(q)) || normalize(b.category).includes(normalize(q)));
+      openPanelAfterRow(0, `Resultados: "${q}"`, items, { emptyIcon:"🔎", emptyMsg:"No encontramos resultados con esa búsqueda en esta localidad." });
+    });
 
     function normalize(s){
       return (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-    }
-
-    function nowMazatlan(){
-      // Aproximación: usamos tu hora local del navegador + formato de día
-      // (en producción podemos fijar TZ con backend; por ahora va bien).
-      return new Date();
     }
 
     function dayKey(d){
       const days = ["sun","mon","tue","wed","thu","fri","sat"];
       return days[d.getDay()];
     }
-
     function toMinutes(hhmm){
       const [h,m] = hhmm.split(":").map(Number);
       return (h*60)+m;
     }
-
     function isOpen(biz, dateObj){
       const dk = dayKey(dateObj);
       const range = biz.hours?.[dk];
@@ -684,65 +690,15 @@
       const cur = dateObj.getHours()*60 + dateObj.getMinutes();
       const s = toMinutes(start);
       const e = toMinutes(end);
-
-      // si cierra después de medianoche
-      if(e < s){
-        return (cur >= s) || (cur <= e);
-      }
+      if(e < s) return (cur >= s) || (cur <= e);
       return (cur >= s) && (cur <= e);
     }
 
     function baseFilter(){
       const loc = locSel.value;
-      const q = normalize(qInput.value.trim());
       let arr = DEMO.filter(b => b.localidad === loc);
-
-      if(q){
-        arr = arr.filter(b => normalize(b.name).includes(q) || normalize(b.category).includes(q));
-      }
-
-      // orden: verificados primero
       arr.sort((a,b) => (b.verified === true) - (a.verified === true));
       return arr;
-    }
-
-    function showEmpty(icon, msg){
-      results.style.display = "none";
-      empty.style.display = "block";
-      emptyBubble.textContent = icon;
-      emptyMsg.textContent = msg;
-    }
-
-    function showResults(title, items){
-      empty.style.display = "none";
-      results.style.display = "block";
-      resultsTitle.textContent = title;
-
-      list.innerHTML = "";
-      items.forEach(b => {
-        const badges = [];
-        if(b.delivery) badges.push("🚚 Domicilio");
-        if(b.pickup) badges.push("🧾 Ordena y recoge");
-        if(b.dineIn) badges.push("🏠 Sucursal");
-
-        const el = document.createElement("div");
-        el.className = "biz";
-        el.innerHTML = `
-          <div class="bizTop">
-            <div>
-              <div class="bizName">${escapeHtml(b.name)}</div>
-              <div class="muted">${b.localidad} • ${humanCat(b.category)} ${b.verified ? "• ✅ Verificado" : ""}</div>
-            </div>
-            ${b.verified ? `<div class="badge">VERIFICADO</div>` : ""}
-          </div>
-          <div class="muted">${badges.join(" • ") || "Sin detalles por ahora"}</div>
-          <div class="bizActions">
-            <a class="btn primary" href="${b.whatsapp}" target="_blank" rel="noopener">WhatsApp</a>
-            <button class="btn" type="button" onclick="alert('Próximo: ver perfil completo')">Ver más</button>
-          </div>
-        `;
-        list.appendChild(el);
-      });
     }
 
     function humanCat(c){
@@ -757,86 +713,159 @@
       return (str||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
     }
 
-    closeResults.addEventListener("click", () => {
-      results.style.display = "none";
-      empty.style.display = "none";
-    });
-
-    showAllBtn.addEventListener("click", () => {
-      qInput.value = "";
-      const items = DEMO.filter(b => b.localidad === locSel.value)
-        .sort((a,b) => (b.verified === true) - (a.verified === true));
-      if(items.length === 0){
-        showEmpty("📍", "Por el momento no hay negocios registrados en esta localidad.");
-      } else {
-        showResults("Todos en esta localidad", items);
+    function closePanel(){
+      if(currentPanel){
+        currentPanel.remove();
+        currentPanel = null;
       }
-    });
+    }
 
-    // Click tiles
+    function buildBizCard(b){
+      const badges = [];
+      if(b.delivery) badges.push("🚚 Domicilio");
+      if(b.pickup) badges.push("🧾 Ordena y recoge");
+      if(b.dineIn) badges.push("🏠 Sucursal");
+
+      const div = document.createElement("div");
+      div.className = "biz";
+      div.innerHTML = `
+        <div class="bizTop">
+          <div>
+            <div class="bizName">${escapeHtml(b.name)}</div>
+            <div class="muted">${escapeHtml(b.localidad)} • ${escapeHtml(humanCat(b.category))} ${b.verified ? "• ✅ Verificado" : ""}</div>
+          </div>
+          ${b.verified ? `<div class="badge">VERIFICADO</div>` : ""}
+        </div>
+        <div class="muted">${badges.join(" • ") || "Sin detalles por ahora"}</div>
+        <div class="bizActions">
+          <a class="btn primary" href="${b.whatsapp}" target="_blank" rel="noopener">WhatsApp</a>
+          <button class="btn" type="button" onclick="alert('Próximo: ver perfil completo')">Ver más</button>
+        </div>
+      `;
+      return div;
+    }
+
+    function buildEmpty(icon, msg){
+      const wrap = document.createElement("div");
+      wrap.className = "emptyBox";
+      wrap.innerHTML = `
+        <div class="bubble">${icon}</div>
+        <div class="msg">${escapeHtml(msg)}</div>
+        <div class="actions">
+          <a class="btn primary" href="registrar.html">➕ Registrar mi negocio</a>
+          <a class="btn" href="no-encontre.html">💡 Sugerencias</a>
+          <button class="btn" type="button" id="panelShowAll">Ver todos</button>
+        </div>
+      `;
+      return wrap;
+    }
+
+    function openPanelAfterRow(tileIndex, title, items, emptyCfg){
+      closePanel();
+
+      // Determina fila (2 columnas)
+      const row = Math.floor(tileIndex / 2);
+      const insertAfterIndex = row*2 + 1; // después del 2do tile de esa fila
+
+      const tiles = [...grid.querySelectorAll(".tile")];
+      const anchor = tiles[Math.min(insertAfterIndex, tiles.length-1)];
+
+      const panel = document.createElement("div");
+      panel.className = "panel";
+      panel.innerHTML = `
+        <div class="panelHeader">
+          <div class="h">${escapeHtml(title)}</div>
+          <button class="panelClose" type="button" aria-label="Cerrar">✕</button>
+        </div>
+        <div class="panelBody"></div>
+      `;
+
+      const body = panel.querySelector(".panelBody");
+      const closeBtn = panel.querySelector(".panelClose");
+
+      closeBtn.addEventListener("click", closePanel);
+
+      if(!items || items.length === 0){
+        const emptyEl = buildEmpty(emptyCfg?.emptyIcon || "⏳", emptyCfg?.emptyMsg || "Por el momento no hay resultados aquí.");
+        body.appendChild(emptyEl);
+
+        emptyEl.querySelector("#panelShowAll").addEventListener("click", () => {
+          const all = DEMO.filter(b => b.localidad === locSel.value)
+            .sort((a,b) => (b.verified === true) - (a.verified === true));
+          if(all.length === 0){
+            body.innerHTML = "";
+            body.appendChild(buildEmpty("📍", "Por el momento no hay negocios registrados en esta localidad."));
+          } else {
+            body.innerHTML = "";
+            all.forEach(b => body.appendChild(buildBizCard(b)));
+          }
+        });
+      } else {
+        items.forEach(b => body.appendChild(buildBizCard(b)));
+      }
+
+      // Inserta el panel dentro del grid (divide las categorías como quieres)
+      anchor.insertAdjacentElement("afterend", panel);
+      currentPanel = panel;
+
+      // Scroll suave para ver el panel (sin irse al final)
+      panel.scrollIntoView({ behavior:"smooth", block:"center" });
+    }
+
+    // Click tiles => abre panel justo debajo del tile (en su fila)
     grid.addEventListener("click", (e) => {
       const a = e.target.closest("a.tile");
       if(!a) return;
       e.preventDefault();
 
+      // index del tile clickeado
+      const tiles = [...grid.querySelectorAll("a.tile")];
+      const idx = tiles.indexOf(a);
+
       const action = a.getAttribute("data-action");
       const cat = a.getAttribute("data-cat");
 
       const loc = locSel.value;
-      const now = nowMazatlan();
+      const now = new Date();
+
+      // Cierra panel si vuelves a tocar el mismo tile con el panel abierto
+      // (opcional simple)
+      // if(currentPanel) closePanel();
 
       if(action === "open"){
         const items = DEMO.filter(b => b.localidad === loc).filter(b => isOpen(b, now))
           .sort((a,b) => (b.verified === true) - (a.verified === true));
-        if(items.length === 0){
-          showEmpty("⏳", "Por el momento no hay negocios abiertos aquí.");
-        } else {
-          showResults("Abierto ahora", items);
-        }
+
+        openPanelAfterRow(idx, "Abierto ahora", items, {
+          emptyIcon:"⏳",
+          emptyMsg:"Por el momento no hay negocios abiertos aquí."
+        });
         return;
       }
 
       if(action === "promos"){
         const items = DEMO.filter(b => b.localidad === loc)
           .filter(b => b.verified && !!b.promoToday)
-          .sort((a,b) => (b.verified === true) - (a.verified === true));
-        if(items.length === 0){
-          showEmpty("🎁", "Por el momento no hay promociones disponibles.");
-        } else {
-          showResults("Promociones de hoy", items.map(b => ({...b, name: `${b.name} • ${b.promoToday}` })));
-        }
+          .sort((a,b) => (b.verified === true) - (a.verified === true))
+          .map(b => ({...b, name: `${b.name} • ${b.promoToday}`}));
+
+        openPanelAfterRow(idx, "Promociones de hoy", items, {
+          emptyIcon:"🎁",
+          emptyMsg:"Por el momento no hay promociones disponibles."
+        });
         return;
       }
 
       if(cat){
         const items = DEMO.filter(b => b.localidad === loc && b.category === cat)
           .sort((a,b) => (b.verified === true) - (a.verified === true));
-        if(items.length === 0){
-          showEmpty("🍽️", "Por el momento no hay negocios en esta categoría aquí.");
-        } else {
-          showResults(humanCat(cat), items);
-        }
-        return;
+
+        openPanelAfterRow(idx, humanCat(cat), items, {
+          emptyIcon:"🍽️",
+          emptyMsg:"Por el momento no hay negocios en esta categoría aquí."
+        });
       }
     });
-
-    function runSearch(forceClose=false){
-      const items = baseFilter();
-      const q = qInput.value.trim();
-
-      if(forceClose || q.length === 0){
-        // No forzamos resultados si no escribió nada
-        results.style.display = "none";
-        empty.style.display = "none";
-        return;
-      }
-
-      if(items.length === 0){
-        showEmpty("🔎", "No encontramos resultados con esa búsqueda en esta localidad.");
-      } else {
-        showResults("Resultados de búsqueda", items);
-      }
-    }
   </script>
 </body>
 </html>
