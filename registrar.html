@@ -3,398 +3,811 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Registrar mi negocio - Aquiservicio</title>
-  <meta name="description" content="Registra tu negocio para aparecer en Aquiservicio. Publicación sujeta a revisión." />
+  <title>Registrar mi negocio • Aquiservicio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#ffffff;
+      --navy:#0b1220;
+      --navy2:#0f1a33;
       --txt:#0f172a;
-      --mut:#475569;
+      --mut:#64748b;
+
+      --card:rgba(255,255,255,.94);
       --bd:rgba(15,23,42,.12);
-      --sh:0 18px 55px rgba(2,6,23,.08);
-      --r:18px;
+      --shadow:0 20px 70px rgba(2,6,23,.18);
+      --glow:rgba(56,189,248,.22);
+      --r:20px;
+
+      --okBg: rgba(34,197,94,.12);
+      --okBd: rgba(34,197,94,.35);
     }
+
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--txt);
       background:
-        radial-gradient(900px 600px at 10% 0%, rgba(2,6,23,.05), transparent 60%),
-        radial-gradient(900px 600px at 90% 10%, rgba(2,6,23,.04), transparent 55%),
-        var(--bg);
-      color:var(--txt);
-    }
-    .wrap{max-width:920px;margin:0 auto;padding:18px}
-    .card{
-      border:1px solid var(--bd);
-      border-radius:calc(var(--r) + 6px);
-      box-shadow:var(--sh);
-      background:#fff;
-      overflow:hidden;
-      animation: fadeIn .35s ease-out;
-    }
-    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    header{
-      padding:18px;
+        radial-gradient(900px 600px at 10% 0%, rgba(56,189,248,.14), transparent 60%),
+        radial-gradient(900px 600px at 90% 10%, rgba(99,102,241,.12), transparent 55%),
+        linear-gradient(180deg, var(--navy), var(--navy2));
+      min-height:100vh;
       display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{
-      width:44px;height:44px;border-radius:14px;border:1px solid var(--bd);
-      display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden
-    }
-    .logo img{width:80%;height:80%;object-fit:contain}
-    .title b{display:block;letter-spacing:.3px}
-    .title span{display:block;font-size:13px;color:var(--mut);margin-top:2px}
-
-    main{padding:0 18px 18px}
-    h1{margin:4px 0 6px;font-size:22px;letter-spacing:-.3px}
-    .lead{margin:0 0 14px;color:var(--mut);font-size:14px;line-height:1.4}
-
-    .panel{
-      border:1px solid var(--bd);
-      border-radius:var(--r);
-      padding:14px;
-      background:#fff;
-    }
-
-    label{font-size:12px;font-weight:900;color:var(--mut);display:block;margin:0 0 6px}
-    input, select, textarea{
-      width:100%;
-      padding:14px;
-      border-radius:14px;
-      border:1px solid var(--bd);
-      font-size:16px;
-      outline:none;
-      background:#fff;
-    }
-    textarea{min-height:92px;resize:vertical}
-    input:focus, select:focus, textarea:focus{
-      border-color: rgba(15,23,42,.20);
-      box-shadow: 0 0 0 4px rgba(15,23,42,.06);
-    }
-
-    .grid{display:grid;grid-template-columns:1fr;gap:10px}
-    @media (min-width:700px){ .grid{grid-template-columns:1fr 1fr} }
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-
-    .btn{
-      border:1px solid var(--bd);
-      border-radius:16px;
-      padding:12px 14px;
-      text-decoration:none;
-      font-weight:1000;
-      color:var(--txt);
-      background:#fff;
-      display:inline-flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:center;
-      gap:10px;
-      transition: transform .12s ease;
-      cursor:pointer;
+      padding:14px;
     }
-    .btn:active{transform:scale(.99)}
-    .btn.primary{
-      background:linear-gradient(180deg, rgba(2,6,23,.05), rgba(2,6,23,.02));
-    }
-    .btn[disabled]{opacity:.55;cursor:not-allowed}
 
-    .rules{
+    .shell{width:min(980px, 100%);}
+    .card{
       margin-top:12px;
-      padding:12px;
-      border-radius:16px;
-      border:1px dashed rgba(15,23,42,.22);
-      color:var(--mut);
-      font-size:13px;
-      line-height:1.45;
-      background:#fff;
+      background: var(--card);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: var(--shadow);
+      border-radius: calc(var(--r) + 10px);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+      animation: in .35s ease-out;
     }
-    .ok{
-      margin-top:12px;
-      padding:12px;
-      border-radius:16px;
-      border:1px solid rgba(11,122,40,.25);
-      background:rgba(11,122,40,.06);
-      color:#0b7a28;
-      font-weight:900;
-      display:none;
-    }
-    .err{
-      margin-top:12px;
-      padding:12px;
-      border-radius:16px;
-      border:1px solid rgba(155,44,44,.25);
-      background:rgba(155,44,44,.06);
-      color:#9b2c2c;
-      font-weight:900;
-      display:none;
-      white-space:pre-wrap;
-    }
-    .foot{
-      margin-top:12px;
-      font-size:12px;
-      color:var(--mut);
-      display:flex;
-      justify-content:space-between;
+    @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+    .top{
+      padding:14px 12px;
+      display:grid;
+      grid-template-columns: 1fr auto;
+      align-items:center;
       gap:10px;
-      flex-wrap:wrap;
+      border-bottom:1px solid rgba(15,23,42,.08);
     }
-    .tag{
+    .brandWrap{display:flex;justify-content:center;}
+    .wordmark{
+      width:min(360px, 70vw);
+      height:auto;
+      display:block;
+      transform: translateX(-10px);
+      filter: drop-shadow(0 16px 40px rgba(2,6,23,.14));
+    }
+    .backBtn{
+      justify-self:end;
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 12px;
+      font-weight:900;
+      font-size:13px;
+      text-decoration:none;
+      color:var(--txt);
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid var(--bd);
-      background:#fff;
+      box-shadow: 0 10px 28px rgba(2,6,23,.08);
+      white-space:nowrap;
+    }
+    .backBtn:active{transform:scale(.99)}
+
+    .main{padding:14px 12px 18px}
+
+    .title{
+      margin:6px 0 8px;
+      text-align:center;
+      font-family:"Poppins", Inter, system-ui, Arial;
       font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:20px;
+      background: linear-gradient(90deg,
+        rgba(15,47,107,.95),
+        rgba(56,189,248,.95),
+        rgba(99,102,241,.95),
+        rgba(15,47,107,.95)
+      );
+      background-size: 260% 100%;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      animation: shine 3.2s ease-in-out infinite;
+    }
+    @keyframes shine{
+      0%{background-position: 0% 50%}
+      50%{background-position: 100% 50%}
+      100%{background-position: 0% 50%}
+    }
+
+    .subtitle{
+      margin:0 auto 12px;
+      text-align:center;
+      max-width:760px;
+      color: rgba(15,23,42,.70);
+      font-weight:800;
+      font-size:14px;
+      line-height:1.45;
+    }
+
+    .progressWrap{
+      max-width:860px;
+      margin:0 auto 12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .progressTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      font-size:12px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color: rgba(15,23,42,.68);
+    }
+    .bar{
+      height:10px;
+      border-radius:999px;
+      background: rgba(15,23,42,.08);
+      overflow:hidden;
+      border:1px solid rgba(15,23,42,.10);
+    }
+    .bar > div{
+      height:100%;
+      width:50%;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(56,189,248,.60), rgba(99,102,241,.55));
+      box-shadow: 0 0 0 3px rgba(56,189,248,.08) inset;
+      transition: width .25s ease;
+    }
+
+    .panel{
+      max-width:860px;
+      margin:0 auto;
+      border:1px solid rgba(15,23,42,.10);
+      border-radius:20px;
+      background:#fff;
+      box-shadow: 0 14px 40px rgba(2,6,23,.08);
+      overflow:hidden;
+    }
+    .panelHead{
+      padding:12px 12px;
+      border-bottom:1px solid rgba(15,23,42,.08);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .panelHead .h{
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:12px;
+      color: rgba(15,23,42,.72);
+    }
+
+    .panelBody{
+      padding:12px;
+      display:grid;
+      gap:12px;
+    }
+
+    .grid2{
+      display:grid;
+      gap:12px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width:820px){
+      .grid2{grid-template-columns: 1fr 1fr;}
+    }
+
+    .field{display:flex; flex-direction:column; gap:8px;}
+    .field label{
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      color: rgba(15,23,42,.72);
+    }
+    input, select, textarea{
+      width:100%;
+      padding:14px 14px;
+      border-radius:18px;
+      border:1px solid rgba(15,23,42,.14);
+      background:#fff;
+      font-size:16px;
+      font-weight:800;
+      outline:none;
+      box-shadow: 0 10px 28px rgba(2,6,23,.06);
+    }
+    textarea{
+      min-height:110px;
+      resize:vertical;
+      font-weight:750;
+      line-height:1.35;
+    }
+    input:focus, select:focus, textarea:focus{
+      box-shadow:0 0 0 4px var(--glow), 0 10px 28px rgba(2,6,23,.10);
+      border-color: rgba(56,189,248,.45);
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip{
+      border:1px solid rgba(15,23,42,.10);
+      background: rgba(2,6,23,.02);
+      border-radius:999px;
+      padding:10px 12px;
+      font-weight:900;
+      font-size:13px;
+      cursor:pointer;
       user-select:none;
     }
+    .chip[aria-pressed="true"]{
+      background: linear-gradient(180deg, rgba(56,189,248,.16), rgba(99,102,241,.10));
+      border-color: rgba(56,189,248,.35);
+    }
+
+    .hintText{
+      font-size:12.5px;
+      color: rgba(15,23,42,.68);
+      font-weight:750;
+      line-height:1.35;
+    }
+    .counter{
+      font-size:12px;
+      font-weight:900;
+      color: rgba(15,23,42,.55);
+      display:flex;
+      justify-content:flex-end;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      padding:12px;
+      border-top:1px solid rgba(15,23,42,.08);
+      background: linear-gradient(180deg, rgba(2,6,23,.02), rgba(2,6,23,.00));
+    }
+    .btn{
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      border-radius:16px;
+      padding:12px 14px;
+      font-weight:900;
+      font-size:14px;
+      cursor:pointer;
+      text-decoration:none;
+      color:var(--txt);
+      box-shadow: 0 10px 28px rgba(2,6,23,.06);
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      white-space:nowrap;
+    }
+    .btn:active{transform:scale(.99)}
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(56,189,248,.18), rgba(99,102,241,.12));
+      border-color: rgba(56,189,248,.35);
+    }
+    .btn.disabled{
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    .toast{
+      max-width:860px;
+      margin:12px auto 0;
+      border-radius:18px;
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      padding:12px;
+      font-weight:850;
+      color: rgba(15,23,42,.85);
+      display:none;
+    }
+    .toast.show{display:block; animation: pop .22s ease-out;}
+    @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .toast.ok{
+      border-color: var(--okBd);
+      background: linear-gradient(180deg, var(--okBg), rgba(255,255,255,.92));
+    }
+    .toast.err{
+      border-color: rgba(239,68,68,.35);
+      background: linear-gradient(180deg, rgba(239,68,68,.10), rgba(255,255,255,.92));
+    }
+
+    .foot{
+      margin:14px 0 0;
+      text-align:center;
+      font-size:12px;
+      color: rgba(255,255,255,.65);
+      font-weight:700;
+    }
+
+    .spinner{
+      width:16px;height:16px;border-radius:50%;
+      border:3px solid rgba(15,23,42,.20);
+      border-top-color: rgba(56,189,248,.80);
+      animation: spin .8s linear infinite;
+      display:none;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .btn.loading .spinner{display:inline-block}
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+  <div class="shell">
     <div class="card">
-      <header>
-        <div class="brand">
-          <div class="logo"><img src="assets/logo.svg" alt="Aquiservicio"></div>
-          <div class="title">
-            <b>AQUISERVICIO</b>
-            <span>Registro de negocio (revisión manual)</span>
-          </div>
+      <div class="top">
+        <div class="brandWrap">
+          <img class="wordmark" src="assets/logo.svg" alt="aquiservicio.com">
         </div>
-        <a class="btn" href="/">← Inicio</a>
-      </header>
+        <a class="backBtn" href="index.html">← Inicio</a>
+      </div>
 
-      <main>
-        <h1>Registrar mi negocio</h1>
-        <p class="lead">
-          Llena esto en 1 minuto. <b>Tu negocio se publica después de revisión</b>.
+      <div class="main">
+        <div class="title">Registrar mi negocio</div>
+        <p class="subtitle">
+          Te toma <b>60 segundos</b>. Tu solicitud queda <b>en revisión</b> y cuando se apruebe aparecerás en la página ✅
         </p>
 
+        <div class="progressWrap">
+          <div class="progressTop">
+            <div id="stepLabel">Paso 1 de 2</div>
+            <div id="stepHint">Datos básicos</div>
+          </div>
+          <div class="bar"><div id="barFill"></div></div>
+        </div>
+
         <div class="panel">
-          <form id="f">
-            <div class="grid">
-              <div>
-                <label for="type">¿Qué quieres registrar?</label>
-                <select id="type" required>
-                  <option value="comida">Comida</option>
-                  <option value="servicio">Servicio</option>
-                </select>
+          <div class="panelHead">
+            <div class="h" id="panelTitle">Datos básicos</div>
+            <div class="hintText" id="panelMini">Lo esencial para que te encuentren</div>
+          </div>
+
+          <form id="form">
+            <div class="panelBody" id="step1">
+              <div class="field">
+                <label>¿Qué vas a registrar?</label>
+                <div class="chips" id="kindChips">
+                  <div class="chip" role="button" tabindex="0" aria-pressed="true" data-kind="food">🍔 Comida</div>
+                  <div class="chip" role="button" tabindex="0" aria-pressed="false" data-kind="service">🔧 Servicios</div>
+                </div>
+                <div class="hintText">Elige una opción. Esto define tus categorías.</div>
               </div>
 
-              <div>
-                <label for="municipality">Municipio</label>
-                <select id="municipality" required>
-                  <option value="Navolato">Navolato (Disponible)</option>
-                  <option value="Culiacán" disabled>Culiacán (Próximamente)</option>
-                  <option value="Mazatlán" disabled>Mazatlán (Próximamente)</option>
-                  <option value="Ahome" disabled>Ahome (Próximamente)</option>
-                  <option value="Guasave" disabled>Guasave (Próximamente)</option>
-                  <option value="El Fuerte" disabled>El Fuerte (Próximamente)</option>
-                  <option value="Angostura" disabled>Angostura (Próximamente)</option>
-                  <option value="Mocorito" disabled>Mocorito (Próximamente)</option>
-                  <option value="Sinaloa" disabled>Sinaloa (Próximamente)</option>
-                  <option value="Badiraguato" disabled>Badiraguato (Próximamente)</option>
-                  <option value="Cosalá" disabled>Cosalá (Próximamente)</option>
-                  <option value="Elota" disabled>Elota (Próximamente)</option>
-                  <option value="Escuinapa" disabled>Escuinapa (Próximamente)</option>
-                  <option value="Rosario" disabled>Rosario (Próximamente)</option>
-                  <option value="San Ignacio" disabled>San Ignacio (Próximamente)</option>
-                  <option value="Salvador Alvarado" disabled>Salvador Alvarado (Próximamente)</option>
-                  <option value="Concordia" disabled>Concordia (Próximamente)</option>
-                  <option value="Choix" disabled>Choix (Próximamente)</option>
-                </select>
+              <div class="grid2">
+                <div class="field">
+                  <label for="name">Nombre del negocio</label>
+                  <input id="name" maxlength="80" placeholder="Ej: Tacos Juan" required />
+                  <div class="hintText">Como te reconoce la gente.</div>
+                </div>
+
+                <div class="field">
+                  <label for="locality">Localidad</label>
+                  <select id="locality" required>
+                    <option value="" disabled selected>Cargando zonas...</option>
+                  </select>
+                  <div class="hintText">Para mostrarte a la gente cerca.</div>
+                </div>
               </div>
 
-              <div>
-                <label for="name">Nombre del negocio</label>
-                <input id="name" required placeholder="Ej: Tacos El Güero">
-              </div>
-
-              <div>
-                <label for="category">Categoría</label>
-                <input id="category" placeholder="Ej: Tacos / Mariscos / Plomero">
-              </div>
-
-              <div>
-                <label for="zone">Zona (Navolato)</label>
-                <select id="zone">
-                  <option value="">(Opcional)</option>
-                  <option>Lic. Benito Juárez</option>
-                  <option>Navolato</option>
-                  <option>Gral. Ángel Flores</option>
-                  <option>San Pedro</option>
-                  <option>Batauto</option>
-                  <option>El Castillo</option>
-                  <option>Juan Aldama</option>
-                  <option>Altata</option>
-                </select>
-              </div>
-
-              <div>
-                <label for="colonia">Colonia</label>
-                <input id="colonia" placeholder="Ej: Centro">
-              </div>
-
-              <div>
-                <label for="whatsapp">WhatsApp (con 521...)</label>
-                <input id="whatsapp" inputmode="numeric" placeholder="Ej: 5216671234567">
-              </div>
-
-              <div>
-                <label for="phone">Teléfono (opcional)</label>
-                <input id="phone" inputmode="numeric" placeholder="Ej: 6671234567">
-              </div>
-
-              <div style="grid-column:1/-1">
-                <label for="address">Dirección (o “a domicilio”)</label>
-                <input id="address" placeholder="Ej: Calle X #123, Centro / Servicio a domicilio">
-              </div>
-
-              <div style="grid-column:1/-1">
-                <label for="maps_url">Link de Google Maps (opcional)</label>
-                <input id="maps_url" placeholder="Pega el link aquí">
+              <div class="field">
+                <label for="category">Categoría principal</label>
+                <select id="category" required></select>
+                <div class="hintText">Tu categoría principal. Luego puedes ampliar con tags en el panel.</div>
               </div>
             </div>
 
-            <div class="grid" style="margin-top:10px">
-              <div>
-                <label for="open_time">Hora de apertura (opcional)</label>
-                <input id="open_time" type="time">
+            <div class="panelBody" id="step2" style="display:none;">
+              <div class="grid2">
+                <div class="field">
+                  <label for="whatsapp">WhatsApp (número o link)</label>
+                  <input id="whatsapp" placeholder="Ej: 6671234567 o https://wa.me/52..." required />
+                  <div class="hintText">Es lo más importante para que te contacten.</div>
+                </div>
+
+                <div class="field">
+                  <label for="phone">Teléfono (opcional)</label>
+                  <input id="phone" placeholder="Ej: 6671234567" />
+                  <div class="hintText">Opcional, por si alguien quiere llamar.</div>
+                </div>
               </div>
-              <div>
-                <label for="close_time">Hora de cierre (opcional)</label>
-                <input id="close_time" type="time">
+
+              <div class="field">
+                <label for="desc">¿Qué vendes / qué haces?</label>
+                <textarea id="desc" maxlength="220" placeholder="Ej: Tacos de asada, tortas, quesadillas. Domicilio en Navolato Centro."></textarea>
+                <div class="counter"><span id="descCount">0</span>/220</div>
+                <div class="hintText">Corto y claro. Esto ayuda a que te encuentren aunque no seas “categoría exacta”.</div>
+              </div>
+
+              <div class="field" id="foodOptions">
+                <label>Opciones de atención (Comida)</label>
+                <div class="chips">
+                  <div class="chip" role="button" tabindex="0" aria-pressed="false" data-flag="delivery">🚚 Domicilio</div>
+                  <div class="chip" role="button" tabindex="0" aria-pressed="false" data-flag="pickup">🧾 Ordena y recoge</div>
+                  <div class="chip" role="button" tabindex="0" aria-pressed="false" data-flag="dine_in">🏠 Sucursal</div>
+                </div>
+                <div class="hintText">Marca lo que sí ofreces. (Si no marcas nada, no pasa nada).</div>
+              </div>
+
+              <div class="field" id="serviceOptions" style="display:none;">
+                <label>Disponibilidad (Servicios)</label>
+                <div class="chips">
+                  <div class="chip" role="button" tabindex="0" aria-pressed="false" data-flag="available_now">🟢 Disponible ahora</div>
+                </div>
+                <div class="hintText">Si estás listo para atender hoy, márcalo.</div>
               </div>
             </div>
 
-            <div class="row" style="margin-top:10px">
-              <label class="tag"><input id="overnight" type="checkbox"> Cierra después de medianoche</label>
-              <label class="tag"><input id="has_store" type="checkbox" checked> En sucursal</label>
-              <label class="tag"><input id="has_delivery" type="checkbox"> A domicilio</label>
-              <label class="tag"><input id="has_pickup" type="checkbox"> Ordena y recoge</label>
-            </div>
+            <div class="actions">
+              <button type="button" class="btn" id="prevBtn">← Atrás</button>
 
-            <div style="margin-top:10px">
-              <label for="tags">Palabras clave (opcional)</label>
-              <input id="tags" placeholder="Ej: tacos, pastor, birria">
-            </div>
-
-            <div style="margin-top:10px">
-              <label for="notes">Notas (opcional)</label>
-              <textarea id="notes" placeholder="Ej: horario especial, días de descanso, etc."></textarea>
-            </div>
-
-            <div class="rules">
-              <b>Reglas rápidas</b><br>
-              • Publicación sujeta a revisión.<br>
-              • No contenido ofensivo o engañoso.<br>
-              • Si reclamas un negocio, debes comprobar propiedad.<br>
-              • El marketplace está <b>en proceso</b> (próximamente).<br>
-            </div>
-
-            <div class="ok" id="ok">
-              ✅ Listo: tu registro se envió. En cuanto se apruebe, aparecerá en Aquiservicio.
-            </div>
-            <div class="err" id="err"></div>
-
-            <div class="row" style="margin-top:12px">
-              <button class="btn primary" id="send" type="submit">Enviar a revisión</button>
-              <a class="btn" href="/">Cancelar</a>
-            </div>
-
-            <div class="foot">
-              <span>Hecho para que sea fácil</span>
-              <span>Tiempo: ~1 minuto</span>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button type="button" class="btn primary" id="nextBtn">Siguiente →</button>
+                <button type="submit" class="btn primary disabled" id="submitBtn">
+                  <span class="spinner"></span>
+                  Enviar solicitud ✅
+                </button>
+              </div>
             </div>
           </form>
         </div>
-      </main>
+
+        <div class="toast" id="toast"></div>
+      </div>
     </div>
+
+    <div class="foot">Aquiservicio • Registro</div>
   </div>
 
-  <!-- Supabase JS (CDN) -->
+  <!-- Supabase JS v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    // ✅ Tus datos (ya los pusiste)
+    // =========================
+    // 1) CONFIG: pega tus datos
+    // =========================
     const SUPABASE_URL = "https://rqsyexfjszecqoedojdb.supabase.co";
-    const SUPABASE_ANON = "sb_publishable_7tEQH3atdOIWkWCpK49qKw_B8rSILgT";
+    const SUPABASE_ANON_KEY = "sb_publishable_7tEQH3atdOIWkWCpK49qKw_B8rSILgT";
 
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const f = document.getElementById("f");
-    const ok = document.getElementById("ok");
-    const err = document.getElementById("err");
-    const send = document.getElementById("send");
+    // =========================
+    // 2) Catálogos (slugs internos)
+    // =========================
+    const FOOD_CATS = [
+      {slug:"tacos", label:"🌮 Tacos"},
+      {slug:"tortas", label:"🥪 Tortas"},
+      {slug:"hamburguesas", label:"🍔 Hamburguesas"},
+      {slug:"pizza", label:"🍕 Pizza"},
+      {slug:"sushi", label:"🍣 Sushi"},
+      {slug:"mariscos", label:"🦐 Mariscos"},
+      {slug:"pollo", label:"🍗 Pollo"},
+      {slug:"cafe_postres", label:"☕ Café y postres"},
+      {slug:"antojitos", label:"🫔 Antojitos"},
+      {slug:"desayunos", label:"🍳 Desayunos"}
+    ];
 
-    function cleanNum(s){ return (s||"").replace(/[^\d]/g,""); }
+    const SERVICE_CATS = [
+      {slug:"plomero", label:"🚿 Plomero"},
+      {slug:"mecanico", label:"🚗 Mecánico"},
+      {slug:"cerrajero", label:"🔑 Cerrajero"},
+      {slug:"albanil", label:"🧱 Albañil / construcción"},
+      {slug:"dentista", label:"🦷 Dentista"},
+      {slug:"mandados", label:"🛵 Mandaditos"},
+      {slug:"taxis", label:"🚕 Taxis"},
+      {slug:"tecnico", label:"🧰 Servicio técnico"},
+      {slug:"limpieza", label:"🧽 Limpieza"},
+      {slug:"fletes", label:"📦 Fletes"}
+    ];
 
-    f.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      ok.style.display = "none";
-      err.style.display = "none";
-      send.disabled = true;
-      send.textContent = "Enviando…";
+    const ZONAS_ORDER = [
+      "Navolato Centro","Altata","La Palma","Villa Juárez","San Pedro",
+      "Dautillos","El Castillo","El Tigre","Las Aguamitas","Yameto"
+    ];
 
-      try{
-        const payload = {
-          name: document.getElementById("name").value.trim(),
-          type: document.getElementById("type").value, // comida/servicio
+    // =========================
+    // 3) UI helpers
+    // =========================
+    const $ = (id) => document.getElementById(id);
+    const toast = $("toast");
 
-          municipality: document.getElementById("municipality").value,
-          zone: document.getElementById("zone").value || null,
-          colonia: document.getElementById("colonia").value.trim() || null,
-          category: document.getElementById("category").value.trim() || null,
-          tags: document.getElementById("tags").value.trim() || null,
+    function showToast(type, msg){
+      toast.className = "toast show " + (type === "ok" ? "ok" : "err");
+      toast.textContent = msg;
+      setTimeout(() => toast.className = "toast", 4200);
+    }
 
-          whatsapp: cleanNum(document.getElementById("whatsapp").value) || null,
-          phone: cleanNum(document.getElementById("phone").value) || null,
-          address: document.getElementById("address").value.trim() || null,
-          maps_url: document.getElementById("maps_url").value.trim() || null,
+    function setPressed(el, v){
+      el.setAttribute("aria-pressed", v ? "true" : "false");
+    }
 
-          open_time: document.getElementById("open_time").value || null,
-          close_time: document.getElementById("close_time").value || null,
-          overnight: document.getElementById("overnight").checked,
+    function toggleChip(el){
+      const v = el.getAttribute("aria-pressed") === "true";
+      setPressed(el, !v);
+    }
 
-          has_store: document.getElementById("has_store").checked,
-          has_delivery: document.getElementById("has_delivery").checked,
-          has_pickup: document.getElementById("has_pickup").checked,
+    function normalizePhoneDigits(s){
+      return (s||"").toString().replace(/\D/g,"");
+    }
 
-          notes: document.getElementById("notes").value.trim() || null,
+    function buildWhatsAppLink(input){
+      const raw = (input||"").trim();
+      if(!raw) return null;
 
-          status: "pending"
-        };
+      // Si ya es link
+      if(/^https?:\/\/(wa\.me|api\.whatsapp\.com)/i.test(raw)) return raw;
 
-        if(!payload.name) throw new Error("Falta el nombre del negocio.");
-        if(payload.municipality !== "Navolato") throw new Error("Por ahora solo Navolato está disponible.");
+      // Si es número, lo convertimos a wa.me con 52 por defecto
+      const digits = normalizePhoneDigits(raw);
+      if(digits.length < 10) return null;
 
-        const { error } = await supabaseClient
-          .from("public_submissions")
-          .insert(payload);
+      // Si ya trae 52 al inicio (12+), lo respetamos
+      const withCountry = digits.startsWith("52") ? digits : ("52" + digits);
+      return "https://wa.me/" + withCountry;
+    }
 
-        if(error) throw error;
+    // =========================
+    // 4) Estado del form
+    // =========================
+    let state = {
+      step: 1,
+      kind: "food",
+      flags: { delivery:false, pickup:false, dine_in:false, available_now:false }
+    };
 
-        ok.style.display = "block";
-        f.reset();
-        // por coherencia, dejamos Navolato y defaults
-        document.getElementById("municipality").value = "Navolato";
-        document.getElementById("has_store").checked = true;
+    function renderProgress(){
+      const stepLabel = $("stepLabel");
+      const stepHint = $("stepHint");
+      const barFill = $("barFill");
+      const panelTitle = $("panelTitle");
+      const panelMini = $("panelMini");
 
-      }catch(ex){
-        err.style.display = "block";
-        err.textContent = "❌ No se pudo enviar.\n" + (ex?.message || String(ex));
-      }finally{
-        send.disabled = false;
-        send.textContent = "Enviar a revisión";
+      if(state.step === 1){
+        stepLabel.textContent = "Paso 1 de 2";
+        stepHint.textContent = "Datos básicos";
+        panelTitle.textContent = "Datos básicos";
+        panelMini.textContent = "Lo esencial para que te encuentren";
+        barFill.style.width = "50%";
+        $("step1").style.display = "";
+        $("step2").style.display = "none";
+        $("prevBtn").classList.add("disabled");
+        $("nextBtn").classList.remove("disabled");
+        $("submitBtn").classList.add("disabled");
+      }else{
+        stepLabel.textContent = "Paso 2 de 2";
+        stepHint.textContent = "Detalles";
+        panelTitle.textContent = "Detalles";
+        panelMini.textContent = "Un poco de info para verse profesional";
+        barFill.style.width = "100%";
+        $("step1").style.display = "none";
+        $("step2").style.display = "";
+        $("prevBtn").classList.remove("disabled");
+        $("nextBtn").classList.add("disabled");
+        $("submitBtn").classList.remove("disabled");
       }
+
+      // Cambiar opciones según tipo
+      if(state.kind === "food"){
+        $("foodOptions").style.display = "";
+        $("serviceOptions").style.display = "none";
+      }else{
+        $("foodOptions").style.display = "none";
+        $("serviceOptions").style.display = "";
+      }
+    }
+
+    function setCategories(){
+      const sel = $("category");
+      sel.innerHTML = "";
+      const cats = state.kind === "food" ? FOOD_CATS : SERVICE_CATS;
+      cats.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.slug;
+        opt.textContent = c.label;
+        sel.appendChild(opt);
+      });
+    }
+
+    async function loadZonas(){
+      const sel = $("locality");
+      sel.innerHTML = `<option value="" disabled selected>Cargando zonas...</option>`;
+
+      const { data, error } = await sb
+        .from("zonas_navolato")
+        .select("name");
+
+      if(error){
+        sel.innerHTML = `<option value="" disabled selected>Error cargando zonas</option>`;
+        showToast("err", "No se pudieron cargar las zonas. Revisa Supabase y el nombre de la tabla.");
+        return;
+      }
+
+      // Orden “como tú quieres”
+      const names = (data || []).map(x => x.name).filter(Boolean);
+      const map = new Map(names.map(n => [n, true]));
+      const ordered = [
+        ...ZONAS_ORDER.filter(n => map.has(n)),
+        ...names.filter(n => !ZONAS_ORDER.includes(n)).sort((a,b)=>a.localeCompare(b))
+      ];
+
+      sel.innerHTML = `<option value="" disabled selected>Selecciona tu localidad</option>`;
+      ordered.forEach(n => {
+        const opt = document.createElement("option");
+        opt.value = n;
+        opt.textContent = n;
+        sel.appendChild(opt);
+      });
+
+      // auto-selección con localStorage
+      const saved = localStorage.getItem("aq_loc");
+      if(saved && ordered.includes(saved)){
+        sel.value = saved;
+      }
+      sel.addEventListener("change", () => localStorage.setItem("aq_loc", sel.value));
+    }
+
+    // =========================
+    // 5) Eventos UI
+    // =========================
+    function wireChips(){
+      // kind chips
+      $("kindChips").addEventListener("click", (e) => {
+        const chip = e.target.closest(".chip");
+        if(!chip) return;
+        const kind = chip.dataset.kind;
+        if(!kind) return;
+
+        state.kind = kind;
+
+        // set pressed
+        [...$("kindChips").querySelectorAll(".chip")].forEach(c => setPressed(c, c.dataset.kind === kind));
+
+        // reset flags (mantén limpio)
+        state.flags = { delivery:false, pickup:false, dine_in:false, available_now:false };
+        // reset option chips pressed
+        document.querySelectorAll('[data-flag]').forEach(c => setPressed(c, false));
+
+        setCategories();
+        renderProgress();
+      });
+
+      // option chips (flags)
+      document.addEventListener("click", (e) => {
+        const chip = e.target.closest(".chip[data-flag]");
+        if(!chip) return;
+        toggleChip(chip);
+        const flag = chip.dataset.flag;
+        const v = chip.getAttribute("aria-pressed") === "true";
+        state.flags[flag] = v;
+      });
+    }
+
+    function wireNav(){
+      $("prevBtn").addEventListener("click", () => {
+        if($("prevBtn").classList.contains("disabled")) return;
+        state.step = 1;
+        renderProgress();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      $("nextBtn").addEventListener("click", () => {
+        if($("nextBtn").classList.contains("disabled")) return;
+
+        // Validación mínima paso 1
+        const name = $("name").value.trim();
+        const loc = $("locality").value;
+        const cat = $("category").value;
+
+        if(name.length < 3){
+          showToast("err","Pon un nombre válido (mínimo 3 letras).");
+          return;
+        }
+        if(!loc){
+          showToast("err","Selecciona tu localidad.");
+          return;
+        }
+        if(!cat){
+          showToast("err","Selecciona una categoría.");
+          return;
+        }
+
+        state.step = 2;
+        renderProgress();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      $("desc").addEventListener("input", () => {
+        $("descCount").textContent = ($("desc").value || "").length;
+      });
+    }
+
+    // =========================
+    // 6) SUBMIT: Inserta en businesses (pending)
+    // =========================
+    $("form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const submitBtn = $("submitBtn");
+      if(submitBtn.classList.contains("disabled")) return;
+
+      const name = $("name").value.trim();
+      const locality = $("locality").value;
+      const category_slug = $("category").value;
+
+      const whatsappLink = buildWhatsAppLink($("whatsapp").value);
+      if(!whatsappLink){
+        showToast("err", "WhatsApp inválido. Pon tu número (10+ dígitos) o un link wa.me");
+        return;
+      }
+
+      const phoneDigits = normalizePhoneDigits($("phone").value);
+      const phone = phoneDigits.length >= 10 ? phoneDigits : null;
+
+      const description = ($("desc").value || "").trim() || null;
+
+      const payload = {
+        status: "pending",
+        verified: false,
+        kind: state.kind,
+        category_slug,
+        name,
+        description,
+        whatsapp: whatsappLink,
+        phone,
+        municipality: "Navolato",
+        locality,
+        delivery: !!state.flags.delivery,
+        pickup: !!state.flags.pickup,
+        dine_in: !!state.flags.dine_in,
+        available_now: !!state.flags.available_now,
+        hours_json: null,
+        recommend_count: 0
+      };
+
+      submitBtn.classList.add("loading");
+      submitBtn.classList.add("disabled");
+
+      const { error } = await sb.from("businesses").insert([payload]);
+
+      submitBtn.classList.remove("loading");
+      submitBtn.classList.remove("disabled");
+
+      if(error){
+        console.log(error);
+        showToast("err", "No se pudo enviar. Revisa que tu URL/KEY estén bien y que RLS permita INSERT pending.");
+        return;
+      }
+
+      // Success UI
+      showToast("ok", "Listo ✅ Tu solicitud quedó en revisión. Cuando se apruebe aparecerás en la página.");
+      // Reset
+      $("form").reset();
+      $("descCount").textContent = "0";
+      state.step = 1;
+      state.flags = { delivery:false, pickup:false, dine_in:false, available_now:false };
+      document.querySelectorAll('[data-flag]').forEach(c => c.setAttribute("aria-pressed","false"));
+      renderProgress();
+      setCategories();
     });
+
+    // =========================
+    // INIT
+    // =========================
+    (async function init(){
+      setCategories();
+      wireChips();
+      wireNav();
+      renderProgress();
+      await loadZonas();
+    })();
   </script>
 </body>
 </html>
