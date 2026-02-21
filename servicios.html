@@ -1,305 +1,798 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Servicios • Aquiservicio</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Servicios • Aquiservicio</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
 
-<style>
-:root{
-  --navy:#0b1220;
-  --navy2:#0f1a33;
-  --txt:#0f172a;
-  --card:rgba(255,255,255,.94);
-  --shadow:0 20px 70px rgba(2,6,23,.18);
-  --r:20px;
+  <style>
+    :root{
+      --navy:#0b1220;
+      --navy2:#0f1a33;
+      --txt:#0f172a;
+      --mut:#64748b;
 
-  --vBorder: rgba(34,197,94,.45);
-  --vBg: rgba(34,197,94,.14);
-}
+      --card:rgba(255,255,255,.94);
+      --shadow:0 20px 70px rgba(2,6,23,.18);
+      --glow:rgba(56,189,248,.22);
+      --r:20px;
 
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Inter,system-ui;
-  background:
-  radial-gradient(900px 600px at 10% 0%, rgba(56,189,248,.14), transparent 60%),
-  radial-gradient(900px 600px at 90% 10%, rgba(99,102,241,.12), transparent 55%),
-  linear-gradient(180deg,var(--navy),var(--navy2));
-  display:flex;
-  justify-content:center;
-  padding:14px;
-  min-height:100vh;
-}
+      --blueMidnight:#0f2f6b;
 
-.shell{width:min(980px,100%)}
-.card{
-  background:var(--card);
-  border-radius:calc(var(--r) + 10px);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-}
+      /* Verified green */
+      --vBorder: rgba(34,197,94,.45);
+      --vBg: rgba(34,197,94,.14);
+      --vText: rgba(15,23,42,.90);
+    }
 
-/* Header */
-.top{
-  padding:14px;
-  display:grid;
-  grid-template-columns:1fr auto;
-  align-items:center;
-  border-bottom:1px solid rgba(15,23,42,.08);
-}
-.wordmark{
-  width:min(340px,70vw);
-  transform:translateX(-10px);
-}
-.backBtn{
-  border:1px solid rgba(15,23,42,.1);
-  background:#fff;
-  border-radius:999px;
-  padding:8px 14px;
-  font-weight:900;
-  text-decoration:none;
-  color:#000;
-}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--txt);
+      background:
+        radial-gradient(900px 600px at 10% 0%, rgba(56,189,248,.14), transparent 60%),
+        radial-gradient(900px 600px at 90% 10%, rgba(99,102,241,.12), transparent 55%),
+        linear-gradient(180deg, var(--navy), var(--navy2));
+      min-height:100vh;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:14px;
+    }
 
-/* Title animated */
-.title{
-  text-align:center;
-  font-family:Poppins;
-  font-weight:900;
-  font-size:26px;
-  margin:14px 0;
-  text-transform:uppercase;
-  letter-spacing:.14em;
-  background:linear-gradient(90deg,#0f2f6b,#38bdf8,#6366f1,#0f2f6b);
-  background-size:300% 100%;
-  -webkit-background-clip:text;
-  color:transparent;
-  animation:shine 3s infinite;
-}
-@keyframes shine{
-  0%{background-position:0%}
-  50%{background-position:100%}
-  100%{background-position:0%}
-}
+    .shell{width:min(980px, 100%);}
+    .card{
+      margin-top:12px;
+      background: var(--card);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: var(--shadow);
+      border-radius: calc(var(--r) + 10px);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+      animation: in .35s ease-out;
+    }
+    @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-/* Grid */
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  padding:0 12px 20px;
-}
+    /* Header */
+    .top{
+      padding:14px 12px;
+      display:grid;
+      grid-template-columns: 1fr auto;
+      align-items:center;
+      gap:10px;
+      border-bottom:1px solid rgba(15,23,42,.08);
+    }
+    .brandWrap{display:flex;justify-content:center;}
+    .wordmark{
+      width:min(360px, 70vw);
+      height:auto;
+      display:block;
+      transform: translateX(-10px);
+      filter: drop-shadow(0 16px 40px rgba(2,6,23,.14));
+    }
+    .backBtn{
+      justify-self:end;
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 12px;
+      font-weight:900;
+      font-size:13px;
+      text-decoration:none;
+      color:var(--txt);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      box-shadow: 0 10px 28px rgba(2,6,23,.08);
+    }
+    .backBtn:active{transform:scale(.99)}
 
-.tile{
-  position:relative;
-  min-height:130px;
-  border-radius:18px;
-  overflow:hidden;
-  cursor:pointer;
-  display:flex;
-  align-items:flex-end;
-}
-.tile img{
-  position:absolute;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-.overlay{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,transparent,rgba(0,0,0,.55));
-}
-.label{
-  position:relative;
-  padding:12px;
-  color:#fff;
-  font-family:Poppins;
-  font-weight:900;
-  letter-spacing:.05em;
-  text-transform:uppercase;
-}
+    .main{padding:14px 12px 16px}
 
-/* Panel */
-.panel{
-  grid-column:1/-1;
-  background:#fff;
-  border-radius:18px;
-  padding:14px;
-  box-shadow:0 14px 40px rgba(0,0,0,.08);
-}
-.panelHeader{
-  display:flex;
-  justify-content:space-between;
-  font-weight:900;
-  margin-bottom:10px;
-}
-.closeBtn{
-  cursor:pointer;
-  font-weight:900;
-}
+    /* Title animated */
+    .title{
+      margin:6px 0 12px;
+      text-align:center;
+      font-family:"Poppins", Inter, system-ui, Arial;
+      font-weight:900;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:26px;
 
-/* Biz cards */
-.biz{
-  border:1px solid rgba(15,23,42,.1);
-  border-radius:16px;
-  padding:12px;
-  margin-bottom:8px;
-}
-.badge{
-  background:var(--vBg);
-  border:1px solid var(--vBorder);
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:11px;
-  font-weight:900;
-}
-.actions{
-  margin-top:8px;
-}
-.btn{
-  border:1px solid rgba(15,23,42,.1);
-  border-radius:12px;
-  padding:8px 12px;
-  text-decoration:none;
-  font-weight:900;
-  background:#fff;
-}
+      background: linear-gradient(90deg,
+        rgba(15,47,107,.95),
+        rgba(56,189,248,.95),
+        rgba(99,102,241,.95),
+        rgba(15,47,107,.95)
+      );
+      background-size: 260% 100%;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      animation: shine 3.2s ease-in-out infinite;
+    }
+    @keyframes shine{
+      0%{background-position: 0% 50%}
+      50%{background-position: 100% 50%}
+      100%{background-position: 0% 50%}
+    }
 
-.footer{
-  display:flex;
-  justify-content:center;
-  padding:12px;
-}
-</style>
+    /* Controls */
+    .controls{
+      display:grid;
+      gap:10px;
+      max-width:860px;
+      margin:0 auto 12px;
+    }
+
+    .selectBox{
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      position:relative;
+    }
+    .selectBox label{
+      font-size:13px;
+      font-weight:900;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      color: rgba(15,23,42,.72);
+    }
+    .selectBox::after{
+      content:"▾";
+      position:absolute;
+      right:18px;
+      bottom:14px;
+      font-size:16px;
+      font-weight:900;
+      color: rgba(15,23,42,.60);
+      pointer-events:none;
+    }
+    select{
+      width:100%;
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      padding:14px 44px 14px 14px;
+      font-size:16px;
+      font-weight:900;
+      border-radius:18px;
+      border:1px solid rgba(15,23,42,.16);
+      background: linear-gradient(180deg, rgba(15,23,42,.10), rgba(15,23,42,.06));
+      color: rgba(15,23,42,.95);
+      box-shadow: 0 10px 28px rgba(2,6,23,.10);
+      outline:none;
+      cursor:pointer;
+      max-width:860px;
+    }
+    select:focus{
+      box-shadow:0 0 0 4px var(--glow), 0 10px 28px rgba(2,6,23,.12);
+      border-color: rgba(56,189,248,.45);
+    }
+
+    .searchBox{
+      width:100%;
+      max-width:860px;
+      margin:0 auto;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .search{
+      flex:1;
+      padding:14px 14px;
+      border-radius:18px;
+      border:1px solid rgba(15,23,42,.14);
+      background:#fff;
+      font-size:16px;
+      font-weight:800;
+      outline:none;
+      box-shadow: 0 10px 28px rgba(2,6,23,.06);
+    }
+    .search:focus{
+      box-shadow:0 0 0 4px var(--glow), 0 10px 28px rgba(2,6,23,.10);
+      border-color: rgba(56,189,248,.45);
+    }
+    .clearBtn{
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      border-radius:18px;
+      padding:14px 14px;
+      font-weight:900;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow: 0 10px 28px rgba(2,6,23,.06);
+    }
+    .clearBtn:active{transform:scale(.99)}
+
+    /* Grid tiles */
+    .grid{
+      max-width:860px;
+      margin:10px auto 0;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+
+    .tile{
+      position:relative;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      box-shadow: 0 14px 40px rgba(2,6,23,.10);
+      text-decoration:none;
+      color:var(--txt);
+      min-height:130px;
+      display:flex;
+      align-items:flex-end;
+      cursor:pointer;
+    }
+    .tile img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter: saturate(1.05) contrast(1.02);
+    }
+    .tile .overlay{
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(2,6,23,.00), rgba(2,6,23,.55));
+    }
+    .tile .label{
+      position:relative;
+      padding:12px;
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+    }
+    .tile .name{
+      font-weight:900;
+      font-size:15px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#fff;
+      font-family:"Poppins", Inter, system-ui, Arial;
+    }
+    .tile .hint{
+      font-weight:800;
+      font-size:12px;
+      color: rgba(255,255,255,.82);
+    }
+
+    /* Panel inline */
+    .panel{
+      grid-column: 1 / -1;
+      border-radius:18px;
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      box-shadow: 0 14px 40px rgba(2,6,23,.08);
+      overflow:hidden;
+      animation: pop .25s ease-out;
+    }
+    @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+    .panelHeader{
+      padding:12px 12px;
+      border-bottom:1px solid rgba(15,23,42,.08);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .panelHeader .h{
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:12px;
+      color: rgba(15,23,42,.72);
+    }
+    .panelClose{
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      border-radius:999px;
+      padding:8px 10px;
+      font-weight:900;
+      font-size:12px;
+      cursor:pointer;
+    }
+
+    .panelBody{
+      padding:12px;
+      display:grid;
+      gap:10px;
+    }
+
+    .biz{
+      border:1px solid rgba(15,23,42,.10);
+      border-radius:16px;
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      background: linear-gradient(180deg, rgba(2,6,23,.02), rgba(2,6,23,.00));
+    }
+    .bizTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .bizName{
+      font-weight:900;
+      font-size:15px;
+    }
+
+    /* ✅ Verified badge smaller + green */
+    .badge{
+      font-weight:900;
+      font-size:10px;            /* más chico */
+      padding:5px 9px;           /* más chico */
+      border-radius:999px;
+      border:1px solid var(--vBorder);
+      background: var(--vBg);
+      color: var(--vText);
+      white-space:nowrap;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .muted{
+      color: rgba(15,23,42,.65);
+      font-weight:700;
+      font-size:13px;
+      line-height:1.35
+    }
+
+    .bizActions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:900;
+      font-size:13px;
+      text-decoration:none;
+      color:var(--txt);
+      cursor:pointer;
+    }
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(56,189,248,.16), rgba(99,102,241,.10));
+      border-color: rgba(56,189,248,.35);
+    }
+
+    /* Empty state inside panel */
+    .emptyBox{
+      border:1px dashed rgba(15,23,42,.20);
+      border-radius:16px;
+      padding:14px;
+      text-align:center;
+      color: rgba(15,23,42,.78);
+      background: rgba(255,255,255,.96);
+    }
+    .emptyBox .bubble{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(56,189,248,.28);
+      background: rgba(56,189,248,.12);
+      font-weight:900;
+      animation: floaty 2.2s ease-in-out infinite;
+      margin-bottom:10px;
+    }
+    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    .emptyBox .msg{font-weight:800; margin:6px 0 10px}
+    .emptyBox .actions{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+
+    .footerActions{
+      margin-top:14px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .foot{
+      margin:14px 0 0;
+      text-align:center;
+      font-size:12px;
+      color: rgba(255,255,255,.65);
+      font-weight:700;
+    }
+  </style>
 </head>
 
 <body>
-<div class="shell">
-<div class="card">
+  <div class="shell">
+    <div class="card">
+      <div class="top">
+        <div class="brandWrap">
+          <img class="wordmark" src="assets/logo.svg" alt="aquiservicio.com">
+        </div>
+        <a class="backBtn" href="index.html">← Inicio</a>
+      </div>
 
-<div class="top">
-  <img src="assets/logo.svg" class="wordmark">
-  <a href="index.html" class="backBtn">← Inicio</a>
-</div>
+      <div class="main">
+        <div class="title">SERVICIOS</div>
 
-<div class="title">SERVICIOS</div>
+        <div class="controls">
+          <div class="selectBox">
+            <label for="loc">LOCALIDAD</label>
+            <select id="loc">
+              <option value="Navolato Centro" selected>Navolato Centro</option>
+              <option value="Altata">Altata</option>
+              <option value="La Palma">La Palma</option>
+              <option value="Villa Juárez">Villa Juárez</option>
+              <option value="San Pedro">San Pedro</option>
+              <option value="Dautillos">Dautillos</option>
+              <option value="El Castillo">El Castillo</option>
+              <option value="El Tigre">El Tigre</option>
+              <option value="Las Aguamitas">Las Aguamitas</option>
+              <option value="Yameto">Yameto</option>
+            </select>
+          </div>
 
-<div class="grid" id="grid">
+          <div class="searchBox">
+            <input id="q" class="search" type="search" placeholder="Buscar plomero, dentista, taxis… o nombre del negocio" autocomplete="off" />
+            <button id="clear" class="clearBtn" type="button">Limpiar</button>
+          </div>
+        </div>
 
-<!-- Disponible -->
-<div class="tile" data-action="disponible">
-<img src="assets/categoriaser/disponible.webp">
-<div class="overlay"></div>
-<div class="label">Disponible ahora</div>
-</div>
+        <div class="grid" id="grid">
+          <a class="tile" href="#" data-action="disponible">
+            <img src="assets/categoriaser/disponible.webp" alt="Disponible ahora">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">DISPONIBLE AHORA</div>
+              <div class="hint">Urgencias y atención rápida</div>
+            </div>
+          </a>
 
-<!-- Promos -->
-<div class="tile" data-action="ofertas">
-<img src="assets/categoriaser/ofertas.webp">
-<div class="overlay"></div>
-<div class="label">Promociones</div>
-</div>
+          <a class="tile" href="#" data-action="ofertas">
+            <img src="assets/categoriaser/ofertas.webp" alt="Promociones">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">PROMOCIONES</div>
+              <div class="hint">Solo verificados</div>
+            </div>
+          </a>
 
-<div class="tile" data-cat="plomero">
-<img src="assets/categoriaser/plomero.webp">
-<div class="overlay"></div>
-<div class="label">Plomero</div>
-</div>
+          <a class="tile" href="#" data-cat="plomero">
+            <img src="assets/categoriaser/plomero.webp" alt="Plomero">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">PLOMERO</div>
+              <div class="hint">Fugas, instalaciones, reparaciones</div>
+            </div>
+          </a>
 
-<div class="tile" data-cat="mecanico">
-<img src="assets/categoriaser/mecanico.webp">
-<div class="overlay"></div>
-<div class="label">Mecánico</div>
-</div>
+          <a class="tile" href="#" data-cat="mecanico">
+            <img src="assets/categoriaser/mecanico.webp" alt="Mecánico">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">MECÁNICO</div>
+              <div class="hint">Carro, moto y auxilio</div>
+            </div>
+          </a>
 
-<div class="tile" data-cat="cerrajero">
-<img src="assets/categoriaser/cerrajero.webp">
-<div class="overlay"></div>
-<div class="label">Cerrajero</div>
-</div>
+          <a class="tile" href="#" data-cat="cerrajero">
+            <img src="assets/categoriaser/cerrajero.webp" alt="Cerrajero">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">CERRAJERO</div>
+              <div class="hint">Aperturas y llaves</div>
+            </div>
+          </a>
 
-<div class="tile" data-cat="albañil">
-<img src="assets/categoriaser/albañil.webp">
-<div class="overlay"></div>
-<div class="label">Albañil</div>
-</div>
+          <a class="tile" href="#" data-cat="albañil">
+            <img src="assets/categoriaser/albañil.webp" alt="Albañil">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">ALBAÑIL</div>
+              <div class="hint">Construcción y reparaciones</div>
+            </div>
+          </a>
 
-<div class="tile" data-cat="dentista">
-<img src="assets/categoriaser/dentista.webp">
-<div class="overlay"></div>
-<div class="label">Dentista</div>
-</div>
+          <a class="tile" href="#" data-cat="dentista">
+            <img src="assets/categoriaser/dentista.webp" alt="Dentista">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">DENTISTA</div>
+              <div class="hint">Consulta y urgencias</div>
+            </div>
+          </a>
 
-<div class="tile" data-cat="mandados">
-<img src="assets/categoriaser/mandados.webp">
-<div class="overlay"></div>
-<div class="label">Mandaditos</div>
-</div>
+          <a class="tile" href="#" data-cat="mandados">
+            <img src="assets/categoriaser/mandados.webp" alt="Mandados">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">MANDADITOS</div>
+              <div class="hint">Recados, compras, entregas</div>
+            </div>
+          </a>
 
-<div class="tile" data-cat="taxis">
-<img src="assets/categoriaser/taxis.webp">
-<div class="overlay"></div>
-<div class="label">Taxis</div>
-</div>
+          <a class="tile" href="#" data-cat="taxis">
+            <img src="assets/categoriaser/taxis.webp" alt="Taxis">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">TAXIS</div>
+              <div class="hint">Traslados y viajes</div>
+            </div>
+          </a>
 
-<div class="tile" data-cat="tecnico">
-<img src="assets/categoriaser/tecnico.webp">
-<div class="overlay"></div>
-<div class="label">Servicio técnico</div>
-</div>
+          <a class="tile" href="#" data-cat="tecnico">
+            <img src="assets/categoriaser/tecnico.webp" alt="Técnico">
+            <div class="overlay"></div>
+            <div class="label">
+              <div class="name">SERVICIO TÉCNICO</div>
+              <div class="hint">Celulares, compus, TV</div>
+            </div>
+          </a>
+        </div>
 
-</div>
+        <div class="footerActions">
+          <a class="backBtn" href="index.html">← Inicio</a>
+        </div>
+      </div>
+    </div>
 
-<div class="footer">
-<a href="index.html" class="backBtn">← Inicio</a>
-</div>
+    <div class="foot">Aquiservicio • Servicios</div>
+  </div>
 
-</div>
-</div>
+  <script>
+    // DEMO DATA (igual lógica que comida)
+    const DEMO = [
+      {
+        id:"plomero-raul",
+        name:"Plomería Raúl",
+        verified:true,
+        localidad:"Navolato Centro",
+        category:"plomero",
+        whatsapp:"https://wa.me/526671111111",
+        promoToday:"Visita con descuento (hoy)",
+        availableNow:true
+      },
+      {
+        id:"taxis-navo",
+        name:"Taxis Navolato",
+        verified:false,
+        localidad:"Navolato Centro",
+        category:"taxis",
+        whatsapp:"https://wa.me/526672222222",
+        promoToday:null,
+        availableNow:true
+      },
+      {
+        id:"dentista-sonrisa",
+        name:"Dentista Sonrisa",
+        verified:true,
+        localidad:"Altata",
+        category:"dentista",
+        whatsapp:"https://wa.me/526663333333",
+        promoToday:null,
+        availableNow:false
+      }
+    ];
 
-<script>
-const grid=document.getElementById("grid");
-let currentPanel=null;
+    const $ = (id) => document.getElementById(id);
+    const grid = $("grid");
+    const locSel = $("loc");
+    const qInput = $("q");
+    const clearBtn = $("clear");
 
-grid.addEventListener("click",e=>{
-const tile=e.target.closest(".tile");
-if(!tile)return;
+    let currentPanel = null;
 
-if(currentPanel){currentPanel.remove();currentPanel=null;}
+    // Persist locality
+    const savedLoc = localStorage.getItem("aq_srv_loc");
+    if(savedLoc){
+      const opt = [...locSel.options].find(o => o.value === savedLoc);
+      if(opt) locSel.value = savedLoc;
+    }
+    locSel.addEventListener("change", () => {
+      localStorage.setItem("aq_srv_loc", locSel.value);
+      closePanel();
+    });
 
-const panel=document.createElement("div");
-panel.className="panel";
+    clearBtn.addEventListener("click", () => { qInput.value=""; closePanel(); });
 
-panel.innerHTML=`
-<div class="panelHeader">
-<div>Resultados</div>
-<div class="closeBtn">✕</div>
-</div>
-<div class="biz">
-<div><b>Ejemplo Servicio</b></div>
-<div class="badge">VERIFICADO</div>
-<div class="actions">
-<a href="#" class="btn">WhatsApp</a>
-<a href="#" class="btn">Ver más</a>
-</div>
-</div>
-`;
+    qInput.addEventListener("input", () => {
+      const q = qInput.value.trim();
+      if(q.length === 0){ closePanel(); return; }
 
-tile.after(panel);
-currentPanel=panel;
+      const items = baseFilter().filter(b =>
+        normalize(b.name).includes(normalize(q)) ||
+        normalize(b.category).includes(normalize(q))
+      );
 
-panel.querySelector(".closeBtn").addEventListener("click",()=>{
-panel.remove();
-currentPanel=null;
-});
-});
-</script>
+      openPanelAfterRow(0, `Resultados: "${q}"`, items, {
+        emptyIcon:"🔎",
+        emptyMsg:"No encontramos resultados con esa búsqueda en esta localidad."
+      });
+    });
 
+    function normalize(s){
+      return (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    }
+
+    function escapeHtml(str){
+      return (str||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+    }
+
+    function baseFilter(){
+      const loc = locSel.value;
+      let arr = DEMO.filter(b => b.localidad === loc);
+      arr.sort((a,b) => (b.verified === true) - (a.verified === true));
+      return arr;
+    }
+
+    function humanCat(c){
+      const map = {
+        plomero:"Plomero",
+        mecanico:"Mecánico",
+        cerrajero:"Cerrajero",
+        "albañil":"Albañil",
+        dentista:"Dentista",
+        mandados:"Mandaditos",
+        taxis:"Taxis",
+        tecnico:"Servicio técnico"
+      };
+      return map[c] || c;
+    }
+
+    function closePanel(){
+      if(currentPanel){
+        currentPanel.remove();
+        currentPanel = null;
+      }
+    }
+
+    function buildBizCard(b){
+      const div = document.createElement("div");
+      div.className = "biz";
+      div.innerHTML = `
+        <div class="bizTop">
+          <div>
+            <div class="bizName">${escapeHtml(b.name)}</div>
+            <div class="muted">${escapeHtml(b.localidad)} • ${escapeHtml(humanCat(b.category))} ${b.verified ? "• ✅ Verificado" : ""}</div>
+          </div>
+          ${b.verified ? `<div class="badge">VERIFICADO</div>` : ""}
+        </div>
+        <div class="muted">${b.availableNow ? "🟢 Disponible ahora" : "⏳ Disponibilidad variable"}</div>
+        <div class="bizActions">
+          <a class="btn primary" href="${b.whatsapp}" target="_blank" rel="noopener">WhatsApp</a>
+          <button class="btn" type="button" onclick="alert('Próximo: ver perfil completo')">Ver más</button>
+        </div>
+      `;
+      return div;
+    }
+
+    function buildEmpty(icon, msg){
+      const wrap = document.createElement("div");
+      wrap.className = "emptyBox";
+      wrap.innerHTML = `
+        <div class="bubble">${icon}</div>
+        <div class="msg">${escapeHtml(msg)}</div>
+        <div class="actions">
+          <a class="btn primary" href="registrar.html">➕ Registrar mi negocio</a>
+          <a class="btn" href="no-encontre.html">💡 Sugerencias</a>
+          <button class="btn" type="button" id="panelShowAll">Ver todos</button>
+        </div>
+      `;
+      return wrap;
+    }
+
+    function openPanelAfterRow(tileIndex, title, items, emptyCfg){
+      closePanel();
+
+      const row = Math.floor(tileIndex / 2);
+      const insertAfterIndex = row*2 + 1;
+
+      const tiles = [...grid.querySelectorAll(".tile")];
+      const anchor = tiles[Math.min(insertAfterIndex, tiles.length-1)];
+
+      const panel = document.createElement("div");
+      panel.className = "panel";
+      panel.innerHTML = `
+        <div class="panelHeader">
+          <div class="h">${escapeHtml(title)}</div>
+          <button class="panelClose" type="button" aria-label="Cerrar">✕</button>
+        </div>
+        <div class="panelBody"></div>
+      `;
+
+      const body = panel.querySelector(".panelBody");
+      panel.querySelector(".panelClose").addEventListener("click", closePanel);
+
+      if(!items || items.length === 0){
+        const emptyEl = buildEmpty(emptyCfg?.emptyIcon || "⏳", emptyCfg?.emptyMsg || "Por el momento no hay resultados aquí.");
+        body.appendChild(emptyEl);
+
+        emptyEl.querySelector("#panelShowAll").addEventListener("click", () => {
+          const all = DEMO.filter(b => b.localidad === locSel.value)
+            .sort((a,b) => (b.verified === true) - (a.verified === true));
+          body.innerHTML = "";
+          if(all.length === 0){
+            body.appendChild(buildEmpty("📍", "Por el momento no hay servicios registrados en esta localidad."));
+          } else {
+            all.forEach(b => body.appendChild(buildBizCard(b)));
+          }
+        });
+      } else {
+        items.forEach(b => body.appendChild(buildBizCard(b)));
+      }
+
+      anchor.insertAdjacentElement("afterend", panel);
+      currentPanel = panel;
+      panel.scrollIntoView({ behavior:"smooth", block:"center" });
+    }
+
+    grid.addEventListener("click", (e) => {
+      const a = e.target.closest("a.tile");
+      if(!a) return;
+      e.preventDefault();
+
+      const tiles = [...grid.querySelectorAll("a.tile")];
+      const idx = tiles.indexOf(a);
+
+      const action = a.getAttribute("data-action");
+      const cat = a.getAttribute("data-cat");
+
+      const loc = locSel.value;
+
+      if(action === "disponible"){
+        const items = DEMO.filter(b => b.localidad === loc && b.availableNow)
+          .sort((a,b) => (b.verified === true) - (a.verified === true));
+
+        openPanelAfterRow(idx, "Disponible ahora", items, {
+          emptyIcon:"⏳",
+          emptyMsg:"Por el momento no hay servicios disponibles aquí."
+        });
+        return;
+      }
+
+      if(action === "ofertas"){
+        const items = DEMO.filter(b => b.localidad === loc)
+          .filter(b => b.verified && !!b.promoToday)
+          .sort((a,b) => (b.verified === true) - (a.verified === true))
+          .map(b => ({...b, name: `${b.name} • ${b.promoToday}`}));
+
+        openPanelAfterRow(idx, "Promociones de hoy", items, {
+          emptyIcon:"🎁",
+          emptyMsg:"Por el momento no hay promociones disponibles."
+        });
+        return;
+      }
+
+      if(cat){
+        const items = DEMO.filter(b => b.localidad === loc && b.category === cat)
+          .sort((a,b) => (b.verified === true) - (a.verified === true));
+
+        openPanelAfterRow(idx, humanCat(cat), items, {
+          emptyIcon:"🧰",
+          emptyMsg:"Por el momento no hay servicios en esta categoría aquí."
+        });
+      }
+    });
+  </script>
 </body>
 </html>
