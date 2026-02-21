@@ -17,16 +17,14 @@
       --mut:#64748b;
 
       --card:rgba(255,255,255,.94);
-      --bd:rgba(15,23,42,.12);
       --glow:rgba(56,189,248,.22);
       --shadow:0 20px 70px rgba(2,6,23,.18);
       --r:20px;
 
-      --thanksText:#0f172a;
-      --thanksBg:rgba(56,189,248,.16);
-      --thanksBd:rgba(56,189,248,.28);
-
-      --welcomeBlue:#0f2f6b;
+      --welcomeBlue:#0f2f6b; /* azul medianoche real */
+      --pillText:#0f172a;
+      --pillBg:rgba(56,189,248,.16);
+      --pillBd:rgba(56,189,248,.28);
     }
 
     *{box-sizing:border-box}
@@ -68,13 +66,13 @@
       gap:10px;
     }
 
-    /* Logo centrado */
+    /* Logo centrado, apenas a la izquierda */
     .wordmark{
       width: min(450px, 86vw);
       height:auto;
       display:block;
       margin: 0 auto;
-      transform: translateX(-10px);
+      transform: translateX(-12px);
       filter: drop-shadow(0 16px 40px rgba(2,6,23,.14));
     }
 
@@ -117,7 +115,7 @@
       font-weight:900;
       border-radius:18px;
       border:1px solid rgba(15,23,42,.16);
-      background: linear-gradient(180deg, rgba(15,23,42,.10), rgba(15,23,42,.06));
+      background: linear-gradient(180deg, rgba(15,23,42,.10), rgba(15,23,42,.06)); /* más oscuro/pro */
       color: rgba(15,23,42,.95);
       box-shadow: 0 10px 28px rgba(2,6,23,.10);
       outline:none;
@@ -129,17 +127,17 @@
       border-color: rgba(56,189,248,.45);
     }
 
-    /* Gracias */
-    .thanks{
+    /* BIENVENIDOS animado (esto reemplaza “muchas gracias”) */
+    .welcomePill{
       display:inline-flex;
       align-items:center;
       justify-content:center;
       font-size:13px;
       font-weight:900;
       letter-spacing:.22px;
-      color: var(--thanksText);
-      background: var(--thanksBg);
-      border:1px solid var(--thanksBd);
+      color: var(--pillText);
+      background: var(--pillBg);
+      border:1px solid var(--pillBd);
       padding:10px 12px;
       border-radius:999px;
       backdrop-filter: blur(8px);
@@ -149,15 +147,16 @@
     }
     @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 
-    /* BIENVENIDOS */
-    .welcome{
+    /* Título grande (antes era welcome) */
+    .welcomeTitle{
       margin:0;
       font-family:Poppins, Inter, system-ui, Arial;
       font-weight:900;
-      letter-spacing: .22em;
-      font-size: 20px;
+      letter-spacing: .18em;
+      font-size: 22px;
       color: var(--welcomeBlue);
       text-transform: uppercase;
+      line-height:1.1;
     }
 
     .subtitle{
@@ -314,20 +313,21 @@
   <div class="shell">
     <div class="card">
       <div class="main">
-
         <div class="hero">
           <img class="wordmark" src="assets/logo.svg" alt="aquiservicio.com">
 
           <div class="municipalityBox">
             <label for="city">MUNICIPIO</label>
             <select id="city">
-              <option value="" selected>Cargando municipios...</option>
+              <option value="Navolato" selected>Navolato (Disponible)</option>
             </select>
           </div>
 
-          <div class="thanks" id="thanks">🤝✨ MUCHAS GRACIAS POR SU APOYO ✨🤝</div>
+          <!-- ✅ Animación ahora es BIENVENIDOS -->
+          <div class="welcomePill" id="welcomePill">🤝✨ BIENVENIDOS ✨🤝</div>
 
-          <p class="welcome">BIENVENIDOS</p>
+          <!-- ✅ Título grande debajo -->
+          <p class="welcomeTitle">AQUISERVICIO.COM</p>
 
           <p class="subtitle">
             Elige lo que necesitas: <b>Comida</b>, <b>Servicios</b> o <b>Marketplace</b>.
@@ -376,14 +376,12 @@
             <li><b>Datos reales</b>: WhatsApp/teléfono válidos y nombre claro.</li>
             <li><b>No engaños</b>, <b>no suplantación</b>, <b>no contenido ofensivo</b>.</li>
             <li><b>Horarios honestos</b>: si son falsos o repetidamente fallan, se baja el perfil.</li>
-            <li><b>Precios claros</b> (si publicas): sin “sorpresas” o cambios extremos.</li>
             <li><b>Reclamar negocio</b> requiere comprobación.</li>
             <li><b>Marketplace</b> está <b>en proceso</b>: aún no disponible.</li>
           </ul>
         </div>
 
         <div class="toast" id="toast"></div>
-
       </div>
     </div>
 
@@ -397,13 +395,37 @@
     // =========================
     // CONFIG (pega tus datos)
     // =========================
-    const SUPABASE_URL = "PEGA_AQUI_TU_SUPABASE_URL";
-    const SUPABASE_ANON_KEY = "PEGA_AQUI_TU_SUPABASE_ANON_KEY";
+    const SUPABASE_URL = "https://rqsyexfjszecqoedojdb.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_7tEQH3atdOIWkWCpK49qKw_B8rSILgT";
 
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const citySelect = document.getElementById("city");
     const toast = document.getElementById("toast");
+
+    // Fallback (por si Supabase falla, no se queda en "cargando")
+    const FALLBACK_MUNICIPIOS = [
+      {name:"Navolato", sort_order:1, active:true},
+      {name:"Culiacán", sort_order:2, active:false},
+      {name:"Mazatlán", sort_order:3, active:false},
+      {name:"Ahome", sort_order:4, active:false},
+      {name:"Guasave", sort_order:5, active:false},
+      {name:"Angostura", sort_order:6, active:false},
+      {name:"El Fuerte", sort_order:7, active:false},
+      {name:"Mocorito", sort_order:8, active:false},
+      {name:"Sinaloa", sort_order:9, active:false},
+      {name:"Badiraguato", sort_order:10, active:false},
+      {name:"Cosalá", sort_order:11, active:false},
+      {name:"Elota", sort_order:12, active:false},
+      {name:"Escuinapa", sort_order:13, active:false},
+      {name:"Rosario", sort_order:14, active:false},
+      {name:"San Ignacio", sort_order:15, active:false},
+      {name:"Salvador Alvarado", sort_order:16, active:false},
+      {name:"Concordia", sort_order:17, active:false},
+      {name:"Choix", sort_order:18, active:false},
+      {name:"Juan José Ríos", sort_order:19, active:false},
+      {name:"Eldorado", sort_order:20, active:false}
+    ];
 
     function showToast(msg){
       toast.textContent = msg;
@@ -411,59 +433,67 @@
       setTimeout(()=> toast.className = "toast", 3600);
     }
 
-    async function loadMunicipios(){
-      citySelect.innerHTML = `<option value="" selected>Cargando municipios...</option>`;
-
-      const { data, error } = await sb
-        .from("municipios")
-        .select("name, active, sort_order")
-        .order("sort_order", { ascending: true });
-
-      if(error){
-        console.log(error);
-        citySelect.innerHTML = `<option value="" selected>Error cargando</option>`;
-        showToast("No se pudieron cargar municipios. Revisa Supabase y RLS.");
-        return;
-      }
-
-      // Construir options
+    function fillMunicipios(list){
+      const data = [...list].sort((a,b)=> (a.sort_order||999) - (b.sort_order||999));
       citySelect.innerHTML = "";
       data.forEach(m => {
         const opt = document.createElement("option");
         opt.value = m.name;
         opt.textContent = m.active ? `${m.name} (Disponible)` : `${m.name} (Próximamente)`;
         opt.disabled = !m.active;
-        if(m.active && m.name === "Navolato") opt.selected = true;
         citySelect.appendChild(opt);
       });
 
-      // Persistencia
+      // default/persist
       const saved = localStorage.getItem("aq_city");
-      if(saved){
-        const opt = [...citySelect.options].find(o => o.value === saved);
-        if(opt && !opt.disabled){
-          citySelect.value = saved;
-        }else{
-          citySelect.value = "Navolato";
-        }
+      const savedOpt = saved ? [...citySelect.options].find(o => o.value === saved) : null;
+
+      if(savedOpt && !savedOpt.disabled){
+        citySelect.value = saved;
       }else{
         citySelect.value = "Navolato";
       }
       localStorage.setItem("aq_city", citySelect.value);
 
-      // Evitar selección de deshabilitados + mensaje
-      citySelect.addEventListener("change", () => {
-        const selectedOption = citySelect.options[citySelect.selectedIndex];
-        if(selectedOption.disabled){
+      citySelect.onchange = () => {
+        const opt = citySelect.options[citySelect.selectedIndex];
+        if(opt.disabled){
           citySelect.value = "Navolato";
           showToast("Ese municipio estará disponible próximamente 🙂");
           return;
         }
         localStorage.setItem("aq_city", citySelect.value);
-      });
+      };
     }
 
-    // INIT
+    async function loadMunicipios(){
+      // Pinta algo útil desde el inicio (para que no se quede “cargando”)
+      fillMunicipios(FALLBACK_MUNICIPIOS);
+
+      // Intentar Supabase
+      try{
+        const { data, error } = await sb
+          .from("municipios")
+          .select("name, active, sort_order")
+          .order("sort_order", { ascending: true });
+
+        if(error){
+          console.log("Supabase municipios error:", error);
+          showToast("No se pudo cargar municipios (usando lista local).");
+          return;
+        }
+        if(!data || data.length === 0){
+          showToast("Municipios vacío (usando lista local).");
+          return;
+        }
+
+        fillMunicipios(data);
+      }catch(err){
+        console.log("Supabase municipios catch:", err);
+        showToast("Sin conexión a Supabase (usando lista local).");
+      }
+    }
+
     loadMunicipios();
   </script>
 </body>
