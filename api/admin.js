@@ -1,32 +1,39 @@
-import { createClient } from "@supabase/supabase-js";
+const { createClient } = require("@supabase/supabase-js");
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   try {
+    // 1) Token primero (si no viene, debe responder 401, no 500)
     const token = req.headers["x-admin-token"];
-
     if (!token || token !== process.env.ADMIN_PANEL_TOKEN) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const supabase = createClient(
+    // 2) Crear cliente (usa service role desde env vars)
+    const sb = createClient(
       process.env.SUPABASE_URL,
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
+    // 3) Acciones
     if (req.method === "GET") {
-      const { data, error } = await supabase
-        .from("businesses")
-        .select("*")
-        .eq("status", "pending");
+      const action = req.query.action;
 
-      if (error) return res.status(400).json({ error: error.message });
+      if (action === "list_pending") {
+        const { data, error } = await sb
+          .from("businesses")
+          .select("id,name,kind,category_slug,locality,whatsapp,created_at")
+          .eq("status", "pending")
+          .order("created_at", { ascending: true });
 
-      return res.status(200).json({ data });
+        if (error) return res.status(400).json({ error: error.message });
+        return res.json({ data });
+      }
+
+      return res.status(400).json({ error: "Unknown action" });
     }
 
-    return res.status(400).json({ error: "Invalid request" });
-
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(405).json({ error: "Method not allowed" });
+  } catch (e) {
+    return res.status(500).json({ error: e.message || "Server error" });
   }
-}
+};
