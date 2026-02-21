@@ -51,6 +51,7 @@
       <div class="row">
         <input id="token" placeholder="ADMIN_PANEL_TOKEN (solo tú)" />
         <button class="btnPrimary" id="load">Cargar pendientes</button>
+        <button id="debug">Debug pending</button>
         <a href="index.html" class="small">← Inicio</a>
       </div>
 
@@ -63,6 +64,11 @@
   <script>
     const listEl = document.getElementById("list");
     const tokenEl = document.getElementById("token");
+    document.getElementById("debug").addEventListener("click", async () => {
+  const out = await apiGet("count_pending");
+  if(out.error) return alert(out.error);
+  alert("Backend ve pending_count = " + out.pending_count);
+});
 
     async function apiGet(action){
       const r = await fetch(`/api/admin?action=${encodeURIComponent(action)}`, {
