@@ -42,6 +42,10 @@ module.exports = async function handler(req,res){
 
     if(error){
       return res.status(400).json({error:error.message});
+      results = results.map(b=>{
+  b.recommendations_count = b.recommendations?.length || 0;
+  return b;
+});
     }
 
     let results = data || [];
