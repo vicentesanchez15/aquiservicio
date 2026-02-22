@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Servicios • Aquiservicio</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,20 +11,29 @@
 
   <style>
     :root{
-      --navy:#0b1220; --navy2:#0f1a33;
-      --txt:#0f172a; --mut:#64748b;
+      --navy:#0b1220;
+      --navy2:#0f1a33;
+
+      --txt:#0f172a;
+      --mut:#64748b;
+
       --card:rgba(255,255,255,.94);
-      --glow:rgba(56,189,248,.22);
       --shadow:0 20px 70px rgba(2,6,23,.18);
       --r:20px;
+
+      --glow:rgba(56,189,248,.22);
+
       --green:#16a34a;
       --greenBg:rgba(34,197,94,.12);
       --greenBd:rgba(34,197,94,.28);
+
+      --chipBg:rgba(2,6,23,.04);
+      --chipBd:rgba(15,23,42,.10);
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
       color:var(--txt);
       background:
         radial-gradient(900px 600px at 10% 0%, rgba(56,189,248,.14), transparent 60%),
@@ -32,110 +41,168 @@
         linear-gradient(180deg, var(--navy), var(--navy2));
       min-height:100vh;
       display:flex;
+      align-items:center;
       justify-content:center;
       padding:18px;
     }
-    .shell{width:min(980px,100%)}
+    .shell{width:min(980px, 100%);}
     .card{
-      margin-top:10px;
-      background:var(--card);
+      background: var(--card);
       border:1px solid rgba(255,255,255,.18);
-      box-shadow:var(--shadow);
+      box-shadow: var(--shadow);
       border-radius: calc(var(--r) + 10px);
       overflow:hidden;
       backdrop-filter: blur(10px);
       animation: in .35s ease-out;
     }
     @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    .main{padding:16px 12px 18px}
+    .main{padding:14px 12px 16px}
 
     .top{
       display:flex;align-items:center;justify-content:space-between;gap:10px;
-      margin-bottom:10px;
+      padding:6px 4px 10px;
     }
-    .back{
-      text-decoration:none;font-weight:900;
+    .btn{
       border:1px solid rgba(15,23,42,.10);
-      background:#fff;padding:10px 12px;border-radius:999px;color:var(--txt);
-      display:inline-flex;gap:8px;align-items:center;
+      background:#fff;
+      border-radius:999px;
+      padding:10px 12px;
+      font-weight:900;
+      font-size:13px;
+      text-decoration:none;
+      color:var(--txt);
+      user-select:none;
     }
+    .logo{
+      height:22px;
+      transform: translateX(-6px);
+      display:block;
+    }
+
+    .titleWrap{ text-align:center; padding:6px 4px 10px; }
     .title{
       margin:0;
       font-weight:900;
-      font-size:22px;
-      letter-spacing:.02em;
-      background: linear-gradient(90deg, rgba(56,189,248,.9), rgba(99,102,241,.9));
+      letter-spacing:.18em;
+      font-size:20px;
+      text-transform:uppercase;
+      background: linear-gradient(90deg, rgba(56,189,248,.92), rgba(99,102,241,.92));
       -webkit-background-clip:text;background-clip:text;color:transparent;
-      animation: shimmer 2.8s ease-in-out infinite;
+      animation: shimmer 3.2s ease-in-out infinite;
     }
-    @keyframes shimmer{0%,100%{filter:saturate(1)}50%{filter:saturate(1.25)}}
-    .sub{margin:2px 0 0;color:rgba(15,23,42,.70);font-weight:750;font-size:13px}
-
-    .searchRow{
-      margin-top:12px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .search{
-      flex:1;
-      min-width:220px;
-      border-radius:16px;
-      padding:12px 12px;
-      border:1px solid rgba(15,23,42,.14);
-      background:#fff;
+    @keyframes shimmer{ 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.2)} }
+    .sub{
+      margin:6px 0 0;
+      color: rgba(15,23,42,.72);
       font-weight:800;
-      outline:none;
-    }
-    .search:focus{box-shadow:0 0 0 4px var(--glow);border-color: rgba(56,189,248,.35);}
-    .pill{
-      border:1px solid rgba(15,23,42,.10);
-      background:#fff;
-      padding:10px 12px;
-      border-radius:999px;
-      font-weight:900;
-      font-size:13px;
-      color:rgba(15,23,42,.75);
-      white-space:nowrap;
+      font-size:13.5px;
+      line-height:1.35;
     }
 
-    .grid{
-      margin-top:14px;
+    .controls{
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
+      grid-template-columns:1fr;
+      gap:10px;
+      margin-top:10px;
+      padding:0 4px;
     }
-    @media(min-width:760px){ .grid{grid-template-columns: 1fr 1fr 1fr 1fr;} }
+    @media(min-width:720px){
+      .controls{grid-template-columns: 260px 1fr;}
+    }
 
-    .catBtn{
+    .selectBox, .searchBox{
       background:#fff;
       border:1px solid rgba(15,23,42,.10);
       border-radius:18px;
-      overflow:hidden;
-      text-decoration:none;
-      color:var(--txt);
-      box-shadow: 0 12px 28px rgba(2,6,23,.08);
-      transition: transform .12s ease, box-shadow .12s ease;
-      display:block;
+      padding:10px;
+      box-shadow: 0 10px 24px rgba(2,6,23,.06);
     }
-    .catBtn:hover{transform:translateY(-1px); box-shadow:0 16px 40px rgba(2,6,23,.12);}
-    .catBtn:active{transform:scale(.99);}
-    .catImg{width:100%; height:110px; object-fit:cover; display:block;}
-    .catName{padding:10px 10px; font-weight:900; font-size:14px; text-align:center;}
+    .label{
+      font-size:12px;
+      font-weight:900;
+      color: rgba(15,23,42,.70);
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      margin-bottom:6px;
+    }
+    select, input{
+      width:100%;
+      border-radius:14px;
+      padding:12px 12px;
+      border:1px solid rgba(15,23,42,.14);
+      font-weight:850;
+      font-size:14px;
+      outline:none;
+      font-family:inherit;
+    }
+    select:focus, input:focus{
+      box-shadow:0 0 0 4px var(--glow);
+      border-color: rgba(56,189,248,.35);
+    }
 
-    .panel{
-      margin-top:14px;
-      border-radius:20px;
-      border:1px solid rgba(56,189,248,.25);
-      background: linear-gradient(180deg, rgba(56,189,248,.08), rgba(99,102,241,.05));
-      padding:12px;
-      display:none;
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-top:12px;
+      padding:0 4px;
     }
-    .panelTop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
-    .panelTitle{margin:0;font-weight:900;font-size:16px}
-    .closeBtn{
+
+    .cat{
+      position:relative;
+      border-radius:18px;
+      overflow:hidden;
       border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      box-shadow: 0 12px 28px rgba(2,6,23,.08);
+      cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease, box-shadow .12s ease;
+      min-height:120px;
+    }
+    .cat:hover{transform:translateY(-1px);box-shadow: 0 16px 40px rgba(2,6,23,.12);}
+    .cat:active{transform:scale(.99);}
+
+    .cat img{
+      width:100%;
+      height:120px;
+      object-fit:cover;
+      display:block;
+      filter: saturate(1.05) contrast(1.02);
+    }
+    .cat .cap{
+      padding:10px 10px 12px;
+      font-weight:900;
+      font-size:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .cap small{
+      font-weight:900;
+      font-size:12px;
+      color: rgba(15,23,42,.62);
+    }
+
+    .expanded{
+      grid-column: 1 / -1;
+      background:#fff;
+      border:1px solid rgba(15,23,42,.10);
+      border-radius:18px;
+      padding:12px;
+      box-shadow: 0 14px 40px rgba(2,6,23,.10);
+      animation: pop .18s ease-out;
+    }
+    @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+    .expTop{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+      margin-bottom:10px;
+    }
+    .expTitle{ font-weight:900; font-size:16px; margin:0; }
+    .xbtn{
+      border:1px solid rgba(15,23,42,.12);
       background:#fff;
       border-radius:999px;
       padding:8px 10px;
@@ -143,317 +210,385 @@
       cursor:pointer;
     }
 
-    .list{display:grid;grid-template-columns:1fr;gap:10px}
-    @media(min-width:760px){ .list{grid-template-columns:1fr 1fr;} }
+    .list{ display:grid; grid-template-columns: 1fr; gap:10px; }
 
     .biz{
-      background:#fff;
       border:1px solid rgba(15,23,42,.10);
-      border-radius:18px;
+      border-radius:16px;
       padding:12px;
-      box-shadow: 0 10px 24px rgba(2,6,23,.06);
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      background: rgba(2,6,23,.02);
     }
-    .bizTop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-    .bizName{margin:0;font-weight:900;font-size:15px}
-    .badge{
-      font-weight:900;
-      font-size:12px;
-      border-radius:999px;
-      padding:6px 10px;
+    .biz img{
+      width:56px;height:56px;border-radius:14px;object-fit:cover;
       border:1px solid rgba(15,23,42,.10);
-      background:rgba(2,6,23,.03);
-      color:rgba(15,23,42,.75);
+      background:#fff;
+      flex:0 0 auto;
+    }
+    .biz .n{font-weight:900}
+    .biz .d{margin-top:4px;color:rgba(15,23,42,.72);font-weight:750;font-size:13px;line-height:1.35}
+    .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}
+
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;
+      font-weight:900;font-size:12px;
+      border:1px solid var(--chipBd);
+      background: var(--chipBg);
+      color: rgba(15,23,42,.78);
       white-space:nowrap;
     }
-    .badge.ok{
-      border-color:var(--greenBd);
-      background:var(--greenBg);
-      color:var(--green);
-    }
-    .bizMeta{margin-top:6px;color:rgba(15,23,42,.70);font-weight:750;font-size:13px;line-height:1.45}
-    .bizFlags{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
-    .flag{
-      font-weight:900;font-size:12px;
-      padding:6px 10px;border-radius:999px;
-      border:1px solid rgba(15,23,42,.10);
-      background:#fff;color:rgba(15,23,42,.75);
-    }
-    .bizActions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
-    .act{
-      text-decoration:none;
+    .badge.green{border-color:var(--greenBd);background:var(--greenBg);color:var(--green);}
+    .badge.promo{background: rgba(56,189,248,.14); border-color: rgba(56,189,248,.28);}
+
+    .act{ margin-left:auto; display:flex;gap:8px;flex-wrap:wrap; }
+    .mini{
       border:1px solid rgba(15,23,42,.10);
       background:#fff;
       border-radius:999px;
-      padding:10px 12px;
+      padding:9px 11px;
       font-weight:900;
       font-size:13px;
+      text-decoration:none;
       color:var(--txt);
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-    .act.primary{
-      background: linear-gradient(180deg, rgba(56,189,248,.16), rgba(99,102,241,.10));
-      border-color: rgba(56,189,248,.35);
     }
 
     .empty{
       text-align:center;
-      font-weight:900;
-      color:rgba(15,23,42,.75);
-      padding:18px 10px;
-      border-radius:18px;
-      background:rgba(255,255,255,.65);
+      padding:14px 10px;
       border:1px dashed rgba(15,23,42,.18);
-      animation: floaty 2.2s ease-in-out infinite;
+      border-radius:16px;
+      color:rgba(15,23,42,.72);
+      font-weight:900;
+      background: rgba(2,6,23,.02);
     }
-    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    .pulse{
+      display:inline-block;
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{transform:translateY(0);opacity:.85}
+      50%{transform:translateY(-4px);opacity:1}
+    }
 
-    .foot{margin-top:12px;text-align:center;font-size:12px;color:rgba(255,255,255,.65);font-weight:800;}
+    .bottom{ display:flex;justify-content:center; margin-top:12px; padding-bottom:4px; }
   </style>
 </head>
+
 <body>
   <div class="shell">
     <div class="card">
       <div class="main">
+
         <div class="top">
-          <a class="back" href="index.html">← Inicio</a>
-          <div style="text-align:center;flex:1">
-            <h1 class="title">Servicios</h1>
-            <p class="sub">Busca por categoría o escribe tu problema.</p>
-          </div>
-          <div style="width:84px"></div>
+          <a class="btn" href="index.html">← Inicio</a>
+          <img class="logo" src="assets/logo.svg" alt="aquiservicio.com">
+          <span style="width:84px"></span>
         </div>
 
-        <div class="searchRow">
-          <input id="q" class="search" placeholder="Buscar… ej: cerrajero, plomero, taxi" />
-          <span class="pill" id="locPill">Navolato</span>
+        <div class="titleWrap">
+          <h1 class="title">SERVICIOS</h1>
+          <p class="sub">Filtra por localidad y busca tu solución rápido.</p>
         </div>
 
-        <div class="grid" id="cats"></div>
-
-        <div class="panel" id="panel">
-          <div class="panelTop">
-            <h3 class="panelTitle" id="panelTitle">Resultados</h3>
-            <button class="closeBtn" id="close">✕</button>
+        <div class="controls">
+          <div class="selectBox">
+            <div class="label">Localidad</div>
+            <select id="locality">
+              <option value="" selected>Todas</option>
+              <option>Navolato Centro</option>
+              <option>Altata</option>
+              <option>La Palma</option>
+              <option>Villa Juárez</option>
+              <option>San Pedro</option>
+              <option>Dautillos</option>
+              <option>El Castillo</option>
+              <option>El Tigre</option>
+              <option>Las Aguamitas</option>
+              <option>Yameto</option>
+            </select>
           </div>
-          <div id="panelBody" class="list"></div>
+
+          <div class="searchBox">
+            <div class="label">Buscar</div>
+            <input id="q" placeholder="Ej: plomero, mecánico, dentista, taxis…" />
+          </div>
+        </div>
+
+        <div class="grid" id="grid"></div>
+
+        <div class="bottom">
+          <a class="btn" href="index.html">← Inicio</a>
         </div>
 
       </div>
     </div>
-
-    <div class="foot">Aquiservicio • Hecho para Sinaloa</div>
   </div>
 
   <script>
-    const CATS = [
+    const grid = document.getElementById("grid");
+    const localitySel = document.getElementById("locality");
+    const qInput = document.getElementById("q");
+
+    const MUNICIPALITY = "Navolato";
+
+    const categories = [
       { key:"disponible", label:"Disponible", img:"assets/categoriaser/disponible.webp", mode:"available" },
       { key:"ofertas",    label:"Ofertas",    img:"assets/categoriaser/ofertas.webp",    mode:"promos" },
 
-      { key:"plomero",    label:"Plomero",    img:"assets/categoriaser/plomero.webp",    offer:"plomero" },
-      { key:"mecanico",   label:"Mecánico",   img:"assets/categoriaser/mecanico.webp",   offer:"mecanico" },
-      { key:"tecnico",    label:"Técnico",    img:"assets/categoriaser/tecnico.webp",    offer:"tecnico" },
-      { key:"cerrajero",  label:"Cerrajero",  img:"assets/categoriaser/cerrajero.webp",  offer:"cerrajero" },
-      { key:"albanil",    label:"Albañil",    img:"assets/categoriaser/albañil.webp",    offer:"albanil" },
-      { key:"dentista",   label:"Dentista",   img:"assets/categoriaser/dentista.webp",   offer:"dentista" },
-      { key:"mandados",   label:"Mandaditos", img:"assets/categoriaser/mandados.webp",   offer:"mandados" },
-      { key:"taxis",      label:"Taxis",      img:"assets/categoriaser/taxis.webp",      offer:"taxis" },
+      { key:"plomero",    label:"Plomero",    img:"assets/categoriaser/plomero.webp" },
+      { key:"mecanico",   label:"Mecánico",   img:"assets/categoriaser/mecanico.webp" },
+      { key:"tecnico",    label:"Técnico",    img:"assets/categoriaser/tecnico.webp" },
+      { key:"cerrajero",  label:"Cerrajero",  img:"assets/categoriaser/cerrajero.webp" },
+      { key:"albañil",    label:"Albañil",    img:"assets/categoriaser/albañil.webp" },
+      { key:"dentista",   label:"Dentista",   img:"assets/categoriaser/dentista.webp" },
+      { key:"mandados",   label:"Mandaditos", img:"assets/categoriaser/mandados.webp" },
+      { key:"taxis",      label:"Taxis",      img:"assets/categoriaser/taxis.webp" }
     ];
 
-    const $ = (id)=>document.getElementById(id);
-    const catsEl = $("cats");
-    const panel = $("panel");
-    const panelTitle = $("panelTitle");
-    const panelBody = $("panelBody");
-    const qEl = $("q");
-    const locPill = $("locPill");
+    function esc(s){
+      return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+    }
 
-    function getMunicipality(){
-      return localStorage.getItem("aq_city") || "Navolato";
+    function waLink(wa){
+      const w = String(wa||"").replace(/\D/g,"");
+      return w ? ("https://wa.me/52"+w) : "#";
     }
-    function getLocality(){
-      const m = getMunicipality();
-      return localStorage.getItem("aq_locality_" + m) || "";
-    }
-    function waLink(num){
-      const n = String(num||"").replace(/\D/g,"");
-      return n ? ("https://wa.me/52" + n) : "#";
-    }
-    function telLink(num){
-      const n = String(num||"").replace(/\D/g,"");
-      return n ? ("tel:" + n) : "#";
+    function telLink(p){
+      const t = String(p||"").replace(/\D/g,"");
+      return t ? ("tel:"+t) : "#";
     }
 
     function renderCats(){
-      catsEl.innerHTML = "";
-      for(const c of CATS){
-        const a = document.createElement("a");
-        a.href="#";
-        a.className="catBtn";
-        a.innerHTML = `
-          <img class="catImg" src="${c.img}" alt="${c.label}">
-          <div class="catName">${c.label}</div>
+      grid.innerHTML = "";
+      categories.forEach(c=>{
+        const el = document.createElement("div");
+        el.className = "cat";
+        el.dataset.key = c.key;
+
+        el.innerHTML = `
+          <img src="${c.img}" alt="${esc(c.label)}">
+          <div class="cap">
+            <div>${esc(c.label)}</div>
+            <small>Ver →</small>
+          </div>
         `;
-        a.addEventListener("click",(e)=>{ e.preventDefault(); openCategory(c); });
-        catsEl.appendChild(a);
-      }
+
+        el.addEventListener("click", ()=>openCategory(c, el));
+        grid.appendChild(el);
+      });
     }
 
-    function showPanel(title){
-      panelTitle.textContent = title;
-      panel.style.display = "block";
-      panel.scrollIntoView({behavior:"smooth", block:"start"});
+    let expandedEl = null;
+    function closeExpanded(){
+      if(expandedEl){ expandedEl.remove(); expandedEl = null; }
     }
-    function closePanel(){
-      panel.style.display = "none";
-      panelBody.innerHTML = "";
-    }
-    $("close").addEventListener("click", closePanel);
 
-    function card(b){
-      const verified = !!b.verified;
-      const flags = [];
-      if (b.available_now) flags.push("Disponible ahora");
+    async function openCategory(cat, afterEl){
+      if(expandedEl && expandedEl.dataset.openKey === cat.key){ closeExpanded(); return; }
+      closeExpanded();
 
-      return `
-        <div class="biz">
-          <div class="bizTop">
-            <h4 class="bizName">${escapeHtml(b.name || "")}</h4>
-            <span class="badge ${verified ? "ok":""}">${verified ? "Verificado" : "Sin verificar"}</span>
+      const box = document.createElement("div");
+      box.className = "expanded";
+      box.dataset.openKey = cat.key;
+      box.innerHTML = `
+        <div class="expTop">
+          <div>
+            <p class="expTitle">${esc(cat.label)}</p>
+            <div style="color:rgba(15,23,42,.72);font-weight:850;font-size:13px;margin-top:4px">
+              ${cat.mode==="available" ? "Servicios disponibles (ahora / por horario)." :
+                cat.mode==="promos" ? "Ofertas del día (solo verificados con plan)." :
+                "Resultados de esta categoría (verificados primero)."}
+            </div>
           </div>
-          <div class="bizMeta">
-            <b>${escapeHtml(b.category_primary || "Servicio")}</b> • ${escapeHtml(b.locality || "")}
-            ${b.description ? "<br>" + escapeHtml(b.description) : ""}
-          </div>
-          ${flags.length ? `<div class="bizFlags">${flags.map(f=>`<span class="flag">${f}</span>`).join("")}</div>` : ""}
-          <div class="bizActions">
-            <a class="act primary" href="${waLink(b.whatsapp)}" target="_blank" rel="noopener">WhatsApp</a>
-            ${b.phone ? `<a class="act" href="${telLink(b.phone)}">Llamar</a>` : ""}
-          </div>
+          <button class="xbtn" aria-label="Cerrar">✕</button>
         </div>
+        <div id="content"></div>
       `;
-    }
+      box.querySelector(".xbtn").addEventListener("click", closeExpanded);
 
-    function emptyMsg(text){
-      return `<div class="empty">${text}</div>`;
-    }
+      afterEl.insertAdjacentElement("afterend", box);
+      expandedEl = box;
 
-    function escapeHtml(s){
-      return String(s)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    async function fetchBusinesses({offer=null, q=null, onlyAvailable=false}){
-      const municipality = getMunicipality();
-      const locality = getLocality();
-      const url = new URL("/api/search", location.origin);
-      url.searchParams.set("kind", "service");
-      url.searchParams.set("municipality", municipality);
-      if (locality) url.searchParams.set("locality", locality);
-      if (offer) url.searchParams.set("offer", offer);
-      if (q) url.searchParams.set("q", q);
-
-      const r = await fetch(url.toString());
-      const out = await r.json();
-      if(!r.ok || out.error) throw new Error(out.error || ("HTTP "+r.status));
-
-      let rows = out.data || [];
-      if (onlyAvailable) rows = rows.filter(x => !!x.available_now);
-      return rows;
-    }
-
-    async function fetchPromos(){
-      const municipality = getMunicipality();
-      const locality = getLocality();
-      const url = new URL("/api/promotions", location.origin);
-      url.searchParams.set("kind", "service");
-      url.searchParams.set("municipality", municipality);
-      if (locality) url.searchParams.set("locality", locality);
-
-      const r = await fetch(url.toString());
-      const out = await r.json();
-      if(!r.ok || out.error) throw new Error(out.error || ("HTTP "+r.status));
-      return out.data || [];
-    }
-
-    async function openCategory(cat){
-      const municipality = getMunicipality();
-      const locality = getLocality();
-      locPill.textContent = locality ? (municipality + " • " + locality) : municipality;
-
-      showPanel(cat.label);
-      panelBody.innerHTML = emptyMsg("Cargando…");
+      const content = box.querySelector("#content");
+      content.innerHTML = `<div class="empty"><span class="pulse">⏳ Cargando…</span></div>`;
 
       try{
-        if(cat.mode === "promos"){
-          const promos = await fetchPromos();
-          if(!promos.length){
-            panelBody.innerHTML = emptyMsg("Por el momento no existen ofertas disponibles ✨");
-            return;
-          }
-          panelBody.innerHTML = promos.map(p => {
-            const b = p.business || {};
-            return `
-              <div class="biz">
-                <div class="bizTop">
-                  <h4 class="bizName">${escapeHtml(b.name || "Oferta")}</h4>
-                  <span class="badge ok">Verificado</span>
-                </div>
-                <div class="bizMeta">${escapeHtml(p.text || "")}</div>
-                <div class="bizActions">
-                  <a class="act primary" href="${waLink(b.whatsapp)}" target="_blank" rel="noopener">WhatsApp</a>
-                  ${b.phone ? `<a class="act" href="${telLink(b.phone)}">Llamar</a>` : ""}
-                </div>
-              </div>
-            `;
-          }).join("");
-          return;
-        }
+        const loc = localitySel.value || "";
+        const q = (qInput.value || "").trim();
 
+        // 1) DISPONIBLE
         if(cat.mode === "available"){
-          const q = qEl.value.trim();
-          const rows = await fetchBusinesses({ q: q || null, onlyAvailable:true });
-          panelBody.innerHTML = rows.length ? rows.map(card).join("") : emptyMsg("Por el momento no hay servicios disponibles ✨");
+          const url = new URL(location.origin + "/api/public_list");
+          url.searchParams.set("kind","service");
+          url.searchParams.set("municipality", MUNICIPALITY);
+          if(loc) url.searchParams.set("locality", loc);
+
+          // Trae todo y filtramos aquí para “disponible”
+          const r = await fetch(url.toString());
+          const out = await r.json();
+          if(!r.ok || out.error) throw new Error(out.error || "Error");
+
+          const list = (out.data || []).filter(b => !!b.available_now || !!b.is_open_now);
+
+          renderBusinesses(content, list, {
+            emptyText: "Por el momento no hay servicios disponibles 😅"
+          });
           return;
         }
 
-        const q = qEl.value.trim();
-        const rows = await fetchBusinesses({ offer: cat.offer || null, q: q || null });
-        panelBody.innerHTML = rows.length ? rows.map(card).join("") : emptyMsg("Por el momento no hay resultados aquí ✨");
+        // 2) OFERTAS (PROMOS REAL)
+        if(cat.mode === "promos"){
+          const url = new URL(location.origin + "/api/public_promos");
+          url.searchParams.set("kind","service");
+          url.searchParams.set("municipality", MUNICIPALITY);
+          if(loc) url.searchParams.set("locality", loc);
+
+          const r = await fetch(url.toString());
+          const out = await r.json();
+          if(!r.ok || out.error) throw new Error(out.error || "Error");
+
+          renderPromos(content, out.data, {
+            emptyText: "✨ Por el momento no existen ofertas disponibles"
+          });
+          return;
+        }
+
+        // 3) CATEGORÍA NORMAL
+        const url = new URL(location.origin + "/api/public_list");
+        url.searchParams.set("kind","service");
+        url.searchParams.set("municipality", MUNICIPALITY);
+        if(loc) url.searchParams.set("locality", loc);
+
+        if(q) url.searchParams.set("q", q);
+        else url.searchParams.set("category", cat.key);
+
+        const r = await fetch(url.toString());
+        const out = await r.json();
+        if(!r.ok || out.error) throw new Error(out.error || "Error");
+
+        renderBusinesses(content, out.data, { emptyText: "No encontramos resultados aquí 😕" });
 
       }catch(e){
-        panelBody.innerHTML = emptyMsg("Error: " + escapeHtml(e.message || "No se pudo cargar"));
+        content.innerHTML = `<div class="empty"><span class="pulse">⚠️ ${esc(e.message || "Error")}</span></div>`;
       }
     }
 
+    function renderBusinesses(container, list, opts){
+      const arr = Array.isArray(list) ? list : [];
+      if(!arr.length){
+        container.innerHTML = `<div class="empty"><span class="pulse">${esc(opts?.emptyText || "Sin resultados")}</span></div>`;
+        return;
+      }
+
+      const wrap = document.createElement("div");
+      wrap.className = "list";
+
+      for(const b of arr){
+        const img = b.profile_photo_url ? b.profile_photo_url : "assets/categoriaser/disponible.webp";
+
+        const badges = [];
+        if(b.verified) badges.push(`<span class="badge green">✅ VERIFICADO</span>`);
+        if(b.available_now) badges.push(`<span class="badge">⚡ Disponible ahora</span>`);
+        if(b.status_text) badges.push(`<span class="badge">${esc(b.status_text)}</span>`);
+
+        // En servicios no siempre aplica delivery/pickup/dine_in, pero si los usas, aquí salen
+        if(b.delivery) badges.push(`<span class="badge">🚚 Domicilio</span>`);
+        if(b.pickup) badges.push(`<span class="badge">🛍️ Ordena y recoge</span>`);
+        if(b.dine_in) badges.push(`<span class="badge">🏪 Sucursal</span>`);
+
+        const card = document.createElement("div");
+        card.className = "biz";
+        card.innerHTML = `
+          <img src="${esc(img)}" alt="">
+          <div style="min-width:0;flex:1">
+            <div class="n">${esc(b.name)}</div>
+            <div class="d">${esc((b.description||"").slice(0,140))}</div>
+            <div class="row">${badges.join("")}</div>
+            <div class="row">
+              <span class="badge">${esc(b.locality || "")}</span>
+              <div class="act">
+                <a class="mini" href="${esc(waLink(b.whatsapp))}" target="_blank" rel="noopener">WhatsApp</a>
+                <a class="mini" href="${esc(telLink(b.phone || b.whatsapp))}">Llamar</a>
+              </div>
+            </div>
+          </div>
+        `;
+        wrap.appendChild(card);
+      }
+
+      container.innerHTML = "";
+      container.appendChild(wrap);
+    }
+
+    function renderPromos(container, list, opts){
+      const arr = Array.isArray(list) ? list : [];
+      if(!arr.length){
+        container.innerHTML = `<div class="empty"><span class="pulse">${esc(opts?.emptyText || "Sin ofertas")}</span></div>`;
+        return;
+      }
+
+      const wrap = document.createElement("div");
+      wrap.className = "list";
+
+      for(const row of arr){
+        const b = row.business || {};
+        const img = b.profile_photo_url ? b.profile_photo_url : "assets/categoriaser/ofertas.webp";
+
+        const badges = [];
+        badges.push(`<span class="badge green">✅ VERIFICADO</span>`);
+        badges.push(`<span class="badge promo">✨ ${esc(row.promo_text || "")}</span>`);
+        if(b.available_now) badges.push(`<span class="badge">⚡ Disponible ahora</span>`);
+
+        const card = document.createElement("div");
+        card.className = "biz";
+        card.innerHTML = `
+          <img src="${esc(img)}" alt="">
+          <div style="min-width:0;flex:1">
+            <div class="n">${esc(b.name)}</div>
+            <div class="d">${esc((b.description||"").slice(0,120))}</div>
+            <div class="row">${badges.join("")}</div>
+            <div class="row">
+              <span class="badge">${esc(b.locality || "")}</span>
+              <div class="act">
+                <a class="mini" href="${esc(waLink(b.whatsapp))}" target="_blank" rel="noopener">WhatsApp</a>
+                <a class="mini" href="${esc(telLink(b.phone || b.whatsapp))}">Llamar</a>
+              </div>
+            </div>
+          </div>
+        `;
+        wrap.appendChild(card);
+      }
+
+      container.innerHTML = "";
+      container.appendChild(wrap);
+    }
+
+    localitySel.addEventListener("change", ()=>{
+      if(expandedEl){
+        const key = expandedEl.dataset.openKey;
+        const cat = categories.find(c=>c.key===key);
+        const card = document.querySelector(`.cat[data-key="${key}"]`);
+        if(cat && card) openCategory(cat, card);
+      }
+    });
+
     let t = null;
-    qEl.addEventListener("input", ()=>{
+    qInput.addEventListener("input", ()=>{
       clearTimeout(t);
-      t = setTimeout(async ()=>{
-        const q = qEl.value.trim();
-        if(!q) return;
-        showPanel("Resultados");
-        panelBody.innerHTML = emptyMsg("Buscando…");
-        try{
-          const rows = await fetchBusinesses({ q });
-          panelBody.innerHTML = rows.length ? rows.map(card).join("") : emptyMsg("No encontré nada con esa búsqueda ✨");
-        }catch(e){
-          panelBody.innerHTML = emptyMsg("Error: " + escapeHtml(e.message || "No se pudo buscar"));
+      t = setTimeout(()=>{
+        if(expandedEl){
+          const key = expandedEl.dataset.openKey;
+          const cat = categories.find(c=>c.key===key);
+          const card = document.querySelector(`.cat[data-key="${key}"]`);
+          if(cat && card) openCategory(cat, card);
         }
-      }, 250);
+      }, 350);
     });
 
     renderCats();
-    (function(){
-      const m = getMunicipality();
-      const l = getLocality();
-      locPill.textContent = l ? (m + " • " + l) : m;
-    })();
   </script>
 </body>
 </html>
