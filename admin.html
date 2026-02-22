@@ -88,11 +88,28 @@
         </div>
 
         <div class="msg" id="msg"></div>
-        <div class="list" id="list"></div>
+        <div class="list" id="list">
+          <button onclick="activarPlan('${b.id}')">Activar PRO</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <script src="admin.js"></script>
+  <script src="admin.js">
+    async function activarPlan(id){
+await fetch("/api/update_plan",{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"x-panel-key":"TU_PANELKEY_AQUI"
+},
+body:JSON.stringify({
+business_id:id,
+plan:"pro"
+})
+});
+alert("Plan activado");
+}
+  </script>
 </body>
 </html>
