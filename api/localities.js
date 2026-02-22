@@ -1,31 +1,40 @@
-const { createClient } = require("@supabase/supabase-js");
+const sb = require("./_supabase");
 
-module.exports = async function handler(req, res) {
-  try {
-    if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" });
+function norm(s){ return (s||"").toString().trim(); }
 
-    const municipality = (req.query.municipality || "").toString().trim();
-    if (!municipality) return res.status(400).json({ error: "municipality requerido" });
+module.exports = async function handler(req, res){
+  try{
+    if(req.method !== "GET") return res.status(405).json({ error: "Method not allowed" });
 
-    const sb = createClient(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
-    );
+    const supa = sb();
+    const municipality = norm(req.query.municipality || "Navolato");
 
-    // Por ahora: solo Navolato tiene tabla de localidades
-    if (municipality.toLowerCase() !== "navolato") {
-      return res.status(200).json({ data: [] });
+    // Preferencia: tabla general localities (municipio + nombre + sort_order)
+    const q2 = await supa
+      .from("localities")
+      .select("name, sort_order")
+      .eq("municipality", municipality)
+      .order("sort_order", { ascending: true })
+      .limit(250);
+
+    if(!q2.error && Array.isArray(q2.data) && q2.data.length){
+      const list = [...new Set(q2.data.map(x => x.name).filter(Boolean))];
+      return res.status(200).json({ ok:true, data: list });
     }
 
-    const { data, error } = await sb
+    // Fallback: tu tabla zonas_navolato (si aún la usas)
+    const q1 = await supa
       .from("zonas_navolato")
-      .select("name")
-      .order("name", { ascending: true });
+      .select("name, sort_order")
+      .order("sort_order", { ascending: true })
+      .limit(250);
 
-    if (error) return res.status(400).json({ error: error.message });
-    return res.status(200).json({ data: data || [] });
+    if(q1.error) return res.status(400).json({ error: q1.error.message });
 
-  } catch (e) {
+    const list = [...new Set((q1.data || []).map(x => x.name).filter(Boolean))];
+    return res.status(200).json({ ok:true, data: list });
+
+  }catch(e){
     return res.status(500).json({ error: e.message || "Server error" });
   }
 };
