@@ -12,11 +12,14 @@
   <style>
     :root{
       --navy:#0b1220; --navy2:#0f1a33;
-      --txt:#0f172a; --card:rgba(255,255,255,.94);
+      --txt:#0f172a; --mut:#64748b;
+      --card:rgba(255,255,255,.94);
       --shadow:0 20px 70px rgba(2,6,23,.18);
       --r:20px;
       --green:#16a34a; --greenBg:rgba(34,197,94,.12); --greenBd:rgba(34,197,94,.28);
       --glow:rgba(56,189,248,.22);
+      --ok:rgba(34,197,94,.12); --okbd:rgba(34,197,94,.30);
+      --err:rgba(239,68,68,.12); --errbd:rgba(239,68,68,.30);
     }
     *{box-sizing:border-box}
     body{
@@ -27,7 +30,7 @@
         linear-gradient(180deg, var(--navy), var(--navy2));
       min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px;
     }
-    .shell{width:min(760px,100%)}
+    .shell{width:min(920px,100%)}
     .card{
       background:var(--card);border:1px solid rgba(255,255,255,.18);box-shadow:var(--shadow);
       border-radius: calc(var(--r) + 10px);overflow:hidden;backdrop-filter: blur(10px);
@@ -35,16 +38,23 @@
     }
     @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     .main{padding:16px 14px 18px}
+
     .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
     .btn{
       border:1px solid rgba(15,23,42,.10);background:#fff;border-radius:999px;
-      padding:10px 12px;font-weight:900;cursor:pointer;
+      padding:10px 12px;font-weight:900;cursor:pointer;text-decoration:none;color:var(--txt);
     }
+
     .h{
       margin:12px 0 6px;font-weight:900;font-size:20px;
       background: linear-gradient(90deg, rgba(56,189,248,.9), rgba(99,102,241,.9));
       -webkit-background-clip:text;background-clip:text;color:transparent;
     }
+    .sub{margin:0;color:rgba(15,23,42,.72);font-weight:800;font-size:13px;line-height:1.45}
+
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
+    @media(min-width:820px){ .grid{grid-template-columns:1fr 1fr;} }
+
     .box{
       background:#fff;border:1px solid rgba(15,23,42,.10);border-radius:18px;padding:12px;
       box-shadow: 0 10px 24px rgba(2,6,23,.06);
@@ -53,11 +63,37 @@
       display:inline-flex;align-items:center;gap:8px;
       font-weight:900;font-size:12px;border-radius:999px;padding:6px 10px;
       border:1px solid rgba(15,23,42,.10);background:rgba(2,6,23,.03);color:rgba(15,23,42,.75);
+      white-space:nowrap;
     }
     .badge.ok{border-color:var(--greenBd);background:var(--greenBg);color:var(--green);}
-    .row{margin-top:8px;color:rgba(15,23,42,.78);font-weight:800;line-height:1.55}
-    .row b{color:rgba(15,23,42,.98)}
-    .msg{margin-top:10px;font-weight:900;color:rgba(15,23,42,.70)}
+
+    label{display:block;margin-top:10px;font-size:12px;font-weight:900;color:rgba(15,23,42,.70);text-transform:uppercase}
+    input, textarea{
+      width:100%;border-radius:16px;padding:12px 12px;border:1px solid rgba(15,23,42,.14);
+      background:#fff;font-weight:850;font-size:14px;outline:none;margin-top:6px;font-family:inherit;
+    }
+    textarea{min-height:100px;resize:vertical}
+    input:focus, textarea:focus{box-shadow:0 0 0 4px var(--glow);border-color: rgba(56,189,248,.35);}
+
+    .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+    .chips label{margin:0;display:flex;align-items:center;gap:8px;text-transform:none;color:rgba(15,23,42,.78);font-weight:900}
+    .chips input{width:auto;margin:0}
+
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .primary{
+      background: linear-gradient(180deg, rgba(56,189,248,.18), rgba(99,102,241,.12));
+      border-color: rgba(56,189,248,.35);
+    }
+
+    .msg{
+      display:none;margin-top:12px;border-radius:18px;padding:12px;font-weight:900;font-size:13px;text-align:center;
+      border:1px solid rgba(15,23,42,.12);background: rgba(2,6,23,.03);
+    }
+    .msg.ok{background:var(--ok);border-color:var(--okbd)}
+    .msg.err{background:var(--err);border-color:var(--errbd)}
+
+    .hint{margin-top:8px;color:rgba(15,23,42,.65);font-weight:850;font-size:12px;line-height:1.45}
+    .lock{opacity:.55;pointer-events:none}
   </style>
 </head>
 <body>
@@ -71,52 +107,250 @@
         </div>
 
         <h1 class="h">Tu panel</h1>
+        <p class="sub">Edita tu información. Algunas funciones se activan al habilitar plan.</p>
 
-        <div class="box" id="box">Cargando…</div>
-        <div class="msg" id="msg"></div>
+        <div class="grid">
+          <!-- RESUMEN -->
+          <div class="box" id="summary">Cargando…</div>
+
+          <!-- EDITAR -->
+          <div class="box">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+              <div style="font-weight:900">Editar perfil</div>
+              <span class="badge" id="planBadge">Plan: -</span>
+            </div>
+
+            <label for="desc">Descripción</label>
+            <textarea id="desc" placeholder="Ej: Vendemos tacos y también tortas…"></textarea>
+
+            <label for="cov">Zona de cobertura (opcional)</label>
+            <input id="cov" placeholder="Ej: Centro y Altata"/>
+
+            <label for="phone">Tel para llamadas (opcional)</label>
+            <input id="phone" placeholder="Ej: 6671234567" inputmode="numeric"/>
+
+            <div class="chips">
+              <label><input type="checkbox" id="delivery"> Domicilio</label>
+              <label><input type="checkbox" id="pickup"> Ordena y recoge</label>
+              <label><input type="checkbox" id="dine"> Sucursal</label>
+              <label><input type="checkbox" id="avail"> Disponible ahora (solo servicios)</label>
+            </div>
+
+            <div class="actions">
+              <button class="btn primary" id="save">Guardar cambios</button>
+            </div>
+
+            <div class="msg" id="msg"></div>
+          </div>
+
+          <!-- FOTOS (BLOQUEADO EN FREE) -->
+          <div class="box" id="mediaBox">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+              <div style="font-weight:900">Fotos (Plan)</div>
+              <span class="badge" id="mediaBadge">Bloqueado</span>
+            </div>
+
+            <label for="photo">Foto de perfil (URL)</label>
+            <input id="photo" placeholder="https://..." />
+
+            <label>Galería (hasta 5 URLs)</label>
+            <input id="g1" placeholder="https://..."/>
+            <input id="g2" placeholder="https://..."/>
+            <input id="g3" placeholder="https://..."/>
+            <input id="g4" placeholder="https://..."/>
+            <input id="g5" placeholder="https://..."/>
+
+            <div class="hint">Por ahora es por URL. Luego lo hacemos con subida directa y segura.</div>
+            <div class="actions">
+              <button class="btn primary" id="saveMedia">Guardar fotos</button>
+            </div>
+          </div>
+
+          <!-- PROMO DIARIA (BLOQUEADO EN FREE / no verificado) -->
+          <div class="box" id="promoBox">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+              <div style="font-weight:900">Promoción del día</div>
+              <span class="badge" id="promoBadge">Bloqueado</span>
+            </div>
+
+            <label for="promo">Texto (máx 180)</label>
+            <input id="promo" placeholder="Ej: 2x1 de 6 a 8pm. Solo hoy." />
+
+            <div class="actions">
+              <button class="btn primary" id="sendPromo">Publicar promo</button>
+            </div>
+
+            <div class="hint">Máximo 1 por día.</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
   <script>
     const $ = (id)=>document.getElementById(id);
-
+    function show(text, ok=true){
+      const m = $("msg");
+      m.style.display="block";
+      m.className="msg " + (ok?"ok":"err");
+      m.textContent=text;
+    }
     function esc(s){
       return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
     }
+    function cleanPhone(s){ return String(s||"").replace(/\D/g,"").slice(0,15); }
+
+    let ME = null;
 
     async function load(){
       const r = await fetch("/api/me");
       const out = await r.json().catch(()=>({}));
       if(!r.ok || out.error){
-        $("box").innerHTML = "No has iniciado sesión.";
-        $("msg").textContent = "Ve a iniciar sesión primero.";
+        $("summary").innerHTML = `<div style="font-weight:900">No has iniciado sesión.</div><div class="hint">Ve a login.</div>`;
         return;
       }
-      const b = out.data;
 
-      $("box").innerHTML = `
+      ME = out.data;
+      const isPro = (ME.plan_tier || "free") !== "free";
+
+      $("planBadge").textContent = "Plan: " + (ME.plan_tier || "free");
+      $("planBadge").className = "badge " + (isPro ? "ok" : "");
+
+      $("summary").innerHTML = `
         <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
           <div>
-            <div style="font-weight:900;font-size:16px">${esc(b.name)}</div>
-            <div style="font-weight:850;color:rgba(15,23,42,.75);margin-top:4px">${esc(b.category_primary)} • ${esc(b.municipality)} • ${esc(b.locality)}</div>
+            <div style="font-weight:900;font-size:16px">${esc(ME.name)}</div>
+            <div style="font-weight:850;color:rgba(15,23,42,.75);margin-top:4px">${esc(ME.category_primary)} • ${esc(ME.municipality)} • ${esc(ME.locality)}</div>
           </div>
-          <span class="badge ${b.verified ? "ok":""}">${b.verified ? "Verificado" : "Sin verificar"}</span>
+          <span class="badge ${ME.verified ? "ok":""}">${ME.verified ? "Verificado" : "Sin verificar"}</span>
         </div>
-
-        <div class="row" style="margin-top:10px"><b>WhatsApp:</b> ${esc(b.whatsapp)}</div>
-        ${b.phone ? `<div class="row"><b>Tel:</b> ${esc(b.phone)}</div>` : ``}
-        ${b.description ? `<div class="row"><b>Descripción:</b> ${esc(b.description)}</div>` : ``}
-        <div class="row"><b>Modalidad:</b>
-          ${(b.delivery ? "Domicilio " : "")}
-          ${(b.pickup ? "• Ordena y recoge " : "")}
-          ${(b.dine_in ? "• Sucursal" : "")}
-          ${(!b.delivery && !b.pickup && !b.dine_in) ? "-" : ""}
-        </div>
+        <div class="hint" style="margin-top:10px"><b>WhatsApp:</b> ${esc(ME.whatsapp)} ${ME.phone ? " • <b>Tel:</b> " + esc(ME.phone) : ""}</div>
       `;
 
-      $("msg").textContent = "Próximo: aquí activamos edición de perfil, horarios, fotos y promociones por plan.";
+      $("desc").value = ME.description || "";
+      $("cov").value = ME.coverage_note || "";
+      $("phone").value = ME.phone || "";
+      $("delivery").checked = !!ME.delivery;
+      $("pickup").checked = !!ME.pickup;
+      $("dine").checked = !!ME.dine_in;
+      $("avail").checked = !!ME.available_now;
+
+      // bloquear "Disponible ahora" si es comida
+      if(ME.kind !== "service"){
+        $("avail").checked = false;
+        $("avail").disabled = true;
+      }
+
+      // Media
+      if(!isPro){
+        $("mediaBox").classList.add("lock");
+        $("mediaBadge").textContent = "Bloqueado";
+      }else{
+        $("mediaBox").classList.remove("lock");
+        $("mediaBadge").textContent = "Activo";
+        $("mediaBadge").className = "badge ok";
+
+        $("photo").value = ME.profile_photo_url || "";
+        const g = Array.isArray(ME.gallery_urls) ? ME.gallery_urls : [];
+        $("g1").value = g[0] || "";
+        $("g2").value = g[1] || "";
+        $("g3").value = g[2] || "";
+        $("g4").value = g[3] || "";
+        $("g5").value = g[4] || "";
+      }
+
+      // Promo: pro + verificado
+      const promoOk = isPro && !!ME.verified;
+      if(!promoOk){
+        $("promoBox").classList.add("lock");
+        $("promoBadge").textContent = "Bloqueado";
+      }else{
+        $("promoBox").classList.remove("lock");
+        $("promoBadge").textContent = "Activo";
+        $("promoBadge").className = "badge ok";
+      }
     }
+
+    async function saveBasic(){
+      $("save").disabled = true;
+      $("save").textContent = "Guardando…";
+      try{
+        const body = {
+          description: $("desc").value,
+          coverage_note: $("cov").value,
+          phone: cleanPhone($("phone").value),
+          delivery: $("delivery").checked,
+          pickup: $("pickup").checked,
+          dine_in: $("dine").checked,
+          available_now: $("avail").checked
+        };
+        const r = await fetch("/api/update_profile", {
+          method:"POST",
+          headers:{ "content-type":"application/json" },
+          body: JSON.stringify(body)
+        });
+        const out = await r.json().catch(()=>({}));
+        if(!r.ok || out.error) return show("Error: " + (out.error || ("HTTP " + r.status)), false);
+        show("Guardado ✅", true);
+        await load();
+      }catch(e){
+        show("Error: " + (e.message || "No se pudo guardar"), false);
+      }finally{
+        $("save").disabled = false;
+        $("save").textContent = "Guardar cambios";
+      }
+    }
+
+    async function saveMedia(){
+      $("saveMedia").disabled = true;
+      $("saveMedia").textContent = "Guardando…";
+      try{
+        const body = {
+          profile_photo_url: $("photo").value,
+          gallery_urls: [ $("g1").value, $("g2").value, $("g3").value, $("g4").value, $("g5").value ]
+        };
+        const r = await fetch("/api/update_profile", {
+          method:"POST",
+          headers:{ "content-type":"application/json" },
+          body: JSON.stringify(body)
+        });
+        const out = await r.json().catch(()=>({}));
+        if(!r.ok || out.error) return show("Error: " + (out.error || ("HTTP " + r.status)), false);
+        show("Fotos guardadas ✅", true);
+        await load();
+      }catch(e){
+        show("Error: " + (e.message || "No se pudo guardar"), false);
+      }finally{
+        $("saveMedia").disabled = false;
+        $("saveMedia").textContent = "Guardar fotos";
+      }
+    }
+
+    async function sendPromo(){
+      $("sendPromo").disabled = true;
+      $("sendPromo").textContent = "Publicando…";
+      try{
+        const r = await fetch("/api/create_promo", {
+          method:"POST",
+          headers:{ "content-type":"application/json" },
+          body: JSON.stringify({ text: $("promo").value })
+        });
+        const out = await r.json().catch(()=>({}));
+        if(!r.ok || out.error) return show("Error: " + (out.error || ("HTTP " + r.status)), false);
+        show("Promoción publicada ✅", true);
+        $("promo").value = "";
+      }catch(e){
+        show("Error: " + (e.message || "No se pudo publicar"), false);
+      }finally{
+        $("sendPromo").disabled = false;
+        $("sendPromo").textContent = "Publicar promo";
+      }
+    }
+
+    $("save").addEventListener("click", saveBasic);
+    $("saveMedia").addEventListener("click", saveMedia);
+    $("sendPromo").addEventListener("click", sendPromo);
 
     $("logout").addEventListener("click", async ()=>{
       await fetch("/api/logout");
