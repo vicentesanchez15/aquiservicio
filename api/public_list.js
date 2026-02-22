@@ -27,7 +27,10 @@ module.exports = async function handler(req,res){
     // 🔹 Ahora traemos negocios
     let query = supa
       .from("businesses")
-      .select("*")
+      .select(`
+  *,
+  recommendations:recommendations(count)
+`)
       .eq("kind", kind)
       .eq("municipality", municipality)
       .eq("status","approved");
