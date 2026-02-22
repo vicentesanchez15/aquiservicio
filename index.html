@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Aquiservicio</title>
 
-  <meta name="robots" content="noindex,nofollow" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
@@ -20,15 +18,17 @@
       --mut:#64748b;
 
       --card:rgba(255,255,255,.94);
+      --bd:rgba(15,23,42,.12);
       --glow:rgba(56,189,248,.22);
       --shadow:0 20px 70px rgba(2,6,23,.18);
       --r:20px;
 
-      --thanksText:#0f172a;
-      --thanksBg:rgba(56,189,248,.16);
-      --thanksBd:rgba(56,189,248,.28);
+      /* azul medianoche REAL (no negro) para BIENVENIDOS */
+      --welcomeBlue:#123a7a;
 
-      --welcomeBlue:#123a7a; /* azul (no negro) */
+      /* fondo del select más oscuro (no azul brillante) */
+      --selectBg:rgba(2,6,23,.05);
+      --selectBd:rgba(15,23,42,.18);
     }
     *{box-sizing:border-box}
     body{
@@ -45,6 +45,7 @@
       justify-content:center;
       padding:18px;
     }
+
     .shell{width:min(980px, 100%);}
     .card{
       background: var(--card);
@@ -68,7 +69,7 @@
       gap:10px;
     }
 
-    /* Logo centrado, ligeramente a la izquierda (por el ancho del SVG) */
+    /* Logo centrado, un poquito a la izquierda por el ancho del SVG */
     .wordmark{
       width: min(520px, 86vw);
       height:auto;
@@ -92,16 +93,17 @@
       font-size:13px;
       font-weight:900;
       color: rgba(15,23,42,.75);
-      letter-spacing:.08em;
+      letter-spacing:.10em;
       text-transform:uppercase;
     }
+
     select{
       width:100%;
       max-width:100%;
       border-radius:16px;
       padding:12px 12px;
-      border:1px solid rgba(15,23,42,.18);
-      background: rgba(2,6,23,.04); /* más oscuro, no azul chillón */
+      border:1px solid var(--selectBd);
+      background: var(--selectBg);
       color: rgba(15,23,42,.88);
       font-weight:900;
       outline:none;
@@ -113,32 +115,19 @@
       background:#fff;
     }
 
-    /* Animación “Gracias” arriba de Bienvenidos */
-    .thanks{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-size:13px;
-      font-weight:900;
-      letter-spacing:.18px;
-      color: var(--thanksText);
-      background: var(--thanksBg);
-      border:1px solid var(--thanksBd);
-      padding:10px 14px;
-      border-radius:999px;
-      user-select:none;
-      white-space:nowrap;
-      animation: floaty 2.2s ease-in-out infinite;
-    }
-    @keyframes floaty{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-
+    /* BIENVENIDOS (ANIMADO y PRO) */
     .welcome{
-      margin:0;
+      margin:2px 0 0;
       font-weight:900;
       letter-spacing: .22em;
       font-size: 22px;
       color: var(--welcomeBlue);
       text-transform: uppercase;
+      animation: welcomeFloat 2.4s ease-in-out infinite;
+    }
+    @keyframes welcomeFloat{
+      0%,100%{ transform:translateY(0); }
+      50%{ transform:translateY(-4px); }
     }
 
     .subtitle{
@@ -149,6 +138,7 @@
       font-weight:650;
     }
 
+    /* Botones grandes centrados */
     .btnGrid{
       display:grid;
       grid-template-columns: 1fr;
@@ -207,29 +197,58 @@
       margin-top:6px;
     }
 
-    .smallActions{
-      margin-top:12px;
-      display:flex;
-      justify-content:center;
+    /* Acciones chicas + texto arriba (para que no se vea básico) */
+    .smallArea{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns:1fr;
       gap:10px;
-      flex-wrap:wrap;
+      max-width:860px;
+      margin-left:auto;
+      margin-right:auto;
     }
+    @media (min-width:720px){ .smallArea{grid-template-columns:1fr 1fr 1fr;} }
+
+    .actionCard{
+      background:#fff;
+      border:1px solid rgba(15,23,42,.10);
+      border-radius:20px;
+      padding:12px;
+      box-shadow: 0 12px 30px rgba(2,6,23,.06);
+      text-align:center;
+    }
+    .actionTop{
+      font-weight:900;
+      color: rgba(15,23,42,.78);
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-size:11px;
+      margin-bottom:8px;
+    }
+
     .miniBtn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
       border:1px solid rgba(15,23,42,.10);
       background:#fff;
       border-radius:999px;
-      padding:10px 14px;
+      padding:11px 14px;
       font-weight:900;
       font-size:13px;
       text-decoration:none;
       color:var(--txt);
-      transition: transform .12s ease;
+      transition: transform .12s ease, box-shadow .12s ease;
+      box-shadow: 0 10px 22px rgba(2,6,23,.06);
     }
+    .miniBtn:hover{transform:translateY(-1px); box-shadow: 0 14px 28px rgba(2,6,23,.10);}
     .miniBtn:active{transform:scale(.99)}
     .miniBtn.primary{
       background: linear-gradient(180deg, rgba(2,6,23,.06), rgba(2,6,23,.02));
     }
 
+    /* Reglas */
     .rules{
       margin-top:16px;
       border-radius: 22px;
@@ -282,18 +301,16 @@
           <img class="wordmark" src="assets/logo.svg" alt="aquiservicio.com">
 
           <div class="municipalityBox">
-            <label for="city">Municipio</label>
+            <label for="city">MUNICIPIO</label>
             <select id="city" disabled>
               <option>Cargando municipios…</option>
             </select>
           </div>
 
-          <div class="thanks">🙏✨ MUCHAS GRACIAS POR SU APOYO ✨🙏</div>
-
           <p class="welcome">BIENVENIDOS</p>
 
           <p class="subtitle">
-            Elige lo que necesitas: <b>Comida</b>, <b>Servicios</b> o <b>Marketplace</b>.
+            Selecciona lo que buscas: <b>Comida</b>, <b>Servicios</b> o <b>Marketplace</b>.
           </p>
         </div>
 
@@ -324,10 +341,22 @@
           </a>
         </div>
 
-        <div class="smallActions">
-          <a class="miniBtn primary" href="registrar.html">➕ Registrar mi negocio</a>
-          <a class="miniBtn" href="login.html">🔐 Iniciar sesión</a>
-          <a class="miniBtn" href="no-encontre.html">💡 Sugerencias</a>
+        <!-- Acciones pro (con texto arriba) -->
+        <div class="smallArea">
+          <div class="actionCard">
+            <div class="actionTop">¿QUIERES ANUNCIARTE?</div>
+            <a class="miniBtn primary" href="registrar.html">➕ Registrar mi negocio</a>
+          </div>
+
+          <div class="actionCard">
+            <div class="actionTop">YA ESTÁS APROBADO</div>
+            <a class="miniBtn" href="login.html">🔐 Iniciar sesión</a>
+          </div>
+
+          <div class="actionCard">
+            <div class="actionTop">¿NO ENCONTRASTE LO QUE BUSCAS?</div>
+            <a class="miniBtn" href="no-encontre.html">💡 Sugerencias</a>
+          </div>
         </div>
 
         <div class="rules">
@@ -369,7 +398,7 @@
         citySelect.innerHTML = "";
         const list = (out && out.data) ? out.data : [];
 
-        // Fallback si falla
+        // fallback si falla la API
         if(!list.length){
           citySelect.appendChild(option("Navolato (Disponible)", "Navolato", false));
           citySelect.appendChild(option("Culiacán (Próximamente)", "Culiacán", true));
@@ -377,12 +406,11 @@
           return;
         }
 
-        // Guardado local
         const saved = localStorage.getItem("aq_city");
 
-        // Regla: solo Navolato disponible hoy (aunque Supabase devuelva todos)
+        // Regla: hoy solo Navolato disponible
         for(const m of list){
-          const name = m.name || m.municipio || "";
+          const name = (m && m.name) ? m.name : "";
           const isNav = name.toLowerCase().includes("navolato");
           citySelect.appendChild(option(
             isNav ? `${name} (Disponible)` : `${name} (Próximamente)`,
@@ -391,11 +419,9 @@
           ));
         }
 
-        // seleccionar
         if(saved && [...citySelect.options].some(o => o.value === saved && !o.disabled)){
           citySelect.value = saved;
         } else {
-          // primer disponible
           const firstOk = [...citySelect.options].find(o => !o.disabled);
           citySelect.value = firstOk ? firstOk.value : citySelect.options[0].value;
         }
