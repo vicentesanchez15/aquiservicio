@@ -44,6 +44,10 @@
       border:1px solid rgba(15,23,42,.10);background:#fff;border-radius:999px;
       padding:10px 12px;font-weight:900;cursor:pointer;text-decoration:none;color:var(--txt);
     }
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(56,189,248,.18), rgba(99,102,241,.12));
+      border-color: rgba(56,189,248,.35);
+    }
 
     .h{
       margin:12px 0 6px;font-weight:900;font-size:20px;
@@ -72,7 +76,7 @@
       width:100%;border-radius:16px;padding:12px 12px;border:1px solid rgba(15,23,42,.14);
       background:#fff;font-weight:850;font-size:14px;outline:none;margin-top:6px;font-family:inherit;
     }
-    textarea{min-height:100px;resize:vertical}
+    textarea{min-height:96px;resize:vertical}
     input:focus, textarea:focus{box-shadow:0 0 0 4px var(--glow);border-color: rgba(56,189,248,.35);}
 
     .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
@@ -80,10 +84,6 @@
     .chips input{width:auto;margin:0}
 
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .primary{
-      background: linear-gradient(180deg, rgba(56,189,248,.18), rgba(99,102,241,.12));
-      border-color: rgba(56,189,248,.35);
-    }
 
     .msg{
       display:none;margin-top:12px;border-radius:18px;padding:12px;font-weight:900;font-size:13px;text-align:center;
@@ -94,6 +94,11 @@
 
     .hint{margin-top:8px;color:rgba(15,23,42,.65);font-weight:850;font-size:12px;line-height:1.45}
     .lock{opacity:.55;pointer-events:none}
+    .thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .thumb{
+      width:86px;height:86px;border-radius:14px;object-fit:cover;border:1px solid rgba(15,23,42,.12);
+      background:rgba(2,6,23,.03);
+    }
   </style>
 </head>
 <body>
@@ -107,13 +112,11 @@
         </div>
 
         <h1 class="h">Tu panel</h1>
-        <p class="sub">Edita tu información. Algunas funciones se activan al habilitar plan.</p>
+        <p class="sub">Edita tu info. Fotos y promociones se activan con plan.</p>
 
         <div class="grid">
-          <!-- RESUMEN -->
           <div class="box" id="summary">Cargando…</div>
 
-          <!-- EDITAR -->
           <div class="box">
             <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
               <div style="font-weight:900">Editar perfil</div>
@@ -121,13 +124,13 @@
             </div>
 
             <label for="desc">Descripción</label>
-            <textarea id="desc" placeholder="Ej: Vendemos tacos y también tortas…"></textarea>
+            <textarea id="desc"></textarea>
 
             <label for="cov">Zona de cobertura (opcional)</label>
-            <input id="cov" placeholder="Ej: Centro y Altata"/>
+            <input id="cov"/>
 
             <label for="phone">Tel para llamadas (opcional)</label>
-            <input id="phone" placeholder="Ej: 6671234567" inputmode="numeric"/>
+            <input id="phone" inputmode="numeric"/>
 
             <div class="chips">
               <label><input type="checkbox" id="delivery"> Domicilio</label>
@@ -143,47 +146,30 @@
             <div class="msg" id="msg"></div>
           </div>
 
-          <!-- FOTOS (BLOQUEADO EN FREE) -->
           <div class="box" id="mediaBox">
             <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
-              <div style="font-weight:900">Fotos (Plan)</div>
+              <div style="font-weight:900">Fotos</div>
               <span class="badge" id="mediaBadge">Bloqueado</span>
             </div>
 
-            <label for="photo">Foto de perfil (URL)</label>
-            <input id="photo" placeholder="https://..." />
-
-            <label>Galería (hasta 5 URLs)</label>
-            <input id="g1" placeholder="https://..."/>
-            <input id="g2" placeholder="https://..."/>
-            <input id="g3" placeholder="https://..."/>
-            <input id="g4" placeholder="https://..."/>
-            <input id="g5" placeholder="https://..."/>
-
-            <div class="hint">Por ahora es por URL. Luego lo hacemos con subida directa y segura.</div>
+            <label>Foto de perfil</label>
+            <input id="fileProfile" type="file" accept="image/*"/>
             <div class="actions">
-              <button class="btn primary" id="saveMedia">Guardar fotos</button>
+              <button class="btn primary" id="upProfile">Subir foto</button>
             </div>
+            <div class="thumbs" id="profilePrev"></div>
+
+            <label>Galería (hasta 5)</label>
+            <input id="fileGallery" type="file" accept="image/*"/>
+            <div class="actions">
+              <button class="btn primary" id="upGallery">Subir a galería</button>
+            </div>
+            <div class="thumbs" id="galleryPrev"></div>
+
+            <div class="hint">Se sube directo con URL firmada (no hay keys en tu navegador).</div>
           </div>
 
-          <!-- PROMO DIARIA (BLOQUEADO EN FREE / no verificado) -->
-          <div class="box" id="promoBox">
-            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
-              <div style="font-weight:900">Promoción del día</div>
-              <span class="badge" id="promoBadge">Bloqueado</span>
-            </div>
-
-            <label for="promo">Texto (máx 180)</label>
-            <input id="promo" placeholder="Ej: 2x1 de 6 a 8pm. Solo hoy." />
-
-            <div class="actions">
-              <button class="btn primary" id="sendPromo">Publicar promo</button>
-            </div>
-
-            <div class="hint">Máximo 1 por día.</div>
-          </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -202,6 +188,25 @@
     function cleanPhone(s){ return String(s||"").replace(/\D/g,"").slice(0,15); }
 
     let ME = null;
+
+    function renderThumbs(){
+      $("profilePrev").innerHTML = "";
+      if(ME?.profile_photo_url){
+        const img = document.createElement("img");
+        img.className="thumb";
+        img.src = ME.profile_photo_url;
+        $("profilePrev").appendChild(img);
+      }
+
+      $("galleryPrev").innerHTML = "";
+      const g = Array.isArray(ME?.gallery_urls) ? ME.gallery_urls : [];
+      g.filter(Boolean).forEach(u=>{
+        const img = document.createElement("img");
+        img.className="thumb";
+        img.src = u;
+        $("galleryPrev").appendChild(img);
+      });
+    }
 
     async function load(){
       const r = await fetch("/api/me");
@@ -236,13 +241,11 @@
       $("dine").checked = !!ME.dine_in;
       $("avail").checked = !!ME.available_now;
 
-      // bloquear "Disponible ahora" si es comida
       if(ME.kind !== "service"){
         $("avail").checked = false;
         $("avail").disabled = true;
       }
 
-      // Media
       if(!isPro){
         $("mediaBox").classList.add("lock");
         $("mediaBadge").textContent = "Bloqueado";
@@ -250,26 +253,9 @@
         $("mediaBox").classList.remove("lock");
         $("mediaBadge").textContent = "Activo";
         $("mediaBadge").className = "badge ok";
-
-        $("photo").value = ME.profile_photo_url || "";
-        const g = Array.isArray(ME.gallery_urls) ? ME.gallery_urls : [];
-        $("g1").value = g[0] || "";
-        $("g2").value = g[1] || "";
-        $("g3").value = g[2] || "";
-        $("g4").value = g[3] || "";
-        $("g5").value = g[4] || "";
       }
 
-      // Promo: pro + verificado
-      const promoOk = isPro && !!ME.verified;
-      if(!promoOk){
-        $("promoBox").classList.add("lock");
-        $("promoBadge").textContent = "Bloqueado";
-      }else{
-        $("promoBox").classList.remove("lock");
-        $("promoBadge").textContent = "Activo";
-        $("promoBadge").className = "badge ok";
-      }
+      renderThumbs();
     }
 
     async function saveBasic(){
@@ -302,55 +288,77 @@
       }
     }
 
-    async function saveMedia(){
-      $("saveMedia").disabled = true;
-      $("saveMedia").textContent = "Guardando…";
+    async function signedUpload(file, kind){
+      // 1) pedir URL firmada
+      const r1 = await fetch("/api/upload_url", {
+        method:"POST",
+        headers:{ "content-type":"application/json" },
+        body: JSON.stringify({ kind, filename: file.name, contentType: file.type })
+      });
+      const out1 = await r1.json().catch(()=>({}));
+      if(!r1.ok || out1.error) throw new Error(out1.error || ("HTTP "+r1.status));
+
+      // 2) subir al signedUrl (PUT)
+      const put = await fetch(out1.signedUrl, {
+        method: "PUT",
+        headers: { "content-type": file.type },
+        body: file
+      });
+      if(!put.ok) throw new Error("Falló la subida (PUT): " + put.status);
+
+      // 3) guardar URL pública en DB
+      const r3 = await fetch("/api/upload_finish", {
+        method:"POST",
+        headers:{ "content-type":"application/json" },
+        body: JSON.stringify({ kind, publicUrl: out1.publicUrl })
+      });
+      const out3 = await r3.json().catch(()=>({}));
+      if(!r3.ok || out3.error) throw new Error(out3.error || ("HTTP "+r3.status));
+
+      return true;
+    }
+
+    async function uploadProfile(){
+      const f = $("fileProfile").files?.[0];
+      if(!f) return show("Selecciona una imagen.", false);
+
+      $("upProfile").disabled = true;
+      $("upProfile").textContent = "Subiendo…";
       try{
-        const body = {
-          profile_photo_url: $("photo").value,
-          gallery_urls: [ $("g1").value, $("g2").value, $("g3").value, $("g4").value, $("g5").value ]
-        };
-        const r = await fetch("/api/update_profile", {
-          method:"POST",
-          headers:{ "content-type":"application/json" },
-          body: JSON.stringify(body)
-        });
-        const out = await r.json().catch(()=>({}));
-        if(!r.ok || out.error) return show("Error: " + (out.error || ("HTTP " + r.status)), false);
-        show("Fotos guardadas ✅", true);
+        await signedUpload(f, "profile");
+        show("Foto actualizada ✅", true);
+        $("fileProfile").value = "";
         await load();
       }catch(e){
-        show("Error: " + (e.message || "No se pudo guardar"), false);
+        show("Error: " + (e.message || "No se pudo subir"), false);
       }finally{
-        $("saveMedia").disabled = false;
-        $("saveMedia").textContent = "Guardar fotos";
+        $("upProfile").disabled = false;
+        $("upProfile").textContent = "Subir foto";
       }
     }
 
-    async function sendPromo(){
-      $("sendPromo").disabled = true;
-      $("sendPromo").textContent = "Publicando…";
+    async function uploadGallery(){
+      const f = $("fileGallery").files?.[0];
+      if(!f) return show("Selecciona una imagen.", false);
+
+      $("upGallery").disabled = true;
+      $("upGallery").textContent = "Subiendo…";
       try{
-        const r = await fetch("/api/create_promo", {
-          method:"POST",
-          headers:{ "content-type":"application/json" },
-          body: JSON.stringify({ text: $("promo").value })
-        });
-        const out = await r.json().catch(()=>({}));
-        if(!r.ok || out.error) return show("Error: " + (out.error || ("HTTP " + r.status)), false);
-        show("Promoción publicada ✅", true);
-        $("promo").value = "";
+        await signedUpload(f, "gallery");
+        show("Agregada a galería ✅", true);
+        $("fileGallery").value = "";
+        await load();
       }catch(e){
-        show("Error: " + (e.message || "No se pudo publicar"), false);
+        show("Error: " + (e.message || "No se pudo subir"), false);
       }finally{
-        $("sendPromo").disabled = false;
-        $("sendPromo").textContent = "Publicar promo";
+        $("upGallery").disabled = false;
+        $("upGallery").textContent = "Subir a galería";
       }
     }
 
     $("save").addEventListener("click", saveBasic);
-    $("saveMedia").addEventListener("click", saveMedia);
-    $("sendPromo").addEventListener("click", sendPromo);
+    $("upProfile").addEventListener("click", uploadProfile);
+    $("upGallery").addEventListener("click", uploadGallery);
 
     $("logout").addEventListener("click", async ()=>{
       await fetch("/api/logout");
