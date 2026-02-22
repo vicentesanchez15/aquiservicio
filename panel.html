@@ -94,6 +94,7 @@
 
     .hint{margin-top:8px;color:rgba(15,23,42,.65);font-weight:850;font-size:12px;line-height:1.45}
     .lock{opacity:.55;pointer-events:none}
+
     .thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
     .thumb{
       width:86px;height:86px;border-radius:14px;object-fit:cover;border:1px solid rgba(15,23,42,.12);
@@ -112,11 +113,13 @@
         </div>
 
         <h1 class="h">Tu panel</h1>
-        <p class="sub">Edita tu info. Fotos y promociones se activan con plan.</p>
+        <p class="sub">Edita tu info. Fotos/promos se activan con plan. Horarios para “Cierra en…” / “Abre en…”.</p>
 
         <div class="grid">
+          <!-- RESUMEN -->
           <div class="box" id="summary">Cargando…</div>
 
+          <!-- EDITAR PERFIL -->
           <div class="box">
             <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
               <div style="font-weight:900">Editar perfil</div>
@@ -124,13 +127,13 @@
             </div>
 
             <label for="desc">Descripción</label>
-            <textarea id="desc"></textarea>
+            <textarea id="desc" placeholder="Ej: Vendemos tacos y también tortas…"></textarea>
 
             <label for="cov">Zona de cobertura (opcional)</label>
-            <input id="cov"/>
+            <input id="cov" placeholder="Ej: Centro y Altata"/>
 
             <label for="phone">Tel para llamadas (opcional)</label>
-            <input id="phone" inputmode="numeric"/>
+            <input id="phone" placeholder="Ej: 6671234567" inputmode="numeric"/>
 
             <div class="chips">
               <label><input type="checkbox" id="delivery"> Domicilio</label>
@@ -146,6 +149,7 @@
             <div class="msg" id="msg"></div>
           </div>
 
+          <!-- FOTOS (SUBIDA REAL) -->
           <div class="box" id="mediaBox">
             <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
               <div style="font-weight:900">Fotos</div>
@@ -166,7 +170,23 @@
             </div>
             <div class="thumbs" id="galleryPrev"></div>
 
-            <div class="hint">Se sube directo con URL firmada (no hay keys en tu navegador).</div>
+            <div class="hint">Subida segura con URL firmada (no hay keys en tu navegador).</div>
+          </div>
+
+          <!-- HORARIOS -->
+          <div class="box" id="hoursBox">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+              <div style="font-weight:900">Horarios</div>
+              <span class="badge" id="hoursBadge">—</span>
+            </div>
+
+            <div class="hint">Pon tu horario real. Así a la gente le sale “Cierra en…” o “Abre en…”.</div>
+
+            <div id="hoursForm" style="margin-top:10px; display:grid; gap:10px;"></div>
+
+            <div class="actions">
+              <button class="btn primary" id="saveHours">Guardar horarios</button>
+            </div>
           </div>
 
         </div>
@@ -176,6 +196,7 @@
 
   <script>
     const $ = (id)=>document.getElementById(id);
+
     function show(text, ok=true){
       const m = $("msg");
       m.style.display="block";
@@ -189,6 +210,7 @@
 
     let ME = null;
 
+    // ---- THUMBS ----
     function renderThumbs(){
       $("profilePrev").innerHTML = "";
       if(ME?.profile_photo_url){
@@ -208,6 +230,99 @@
       });
     }
 
+    // ---- HORAS ----
+    const DOW = [
+      { dow:1, name:"Lunes" },
+      { dow:2, name:"Martes" },
+      { dow:3, name:"Miércoles" },
+      { dow:4, name:"Jueves" },
+      { dow:5, name:"Viernes" },
+      { dow:6, name:"Sábado" },
+      { dow:0, name:"Domingo" }
+    ];
+
+    function hourRow(d){
+      return `
+        <div style="display:grid;grid-template-columns: 1fr 90px 90px; gap:10px; align-items:center;">
+          <div style="font-weight:900;color:rgba(15,23,42,.78)">${d.name}</div>
+          <input type="time" id="o${d.dow}" value="09:00">
+          <input type="time" id="c${d.dow}" value="18:00">
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;margin-top:-4px">
+          <label style="margin:0;display:flex;align-items:center;gap:8px;text-transform:none;color:rgba(15,23,42,.78);font-weight:900">
+            <input type="checkbox" id="x${d.dow}"> Cerrado este día
+          </label>
+        </div>
+      `;
+    }
+
+    async function loadHours(){
+      try{
+        const r = await fetch("/api/get_hours");
+        const out = await r.json().catch(()=>({}));
+        if(!r.ok || out.error){
+          $("hoursBadge").textContent = "No disponible";
+          return;
+        }
+
+        $("hoursBadge").textContent = "Listo";
+        $("hoursBadge").className = "badge ok";
+
+        const map = new Map((out.data||[]).map(x => [Number(x.dow), x]));
+        $("hoursForm").innerHTML = DOW.map(d => `
+          <div style="padding:10px;border:1px solid rgba(15,23,42,.10);border-radius:16px;background:#fff">
+            ${hourRow(d)}
+          </div>
+        `).join("");
+
+        for(const d of DOW){
+          const row = map.get(d.dow);
+          if(row){
+            $("o"+d.dow).value = String(row.open_time).slice(0,5);
+            $("c"+d.dow).value = String(row.close_time).slice(0,5);
+            $("x"+d.dow).checked = !!row.is_closed;
+            $("o"+d.dow).disabled = !!row.is_closed;
+            $("c"+d.dow).disabled = !!row.is_closed;
+          }
+
+          $("x"+d.dow).addEventListener("change", ()=>{
+            const closed = $("x"+d.dow).checked;
+            $("o"+d.dow).disabled = closed;
+            $("c"+d.dow).disabled = closed;
+          });
+        }
+      }catch{
+        $("hoursBadge").textContent = "Error";
+      }
+    }
+
+    async function saveHours(){
+      $("saveHours").disabled = true;
+      $("saveHours").textContent = "Guardando…";
+      try{
+        const rows = DOW.map(d => ({
+          dow: d.dow,
+          is_closed: $("x"+d.dow).checked,
+          open_time: $("o"+d.dow).value,
+          close_time: $("c"+d.dow).value
+        }));
+        const r = await fetch("/api/save_hours", {
+          method:"POST",
+          headers:{ "content-type":"application/json" },
+          body: JSON.stringify({ rows })
+        });
+        const out = await r.json().catch(()=>({}));
+        if(!r.ok || out.error) return show("Error: " + (out.error || ("HTTP " + r.status)), false);
+        show("Horarios guardados ✅", true);
+      }catch(e){
+        show("Error: " + (e.message || "No se pudo guardar"), false);
+      }finally{
+        $("saveHours").disabled = false;
+        $("saveHours").textContent = "Guardar horarios";
+      }
+    }
+
+    // ---- PERFIL ----
     async function load(){
       const r = await fetch("/api/me");
       const out = await r.json().catch(()=>({}));
@@ -244,6 +359,8 @@
       if(ME.kind !== "service"){
         $("avail").checked = false;
         $("avail").disabled = true;
+      }else{
+        $("avail").disabled = false;
       }
 
       if(!isPro){
@@ -256,6 +373,7 @@
       }
 
       renderThumbs();
+      await loadHours();
     }
 
     async function saveBasic(){
@@ -288,6 +406,7 @@
       }
     }
 
+    // ---- SUBIDA SEGURA ----
     async function signedUpload(file, kind){
       // 1) pedir URL firmada
       const r1 = await fetch("/api/upload_url", {
@@ -298,7 +417,7 @@
       const out1 = await r1.json().catch(()=>({}));
       if(!r1.ok || out1.error) throw new Error(out1.error || ("HTTP "+r1.status));
 
-      // 2) subir al signedUrl (PUT)
+      // 2) subir al signedUrl
       const put = await fetch(out1.signedUrl, {
         method: "PUT",
         headers: { "content-type": file.type },
@@ -357,6 +476,7 @@
     }
 
     $("save").addEventListener("click", saveBasic);
+    $("saveHours").addEventListener("click", saveHours);
     $("upProfile").addEventListener("click", uploadProfile);
     $("upGallery").addEventListener("click", uploadGallery);
 
