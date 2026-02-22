@@ -1,447 +1,180 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Aquiservicio</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Aquiservicio</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --navy:#0b1220;
-      --navy2:#0f1a33;
+<style>
+:root{
+  --navy:#0b1220;
+  --navy2:#0f1a33;
+  --card:rgba(255,255,255,.94);
+  --shadow:0 20px 70px rgba(2,6,23,.18);
+  --r:22px;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Inter,system-ui;
+background:
+radial-gradient(900px 600px at 10% 0%, rgba(56,189,248,.14), transparent 60%),
+radial-gradient(900px 600px at 90% 10%, rgba(99,102,241,.12), transparent 55%),
+linear-gradient(180deg, var(--navy), var(--navy2));
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:18px;
+}
+.shell{width:min(980px,100%)}
+.card{
+background:var(--card);
+border-radius:calc(var(--r)+10px);
+box-shadow:var(--shadow);
+padding:24px;
+text-align:center;
+}
 
-      --txt:#0f172a;
-      --mut:#64748b;
+.logo{
+max-width:420px;
+width:90%;
+margin:0 auto 18px;
+display:block;
+}
 
-      --card:rgba(255,255,255,.94);
-      --bd:rgba(15,23,42,.12);
-      --glow:rgba(56,189,248,.22);
-      --shadow:0 20px 70px rgba(2,6,23,.18);
-      --r:20px;
+.welcome{
+font-size:26px;
+font-weight:900;
+letter-spacing:.18em;
+text-transform:uppercase;
+background:linear-gradient(90deg,#38bdf8,#6366f1);
+-webkit-background-clip:text;
+color:transparent;
+margin-bottom:16px;
+animation: shimmer 3s infinite;
+}
+@keyframes shimmer{
+0%,100%{filter:brightness(1)}
+50%{filter:brightness(1.25)}
+}
 
-      /* azul medianoche REAL (no negro) para BIENVENIDOS */
-      --welcomeBlue:#123a7a;
+.selectWrap{
+margin:16px auto;
+max-width:380px;
+}
+select{
+width:100%;
+padding:14px;
+border-radius:16px;
+border:1px solid rgba(15,23,42,.12);
+font-weight:900;
+}
 
-      /* fondo del select más oscuro (no azul brillante) */
-      --selectBg:rgba(2,6,23,.05);
-      --selectBd:rgba(15,23,42,.18);
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color:var(--txt);
-      background:
-        radial-gradient(900px 600px at 10% 0%, rgba(56,189,248,.14), transparent 60%),
-        radial-gradient(900px 600px at 90% 10%, rgba(99,102,241,.12), transparent 55%),
-        linear-gradient(180deg, var(--navy), var(--navy2));
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-    }
+.btnGrid{
+margin-top:20px;
+display:grid;
+gap:12px;
+}
 
-    .shell{width:min(980px, 100%);}
-    .card{
-      background: var(--card);
-      border:1px solid rgba(255,255,255,.18);
-      box-shadow: var(--shadow);
-      border-radius: calc(var(--r) + 10px);
-      overflow:hidden;
-      backdrop-filter: blur(10px);
-      animation: in .35s ease-out;
-    }
-    @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.bigBtn{
+padding:16px;
+border-radius:20px;
+border:1px solid rgba(15,23,42,.10);
+background:#fff;
+font-weight:900;
+font-size:16px;
+cursor:pointer;
+transition:.15s;
+}
+.bigBtn:hover{transform:translateY(-2px)}
 
-    .main{padding:18px 12px 20px}
+.smallActions{
+margin-top:18px;
+display:flex;
+gap:10px;
+justify-content:center;
+flex-wrap:wrap;
+}
 
-    .hero{
-      text-align:center;
-      padding:6px 8px 10px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:10px;
-    }
-
-    /* Logo centrado, un poquito a la izquierda por el ancho del SVG */
-    .wordmark{
-      width: min(520px, 86vw);
-      height:auto;
-      display:block;
-      margin: 0 auto;
-      transform: translateX(-10px);
-    }
-
-    /* MUNICIPIO */
-    .municipalityBox{
-      width:100%;
-      max-width:560px;
-      margin:0 auto;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:10px;
-      padding: 0 8px;
-    }
-    .municipalityBox label{
-      font-size:13px;
-      font-weight:900;
-      color: rgba(15,23,42,.75);
-      letter-spacing:.10em;
-      text-transform:uppercase;
-    }
-
-    select{
-      width:100%;
-      max-width:100%;
-      border-radius:16px;
-      padding:12px 12px;
-      border:1px solid var(--selectBd);
-      background: var(--selectBg);
-      color: rgba(15,23,42,.88);
-      font-weight:900;
-      outline:none;
-      appearance:none;
-    }
-    select:focus{
-      box-shadow:0 0 0 4px var(--glow);
-      border-color: rgba(56,189,248,.35);
-      background:#fff;
-    }
-
-    /* BIENVENIDOS (ANIMADO y PRO) */
-    .welcome{
-      margin:2px 0 0;
-      font-weight:900;
-      letter-spacing: .22em;
-      font-size: 22px;
-      color: var(--welcomeBlue);
-      text-transform: uppercase;
-      animation: welcomeFloat 2.4s ease-in-out infinite;
-    }
-    @keyframes welcomeFloat{
-      0%,100%{ transform:translateY(0); }
-      50%{ transform:translateY(-4px); }
-    }
-
-    .subtitle{
-      margin:0;
-      color: rgba(15,23,42,.72);
-      font-size:14.5px;
-      line-height:1.45;
-      font-weight:650;
-    }
-
-    /* Botones grandes centrados */
-    .btnGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:12px;
-      margin-top:16px;
-      justify-items:center;
-    }
-    @media (min-width:720px){ .btnGrid{grid-template-columns:1fr 1fr 1fr;} }
-
-    .bigBtn{
-      width:100%;
-      max-width:520px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      padding:16px 16px;
-      border-radius:22px;
-      border:1px solid rgba(15,23,42,.10);
-      text-decoration:none;
-      color:var(--txt);
-      background: #fff;
-      box-shadow: 0 14px 40px rgba(2,6,23,.10);
-      transition: transform .12s ease, box-shadow .12s ease;
-      user-select:none;
-    }
-    .bigBtn:hover{transform:translateY(-1px); box-shadow: 0 18px 55px rgba(2,6,23,.14);}
-    .bigBtn:active{transform:scale(.99);}
-
-    .bigBtn .l{display:flex;flex-direction:column;gap:3px}
-    .bigBtn .t{font-weight:900;font-size:16px;letter-spacing:.2px}
-    .bigBtn .s{font-weight:650;font-size:13px;color: rgba(15,23,42,.60)}
-    .bigBtn .arrow{font-weight:900;opacity:.75}
-
-    .bigBtn.primary{
-      background: linear-gradient(180deg, rgba(56,189,248,.16), rgba(99,102,241,.10));
-      border-color: rgba(56,189,248,.35);
-    }
-    .bigBtn.disabled{
-      opacity:.55;
-      pointer-events:none;
-      background: linear-gradient(180deg, rgba(15,23,42,.04), rgba(15,23,42,.02));
-    }
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:900;
-      border:1px solid rgba(15,23,42,.10);
-      background:#fff;
-      color: rgba(15,23,42,.72);
-      width: fit-content;
-      margin-top:6px;
-    }
-
-    /* Acciones chicas + texto arriba (para que no se vea básico) */
-    .smallArea{
-      margin-top:14px;
-      display:grid;
-      grid-template-columns:1fr;
-      gap:10px;
-      max-width:860px;
-      margin-left:auto;
-      margin-right:auto;
-    }
-    @media (min-width:720px){ .smallArea{grid-template-columns:1fr 1fr 1fr;} }
-
-    .actionCard{
-      background:#fff;
-      border:1px solid rgba(15,23,42,.10);
-      border-radius:20px;
-      padding:12px;
-      box-shadow: 0 12px 30px rgba(2,6,23,.06);
-      text-align:center;
-    }
-    .actionTop{
-      font-weight:900;
-      color: rgba(15,23,42,.78);
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      font-size:11px;
-      margin-bottom:8px;
-    }
-
-    .miniBtn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width:100%;
-      border:1px solid rgba(15,23,42,.10);
-      background:#fff;
-      border-radius:999px;
-      padding:11px 14px;
-      font-weight:900;
-      font-size:13px;
-      text-decoration:none;
-      color:var(--txt);
-      transition: transform .12s ease, box-shadow .12s ease;
-      box-shadow: 0 10px 22px rgba(2,6,23,.06);
-    }
-    .miniBtn:hover{transform:translateY(-1px); box-shadow: 0 14px 28px rgba(2,6,23,.10);}
-    .miniBtn:active{transform:scale(.99)}
-    .miniBtn.primary{
-      background: linear-gradient(180deg, rgba(2,6,23,.06), rgba(2,6,23,.02));
-    }
-
-    /* Reglas */
-    .rules{
-      margin-top:16px;
-      border-radius: 22px;
-      border:1px solid rgba(56,189,248,.35);
-      background: linear-gradient(180deg, rgba(56,189,248,.10), rgba(99,102,241,.06));
-      padding:16px;
-      color: rgba(15,23,42,.86);
-      font-size:14px;
-      line-height:1.55;
-      max-width: 860px;
-      margin-left:auto;
-      margin-right:auto;
-      text-align:left;
-    }
-    .rules h3{
-      margin:0;
-      font-size:16px;
-      font-weight:900;
-      text-align:center;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-    }
-    .rules .subh{
-      margin:6px 0 8px;
-      font-size:12px;
-      font-weight:900;
-      text-align:center;
-      color: rgba(15,23,42,.65);
-    }
-    .rules b{color:rgba(15,23,42,.98)}
-    .rules ul{margin:10px 0 0; padding-left:18px}
-    .rules li{margin:7px 0}
-
-    .foot{
-      margin-top:12px;
-      text-align:center;
-      font-size:12px;
-      color: rgba(255,255,255,.65);
-      font-weight:700;
-    }
-  </style>
+.miniBtn{
+padding:10px 14px;
+border-radius:999px;
+border:1px solid rgba(15,23,42,.10);
+background:#fff;
+font-weight:800;
+text-decoration:none;
+color:#000;
+font-size:13px;
+}
+</style>
 </head>
 
 <body>
-  <div class="shell">
-    <div class="card">
-      <div class="main">
+<div class="shell">
+<div class="card">
 
-        <div class="hero">
-          <img class="wordmark" src="assets/logo.svg" alt="aquiservicio.com">
+<img src="assets/logo.svg" class="logo">
 
-          <div class="municipalityBox">
-            <label for="city">MUNICIPIO</label>
-            <select id="city" disabled>
-              <option>Cargando municipios…</option>
-            </select>
-          </div>
+<div class="welcome">BIENVENIDO</div>
 
-          <p class="welcome">BIENVENIDOS</p>
+<div class="selectWrap">
+<select id="municipality">
+<option>Cargando municipios...</option>
+</select>
+</div>
 
-          <p class="subtitle">
-            Selecciona lo que buscas: <b>Comida</b>, <b>Servicios</b> o <b>Marketplace</b>.
-          </p>
-        </div>
+<div class="btnGrid">
+<button class="bigBtn" onclick="go('comida.html')">🍔 Comida</button>
+<button class="bigBtn" onclick="go('servicios.html')">🔧 Servicios</button>
+<button class="bigBtn" disabled>🛒 Marketplace (Próximamente)</button>
+</div>
 
-        <div class="btnGrid">
-          <a class="bigBtn primary" href="comida.html">
-            <div class="l">
-              <div class="t">🍔 Comida</div>
-              <div class="s">Lo más buscado y verificado</div>
-            </div>
-            <div class="arrow">→</div>
-          </a>
+<div class="smallActions">
+<a href="registrar.html" class="miniBtn">Quiero anunciarme</a>
+<a href="login.html" class="miniBtn">Iniciar sesión</a>
+</div>
 
-          <a class="bigBtn primary" href="servicios.html">
-            <div class="l">
-              <div class="t">🔧 Servicios</div>
-              <div class="s">Plomería, mecánico, taxis…</div>
-            </div>
-            <div class="arrow">→</div>
-          </a>
+</div>
+</div>
 
-          <a class="bigBtn disabled" href="marketplace.html" aria-disabled="true">
-            <div class="l">
-              <div class="t">🛒 Marketplace</div>
-              <div class="s">Próximamente</div>
-              <div class="tag">En proceso</div>
-            </div>
-            <div class="arrow">→</div>
-          </a>
-        </div>
+<script>
+const select=document.getElementById("municipality");
 
-        <!-- Acciones pro (con texto arriba) -->
-        <div class="smallArea">
-          <div class="actionCard">
-            <div class="actionTop">¿QUIERES ANUNCIARTE?</div>
-            <a class="miniBtn primary" href="registrar.html">➕ Registrar mi negocio</a>
-          </div>
+async function loadMunicipios(){
+const r=await fetch("/api/public_municipalities");
+const out=await r.json();
 
-          <div class="actionCard">
-            <div class="actionTop">YA ESTÁS APROBADO</div>
-            <a class="miniBtn" href="login.html">🔐 Iniciar sesión</a>
-          </div>
+select.innerHTML="";
+(out.data||[]).forEach(m=>{
+const o=document.createElement("option");
+o.value=m.name;
+o.textContent=m.available?m.name:m.name+" (Próximamente)";
+if(!m.available)o.disabled=true;
+select.appendChild(o);
+});
 
-          <div class="actionCard">
-            <div class="actionTop">¿NO ENCONTRASTE LO QUE BUSCAS?</div>
-            <a class="miniBtn" href="no-encontre.html">💡 Sugerencias</a>
-          </div>
-        </div>
+const saved=localStorage.getItem("aq_municipality");
+if(saved&&[...select.options].some(o=>o.value===saved&&!o.disabled)){
+select.value=saved;
+}else{
+select.selectedIndex=0;
+}
+}
+loadMunicipios();
 
-        <div class="rules">
-          <h3>REGLAS</h3>
-          <div class="subh">(para mantener la calidad)</div>
-          <ul>
-            <li><b>Publicación sujeta a revisión</b>: se publica solo si cumple reglas.</li>
-            <li><b>Pago al recibir</b> (si aplica): al entregar o al recoger, según el negocio.</li>
-            <li><b>Datos reales</b>: WhatsApp/teléfono válidos y nombre claro.</li>
-            <li><b>No engaños</b>, <b>no suplantación</b>, <b>no contenido ofensivo</b>.</li>
-            <li><b>Horarios honestos</b>: si son falsos o repetidamente fallan, se baja el perfil.</li>
-            <li><b>Reclamar negocio</b> requiere comprobación.</li>
-            <li><b>Marketplace</b> está <b>en proceso</b>: aún no disponible.</li>
-          </ul>
-        </div>
+select.addEventListener("change",()=>{
+localStorage.setItem("aq_municipality",select.value);
+});
 
-      </div>
-    </div>
+function go(page){
+localStorage.setItem("aq_municipality",select.value);
+window.location=page;
+}
+</script>
 
-    <div class="foot">Aquiservicio • Hecho para Sinaloa</div>
-  </div>
-
-  <script>
-    const citySelect = document.getElementById("city");
-
-    function option(label, value, disabled=false){
-      const o = document.createElement("option");
-      o.textContent = label;
-      o.value = value;
-      o.disabled = disabled;
-      return o;
-    }
-
-    async function loadMunicipalities(){
-      try{
-        const r = await fetch("/api/municipalities", { method:"GET" });
-        const out = await r.json();
-
-        citySelect.innerHTML = "";
-        const list = (out && out.data) ? out.data : [];
-
-        // fallback si falla la API
-        if(!list.length){
-          citySelect.appendChild(option("Navolato (Disponible)", "Navolato", false));
-          citySelect.appendChild(option("Culiacán (Próximamente)", "Culiacán", true));
-          citySelect.disabled = false;
-          return;
-        }
-
-        const saved = localStorage.getItem("aq_city");
-
-        // Regla: hoy solo Navolato disponible
-        for(const m of list){
-          const name = (m && m.name) ? m.name : "";
-          const isNav = name.toLowerCase().includes("navolato");
-          citySelect.appendChild(option(
-            isNav ? `${name} (Disponible)` : `${name} (Próximamente)`,
-            name,
-            !isNav
-          ));
-        }
-
-        if(saved && [...citySelect.options].some(o => o.value === saved && !o.disabled)){
-          citySelect.value = saved;
-        } else {
-          const firstOk = [...citySelect.options].find(o => !o.disabled);
-          citySelect.value = firstOk ? firstOk.value : citySelect.options[0].value;
-        }
-
-        localStorage.setItem("aq_city", citySelect.value);
-        citySelect.disabled = false;
-
-        citySelect.addEventListener("change", () => {
-          localStorage.setItem("aq_city", citySelect.value);
-        });
-
-      }catch(_){
-        citySelect.innerHTML = "";
-        citySelect.appendChild(option("Navolato (Disponible)", "Navolato", false));
-        citySelect.appendChild(option("Culiacán (Próximamente)", "Culiacán", true));
-        citySelect.disabled = false;
-      }
-    }
-
-    loadMunicipalities();
-  </script>
 </body>
 </html>
