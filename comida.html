@@ -15,7 +15,6 @@
       --navy2:#0f1a33;
 
       --txt:#0f172a;
-      --mut:#64748b;
 
       --card:rgba(255,255,255,.94);
       --shadow:0 20px 70px rgba(2,6,23,.18);
@@ -79,10 +78,7 @@
       display:block;
     }
 
-    .titleWrap{
-      text-align:center;
-      padding:6px 4px 10px;
-    }
+    .titleWrap{ text-align:center; padding:6px 4px 10px; }
     .title{
       margin:0;
       font-weight:900;
@@ -93,10 +89,7 @@
       -webkit-background-clip:text;background-clip:text;color:transparent;
       animation: shimmer 3.2s ease-in-out infinite;
     }
-    @keyframes shimmer{
-      0%,100%{filter:brightness(1)}
-      50%{filter:brightness(1.2)}
-    }
+    @keyframes shimmer{ 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.2)} }
     .sub{
       margin:6px 0 0;
       color: rgba(15,23,42,.72);
@@ -206,11 +199,7 @@
       display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
       margin-bottom:10px;
     }
-    .expTitle{
-      font-weight:900;
-      font-size:16px;
-      margin:0;
-    }
+    .expTitle{ font-weight:900; font-size:16px; margin:0; }
     .xbtn{
       border:1px solid rgba(15,23,42,.12);
       background:#fff;
@@ -220,11 +209,7 @@
       cursor:pointer;
     }
 
-    .list{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:10px;
-    }
+    .list{ display:grid; grid-template-columns: 1fr; gap:10px; }
 
     .biz{
       border:1px solid rgba(15,23,42,.10);
@@ -257,10 +242,7 @@
     .badge.green{border-color:var(--greenBd);background:var(--greenBg);color:var(--green);}
     .badge.promo{background: rgba(56,189,248,.14); border-color: rgba(56,189,248,.28);}
 
-    .act{
-      margin-left:auto;
-      display:flex;gap:8px;flex-wrap:wrap;
-    }
+    .act{ margin-left:auto; display:flex;gap:8px;flex-wrap:wrap; }
     .mini{
       border:1px solid rgba(15,23,42,.10);
       background:#fff;
@@ -281,20 +263,10 @@
       font-weight:900;
       background: rgba(2,6,23,.02);
     }
-    .pulse{
-      display:inline-block;
-      animation: pulse 1.6s ease-in-out infinite;
-    }
-    @keyframes pulse{
-      0%,100%{transform:translateY(0);opacity:.85}
-      50%{transform:translateY(-4px);opacity:1}
-    }
+    .pulse{ display:inline-block; animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse{ 0%,100%{transform:translateY(0);opacity:.85} 50%{transform:translateY(-4px);opacity:1} }
 
-    .bottom{
-      display:flex;justify-content:center;
-      margin-top:12px;
-      padding-bottom:4px;
-    }
+    .bottom{ display:flex;justify-content:center; margin-top:12px; padding-bottom:4px; }
   </style>
 </head>
 
@@ -318,17 +290,7 @@
           <div class="selectBox">
             <div class="label">Localidad</div>
             <select id="locality">
-              <option value="" selected>Todas</option>
-              <option>Navolato Centro</option>
-              <option>Altata</option>
-              <option>La Palma</option>
-              <option>Villa Juárez</option>
-              <option>San Pedro</option>
-              <option>Dautillos</option>
-              <option>El Castillo</option>
-              <option>El Tigre</option>
-              <option>Las Aguamitas</option>
-              <option>Yameto</option>
+              <option value="" selected>Cargando localidades…</option>
             </select>
           </div>
 
@@ -372,7 +334,6 @@
     function esc(s){
       return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
     }
-
     function waLink(wa){
       const w = String(wa||"").replace(/\D/g,"");
       return w ? ("https://wa.me/52"+w) : "#";
@@ -382,13 +343,47 @@
       return t ? ("tel:"+t) : "#";
     }
 
+    async function loadLocalities(){
+      try{
+        const url = new URL(location.origin + "/api/public_localities");
+        url.searchParams.set("municipality", MUNICIPALITY);
+
+        const r = await fetch(url.toString());
+        const out = await r.json().catch(()=>({}));
+        if(!r.ok || out.error) throw new Error(out.error || "Error cargando localidades");
+
+        const list = Array.isArray(out.data) ? out.data : [];
+
+        localitySel.innerHTML = "";
+        const optAll = document.createElement("option");
+        optAll.value = "";
+        optAll.textContent = "Todas";
+        localitySel.appendChild(optAll);
+
+        for(const name of list){
+          const o = document.createElement("option");
+          o.value = name;
+          o.textContent = name;
+          localitySel.appendChild(o);
+        }
+
+        const saved = localStorage.getItem("aq_locality_" + MUNICIPALITY) || "";
+        if(saved && [...localitySel.options].some(o => o.value === saved)){
+          localitySel.value = saved;
+        }else{
+          localitySel.value = "";
+        }
+      }catch(e){
+        localitySel.innerHTML = `<option value="" selected>Error: ${esc(e.message || "No se pudo")}</option>`;
+      }
+    }
+
     function renderCats(){
       grid.innerHTML = "";
       categories.forEach(c=>{
         const el = document.createElement("div");
         el.className = "cat";
         el.dataset.key = c.key;
-
         el.innerHTML = `
           <img src="${c.img}" alt="${esc(c.label)}">
           <div class="cap">
@@ -396,26 +391,16 @@
             <small>Ver →</small>
           </div>
         `;
-
         el.addEventListener("click", ()=>openCategory(c, el));
         grid.appendChild(el);
       });
     }
 
     let expandedEl = null;
-
-    function closeExpanded(){
-      if(expandedEl){
-        expandedEl.remove();
-        expandedEl = null;
-      }
-    }
+    function closeExpanded(){ if(expandedEl){ expandedEl.remove(); expandedEl = null; } }
 
     async function openCategory(cat, afterEl){
-      if(expandedEl && expandedEl.dataset.openKey === cat.key){
-        closeExpanded();
-        return;
-      }
+      if(expandedEl && expandedEl.dataset.openKey === cat.key){ closeExpanded(); return; }
       closeExpanded();
 
       const box = document.createElement("div");
@@ -447,7 +432,6 @@
         const loc = localitySel.value || "";
         const q = (qInput.value || "").trim();
 
-        // 1) ABIERTO
         if(cat.mode === "open"){
           const url = new URL(location.origin + "/api/public_list");
           url.searchParams.set("kind","food");
@@ -459,15 +443,13 @@
           const out = await r.json();
           if(!r.ok || out.error) throw new Error(out.error || "Error");
 
-          renderBusinesses(content, out.data, {
-            emptyText: "Por el momento no hay negocios abiertos aquí 😅"
-          });
+          renderBusinesses(content, out.data, { emptyText: "Por el momento no hay negocios abiertos aquí 😅" });
           return;
         }
 
-        // 2) PROMOS (REAL)
         if(cat.mode === "promos"){
           const url = new URL(location.origin + "/api/public_promos");
+          url.searchParams.set("kind","food");
           url.searchParams.set("municipality", MUNICIPALITY);
           if(loc) url.searchParams.set("locality", loc);
 
@@ -475,18 +457,14 @@
           const out = await r.json();
           if(!r.ok || out.error) throw new Error(out.error || "Error");
 
-          renderPromos(content, out.data, {
-            emptyText: "🎉 Por el momento no existen promociones disponibles"
-          });
+          renderPromos(content, out.data, { emptyText: "🎉 Por el momento no existen promociones disponibles" });
           return;
         }
 
-        // 3) CATEGORÍA NORMAL
         const url = new URL(location.origin + "/api/public_list");
         url.searchParams.set("kind","food");
         url.searchParams.set("municipality", MUNICIPALITY);
         if(loc) url.searchParams.set("locality", loc);
-
         if(q) url.searchParams.set("q", q);
         else url.searchParams.set("category", cat.key);
 
@@ -494,9 +472,7 @@
         const out = await r.json();
         if(!r.ok || out.error) throw new Error(out.error || "Error");
 
-        renderBusinesses(content, out.data, {
-          emptyText: "No encontramos resultados aquí 😕"
-        });
+        renderBusinesses(content, out.data, { emptyText: "No encontramos resultados aquí 😕" });
 
       }catch(e){
         content.innerHTML = `<div class="empty"><span class="pulse">⚠️ ${esc(e.message || "Error")}</span></div>`;
@@ -506,11 +482,7 @@
     function renderBusinesses(container, list, opts){
       const arr = Array.isArray(list) ? list : [];
       if(!arr.length){
-        container.innerHTML = `
-          <div class="empty">
-            <span class="pulse">${esc(opts?.emptyText || "Sin resultados")}</span>
-          </div>
-        `;
+        container.innerHTML = `<div class="empty"><span class="pulse">${esc(opts?.emptyText || "Sin resultados")}</span></div>`;
         return;
       }
 
@@ -523,7 +495,6 @@
 
         if(b.verified) badges.push(`<span class="badge green">✅ VERIFICADO</span>`);
         if(b.status_text) badges.push(`<span class="badge">${esc(b.status_text)}</span>`);
-
         if(b.delivery) badges.push(`<span class="badge">🚚 Domicilio</span>`);
         if(b.pickup) badges.push(`<span class="badge">🛍️ Ordena y recoge</span>`);
         if(b.dine_in) badges.push(`<span class="badge">🏪 Sucursal</span>`);
@@ -555,11 +526,7 @@
     function renderPromos(container, list, opts){
       const arr = Array.isArray(list) ? list : [];
       if(!arr.length){
-        container.innerHTML = `
-          <div class="empty">
-            <span class="pulse">${esc(opts?.emptyText || "Sin promos")}</span>
-          </div>
-        `;
+        container.innerHTML = `<div class="empty"><span class="pulse">${esc(opts?.emptyText || "Sin promos")}</span></div>`;
         return;
       }
 
@@ -569,20 +536,16 @@
       for(const row of arr){
         const b = row.business || {};
         const img = b.profile_photo_url ? b.profile_photo_url : "assets/categoria/promos.webp";
-
         const badges = [];
         badges.push(`<span class="badge green">✅ VERIFICADO</span>`);
         badges.push(`<span class="badge promo">🎉 ${esc(row.promo_text || "")}</span>`);
-        if(b.delivery) badges.push(`<span class="badge">🚚 Domicilio</span>`);
-        if(b.pickup) badges.push(`<span class="badge">🛍️ Ordena y recoge</span>`);
-        if(b.dine_in) badges.push(`<span class="badge">🏪 Sucursal</span>`);
 
         const card = document.createElement("div");
         card.className = "biz";
         card.innerHTML = `
           <img src="${esc(img)}" alt="">
           <div style="min-width:0;flex:1">
-            <div class="n">${esc(b.name)}</div>
+            <div class="n">${esc(b.name || "")}</div>
             <div class="d">${esc((b.description||"").slice(0,120))}</div>
             <div class="row">${badges.join("")}</div>
             <div class="row">
@@ -602,6 +565,7 @@
     }
 
     localitySel.addEventListener("change", ()=>{
+      localStorage.setItem("aq_locality_" + MUNICIPALITY, localitySel.value || "");
       if(expandedEl){
         const key = expandedEl.dataset.openKey;
         const cat = categories.find(c=>c.key===key);
@@ -624,6 +588,7 @@
     });
 
     renderCats();
+    loadLocalities();
   </script>
 </body>
 </html>
