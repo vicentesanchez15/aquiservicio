@@ -27,7 +27,7 @@ function tzPartsNow(){
 }
 
 function todayBoundsUTC(){
-  // calcula inicio/fin del "día local" (Mazatlán) como timestamps UTC
+  // inicio/fin del "día local" (Mazatlán) expresado en UTC
   const p = tzPartsNow();
   const msSinceMidnight = ((p.hh * 60 + p.mi) * 60 + p.ss) * 1000;
   const start = new Date(Date.now() - msSinceMidnight);
@@ -43,14 +43,11 @@ module.exports = async function handler(req,res){
 
     const supa = sb();
 
+    const kind = norm(req.query.kind || "food"); // food | service
     const municipality = norm(req.query.municipality || "Navolato");
     const locality = norm(req.query.locality || "");
 
     const { startISO, endISO } = todayBoundsUTC();
-
-    // Traer promos del día (Mazatlán), unidas con business info
-    // Reglas: solo approved + kind=food + verified + plan_tier != free
-    // Nota: usamos dos consultas (promos y luego businesses) para evitar joins raros.
 
     const promos = await supa
       .from("promotions")
@@ -58,7 +55,7 @@ module.exports = async function handler(req,res){
       .gte("created_at", startISO)
       .lte("created_at", endISO)
       .order("created_at", { ascending: false })
-      .limit(100);
+      .limit(120);
 
     if(promos.error) return res.status(400).json({ error: promos.error.message });
 
@@ -69,10 +66,10 @@ module.exports = async function handler(req,res){
 
     let qb = supa
       .from("businesses")
-      .select("id,name,kind,municipality,locality,category_primary,description,whatsapp,phone,delivery,pickup,dine_in,verified,plan_tier,profile_photo_url,status")
+      .select("id,name,kind,municipality,locality,category_primary,description,whatsapp,phone,delivery,pickup,dine_in,verified,plan_tier,profile_photo_url,status,available_now")
       .in("id", ids)
       .eq("status","approved")
-      .eq("kind","food")
+      .eq("kind", kind)
       .eq("municipality", municipality);
 
     if(locality) qb = qb.eq("locality", locality);
@@ -80,6 +77,7 @@ module.exports = async function handler(req,res){
     const biz = await qb;
     if(biz.error) return res.status(400).json({ error: biz.error.message });
 
+    // solo: verificados + con plan
     const okBiz = (biz.data || []).filter(b => b.verified && (b.plan_tier || "free") !== "free");
     const byId = new Map(okBiz.map(b => [b.id, b]));
 
