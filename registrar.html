@@ -4,170 +4,460 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Registrar • Aquiservicio</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
+
   <style>
-    :root{--navy:#0b1220;--navy2:#0f1a33;--card:rgba(255,255,255,.94);--txt:#0f172a;--shadow:0 20px 70px rgba(2,6,23,.18)}
+    :root{
+      --navy:#0b1220;
+      --navy2:#0f1a33;
+
+      --txt:#0f172a;
+      --mut:#64748b;
+
+      --card:rgba(255,255,255,.94);
+      --bd:rgba(15,23,42,.12);
+      --glow:rgba(56,189,248,.22);
+      --shadow:0 20px 70px rgba(2,6,23,.18);
+      --r:20px;
+
+      --ok:rgba(34,197,94,.12);
+      --okbd:rgba(34,197,94,.30);
+      --err:rgba(239,68,68,.12);
+      --errbd:rgba(239,68,68,.30);
+    }
     *{box-sizing:border-box}
     body{
-      margin:0;font-family:Inter,system-ui,Arial;color:var(--txt);
-      background:radial-gradient(900px 600px at 10% 0%, rgba(56,189,248,.14), transparent 60%),
-               radial-gradient(900px 600px at 90% 10%, rgba(99,102,241,.12), transparent 55%),
-               linear-gradient(180deg, var(--navy), var(--navy2));
-      min-height:100vh; padding:16px; display:flex; justify-content:center;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--txt);
+      background:
+        radial-gradient(900px 600px at 10% 0%, rgba(56,189,248,.14), transparent 60%),
+        radial-gradient(900px 600px at 90% 10%, rgba(99,102,241,.12), transparent 55%),
+        linear-gradient(180deg, var(--navy), var(--navy2));
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
     }
-    .wrap{width:min(720px,100%)}
-    .card{background:var(--card); border-radius:22px; box-shadow:var(--shadow); padding:14px}
-    h1{margin:0 0 10px; font-size:18px; letter-spacing:.08em; text-transform:uppercase}
-    label{display:block; margin:12px 0 6px; font-weight:900; font-size:13px; color:rgba(15,23,42,.75)}
+    .shell{width:min(860px, 100%);}
+    .card{
+      background: var(--card);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: var(--shadow);
+      border-radius: calc(var(--r) + 10px);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+      animation: in .35s ease-out;
+    }
+    @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+    .main{padding:18px 14px 18px}
+
+    .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .title{
+      margin:0;
+      font-weight:900;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:14px;
+      color:rgba(15,23,42,.82);
+    }
+    .back{
+      text-decoration:none;
+      font-weight:900;
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      padding:10px 12px;
+      border-radius:999px;
+      color:var(--txt);
+    }
+
+    .progress{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      margin:12px 0 14px;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:999px;
+      border:2px solid rgba(15,23,42,.18);
+      background:transparent;
+    }
+    .dot.on{
+      border-color: rgba(56,189,248,.55);
+      background: rgba(56,189,248,.25);
+      box-shadow:0 0 0 6px rgba(56,189,248,.10);
+    }
+    .stepTitle{
+      text-align:center;
+      margin:0;
+      font-size:18px;
+      font-weight:900;
+      letter-spacing:.02em;
+      background: linear-gradient(90deg, rgba(56,189,248,.85), rgba(99,102,241,.85));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .sub{
+      text-align:center;
+      margin:6px 0 0;
+      color: rgba(15,23,42,.70);
+      font-weight:700;
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+      margin-top:14px;
+    }
+    @media (min-width:760px){ .grid{grid-template-columns:1fr 1fr;} }
+
+    label{
+      display:block;
+      font-size:12px;
+      font-weight:900;
+      color: rgba(15,23,42,.70);
+      margin-bottom:6px;
+      letter-spacing:.02em;
+    }
     input, select, textarea{
-      width:100%; padding:12px 14px; border-radius:14px; border:1px solid rgba(15,23,42,.16);
-      font-weight:800; font-size:14px; font-family:inherit;
+      width:100%;
+      border-radius:16px;
+      padding:12px 12px;
+      border:1px solid rgba(15,23,42,.14);
+      background:#fff;
+      font-weight:750;
+      font-size:14px;
+      outline:none;
     }
-    textarea{min-height:92px; resize:vertical}
-    .row{display:grid; grid-template-columns:1fr; gap:10px}
-    @media (min-width:680px){ .row{grid-template-columns:1fr 1fr} }
-    button{
-      margin-top:14px; width:100%;
-      padding:14px 14px; border-radius:16px;
-      border:1px solid rgba(56,189,248,.35);
-      background:linear-gradient(180deg, rgba(56,189,248,.18), rgba(99,102,241,.12));
-      font-weight:900; cursor:pointer;
+    textarea{min-height:96px; resize:vertical}
+    input:focus, select:focus, textarea:focus{
+      box-shadow:0 0 0 4px var(--glow);
+      border-color: rgba(56,189,248,.35);
     }
-    .msg{margin-top:12px; padding:10px; border-radius:14px; border:1px solid rgba(15,23,42,.12); background:rgba(2,6,23,.03); font-weight:900}
-    .err{border-color:rgba(239,68,68,.35); background:rgba(239,68,68,.10)}
-    .ok{border-color:rgba(34,197,94,.35); background:rgba(34,197,94,.10)}
-    .small{font-size:12px; color:rgba(15,23,42,.70); font-weight:800}
+
+    .opts{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:8px;
+      color: rgba(15,23,42,.70);
+      font-weight:800;
+      font-size:12px;
+    }
+    .opts label{display:flex;align-items:center;gap:8px;margin:0}
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:14px;
+    }
+    .btn{
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      border-radius:999px;
+      padding:12px 14px;
+      font-weight:900;
+      font-size:14px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(56,189,248,.18), rgba(99,102,241,.12));
+      border-color: rgba(56,189,248,.35);
+    }
+    .btn:disabled{opacity:.55; cursor:not-allowed}
+
+    .msg{
+      margin-top:14px;
+      border-radius:18px;
+      padding:12px;
+      border:1px solid rgba(15,23,42,.12);
+      background: rgba(2,6,23,.03);
+      font-weight:900;
+      font-size:13px;
+      text-align:center;
+      display:none;
+      word-break:break-word;
+    }
+    .msg.ok{background:var(--ok); border-color:var(--okbd)}
+    .msg.err{background:var(--err); border-color:var(--errbd)}
+
     .hp{display:none !important}
+    .reviewCard{
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+      border-radius:18px;
+      padding:12px;
+      margin-top:12px;
+      font-weight:800;
+      color:rgba(15,23,42,.80);
+      font-size:13px;
+      line-height:1.55;
+    }
+    .reviewCard b{color:rgba(15,23,42,.98)}
   </style>
 </head>
+
 <body>
-  <div class="wrap">
+  <div class="shell">
     <div class="card">
-      <h1>Registrar negocio</h1>
-      <div class="small">Tu solicitud se revisa y se aprueba antes de publicarse.</div>
-
-      <form id="f">
-        <!-- Honeypot anti-bot -->
-        <input class="hp" id="hp" autocomplete="off" tabindex="-1" />
-
-        <div class="row">
-          <div>
-            <label>Tipo</label>
-            <select id="kind" required>
-              <option value="food">Comida</option>
-              <option value="service">Servicios</option>
-            </select>
-          </div>
-          <div>
-            <label>Localidad</label>
-            <input id="locality" placeholder="Ej: Navolato Centro" required />
-          </div>
+      <div class="main">
+        <div class="top">
+          <h1 class="title">Registro de negocio</h1>
+          <a class="back" href="index.html">← Inicio</a>
         </div>
 
-        <label>Nombre del negocio</label>
-        <input id="name" required placeholder="Ej: Tacos Juan" />
-
-        <label>¿Qué ofreces? (categoría principal)</label>
-        <input id="category" required placeholder="Ej: tacos, sushi, mecánico, dentista..." />
-
-        <label>Descripción (corta y clara)</label>
-        <textarea id="desc" placeholder="Ej: Tacos de asada y también tortas. Domicilio en Navolato Centro."></textarea>
-
-        <div class="row">
-          <div>
-            <label>WhatsApp (solo números)</label>
-            <input id="whatsapp" required placeholder="6671234567" inputmode="numeric" />
-          </div>
-          <div>
-            <label>Teléfono (opcional)</label>
-            <input id="phone" placeholder="Opcional" inputmode="numeric" />
-          </div>
+        <div class="progress" aria-hidden="true">
+          <span class="dot on" id="d1"></span>
+          <span class="dot" id="d2"></span>
         </div>
 
-        <label>Tags (separados por coma)</label>
-        <input id="tags" placeholder="Ej: tortas, carne asada, aguas frescas" />
+        <p class="stepTitle" id="stepTitle">Paso 1 de 2</p>
+        <p class="sub" id="stepSub">Datos básicos para que la gente te encuentre.</p>
 
-        <div class="row">
-          <div>
-            <label>Opciones</label>
-            <div class="small">
-              <input type="checkbox" id="delivery"> Domicilio &nbsp; • &nbsp;
-              <input type="checkbox" id="pickup"> Ordena y recoge &nbsp; • &nbsp;
-              <input type="checkbox" id="dinein"> Solo sucursal
+        <form id="f">
+          <input class="hp" id="hp" autocomplete="off" tabindex="-1" />
+
+          <!-- STEP 1 -->
+          <div id="step1">
+            <div class="grid">
+              <div>
+                <label for="kind">Tipo</label>
+                <select id="kind" required>
+                  <option value="food">Comida</option>
+                  <option value="service">Servicios</option>
+                </select>
+              </div>
+              <div>
+                <label for="locality">Localidad</label>
+                <input id="locality" placeholder="Ej: Navolato Centro" required />
+              </div>
+            </div>
+
+            <div class="grid">
+              <div>
+                <label for="name">Nombre del negocio</label>
+                <input id="name" placeholder="Ej: Tacos Juan" required />
+              </div>
+              <div>
+                <label for="category">¿Qué ofreces? (categoría principal)</label>
+                <input id="category" placeholder="Ej: tacos, sushi, mecánico, dentista..." required />
+              </div>
+            </div>
+
+            <div class="grid">
+              <div style="grid-column:1/-1">
+                <label for="desc">Descripción (corta y clara)</label>
+                <textarea id="desc" placeholder="Ej: Tacos de asada y también tortas. Domicilio en Navolato Centro."></textarea>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn primary" type="button" id="next">Continuar →</button>
             </div>
           </div>
-          <div>
-            <label>Servicios</label>
-            <div class="small">
-              <input type="checkbox" id="available"> Disponible ahora
+
+          <!-- STEP 2 -->
+          <div id="step2" style="display:none;">
+            <div class="grid">
+              <div>
+                <label for="whatsapp">WhatsApp (solo números)</label>
+                <input id="whatsapp" placeholder="6671234567" inputmode="numeric" required />
+              </div>
+              <div>
+                <label for="phone">Teléfono (opcional)</label>
+                <input id="phone" placeholder="Opcional" inputmode="numeric" />
+              </div>
+            </div>
+
+            <div class="grid">
+              <div style="grid-column:1/-1">
+                <label for="tags">Tags (separados por coma)</label>
+                <input id="tags" placeholder="Ej: tortas, carne asada, aguas frescas, promociones" />
+              </div>
+            </div>
+
+            <div class="grid">
+              <div>
+                <label>Opciones</label>
+                <div class="opts">
+                  <label><input type="checkbox" id="delivery"> Domicilio</label>
+                  <label><input type="checkbox" id="pickup"> Ordena y recoge</label>
+                  <label><input type="checkbox" id="dinein"> Solo sucursal</label>
+                </div>
+              </div>
+              <div>
+                <label>Servicios</label>
+                <div class="opts">
+                  <label><input type="checkbox" id="available"> Disponible ahora</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="reviewCard" id="review"></div>
+
+            <div class="actions">
+              <button class="btn" type="button" id="back">← Volver</button>
+              <button class="btn primary" type="submit" id="send">Enviar solicitud ✅</button>
             </div>
           </div>
-        </div>
 
-        <button type="submit">Enviar solicitud ✅</button>
-        <div id="msg" class="msg" style="display:none;"></div>
-      </form>
-
-      <div class="small" style="margin-top:12px;">
-        <a href="index.html">← Volver al inicio</a>
+          <div class="msg" id="msg"></div>
+        </form>
       </div>
     </div>
   </div>
 
   <script>
-    const f = document.getElementById("f");
-    const msg = document.getElementById("msg");
-    const showMsg = (text, ok=true) => {
+    const $ = (id) => document.getElementById(id);
+    const msg = $("msg");
+
+    const step1 = $("step1");
+    const step2 = $("step2");
+    const d1 = $("d1");
+    const d2 = $("d2");
+    const stepTitle = $("stepTitle");
+    const stepSub = $("stepSub");
+    const review = $("review");
+
+    function showMsg(text, ok=true){
       msg.style.display = "block";
       msg.className = "msg " + (ok ? "ok" : "err");
       msg.textContent = text;
-    };
+    }
 
-    f.addEventListener("submit", async (e) => {
+    function cleanPhone(s){
+      return (s || "").toString().replace(/\D/g, "").slice(0, 15);
+    }
+
+    function goStep(n){
+      if(n === 1){
+        step1.style.display = "";
+        step2.style.display = "none";
+        d1.classList.add("on");
+        d2.classList.remove("on");
+        stepTitle.textContent = "Paso 1 de 2";
+        stepSub.textContent = "Datos básicos para que la gente te encuentre.";
+        msg.style.display = "none";
+      } else {
+        step1.style.display = "none";
+        step2.style.display = "";
+        d1.classList.remove("on");
+        d2.classList.add("on");
+        stepTitle.textContent = "Paso 2 de 2";
+        stepSub.textContent = "Contacto y detalles. Luego lo revisamos.";
+        renderReview();
+      }
+    }
+
+    function renderReview(){
+      const kind = $("kind").value === "food" ? "Comida" : "Servicios";
+      const locality = $("locality").value.trim();
+      const name = $("name").value.trim();
+      const category = $("category").value.trim();
+      const desc = $("desc").value.trim();
+
+      review.innerHTML = `
+        <div><b>Tipo:</b> ${kind}</div>
+        <div><b>Localidad:</b> ${locality || "-"}</div>
+        <div><b>Negocio:</b> ${name || "-"}</div>
+        <div><b>Categoría:</b> ${category || "-"}</div>
+        <div><b>Descripción:</b> ${desc ? desc : "-"}</div>
+      `;
+    }
+
+    $("next").addEventListener("click", () => {
+      const locality = $("locality").value.trim();
+      const name = $("name").value.trim();
+      const category = $("category").value.trim();
+
+      if(!locality || locality.length < 3) return showMsg("Falta la localidad.", false);
+      if(!name || name.length < 3) return showMsg("Falta el nombre del negocio.", false);
+      if(!category || category.length < 2) return showMsg("Falta la categoría principal.", false);
+
+      goStep(2);
+    });
+
+    $("back").addEventListener("click", () => goStep(1));
+
+    $("f").addEventListener("submit", async (e) => {
       e.preventDefault();
       msg.style.display = "none";
 
-      const tagsRaw = document.getElementById("tags").value.trim();
+      const whatsapp = cleanPhone($("whatsapp").value);
+      if(whatsapp.length < 10) return showMsg("WhatsApp inválido.", false);
+
+      const tagsRaw = $("tags").value.trim();
       const tags = tagsRaw
         ? tagsRaw.split(",").map(t => t.trim()).filter(Boolean).slice(0, 20)
         : [];
 
       const body = {
-        hp: document.getElementById("hp").value,
-        kind: document.getElementById("kind").value,
-        locality: document.getElementById("locality").value.trim(),
-        name: document.getElementById("name").value.trim(),
-        category: document.getElementById("category").value.trim(),
-        description: document.getElementById("desc").value.trim(),
-        whatsapp: document.getElementById("whatsapp").value.trim(),
-        phone: document.getElementById("phone").value.trim(),
+        hp: $("hp").value,
+        kind: $("kind").value,
+        locality: $("locality").value.trim(),
+        name: $("name").value.trim(),
+        category: $("category").value.trim(),
+        description: $("desc").value.trim(),
+
+        whatsapp,
+        phone: cleanPhone($("phone").value) || "",
+
         tags,
-        delivery: document.getElementById("delivery").checked,
-        pickup: document.getElementById("pickup").checked,
-        dine_in: document.getElementById("dinein").checked,
-        available_now: document.getElementById("available").checked
+        delivery: $("delivery").checked,
+        pickup: $("pickup").checked,
+        dine_in: $("dinein").checked,
+        available_now: $("available").checked
       };
 
-      const r = await fetch("/api/register", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(body)
-      });
+      $("send").disabled = true;
+      $("send").textContent = "Enviando…";
 
-      const outText = await r.text();
-      let out = {};
-      try { out = outText ? JSON.parse(outText) : {}; } catch(_){}
+      try{
+        const r = await fetch("/api/register", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(body)
+        });
 
-      if (!r.ok || out.error) {
-        showMsg("Error: " + (out.error || ("HTTP " + r.status)), false);
-        return;
+        const text = await r.text();
+        let out = {};
+        try{ out = text ? JSON.parse(text) : {}; }catch(_){}
+
+        if(!r.ok || out.error){
+          showMsg("Error: " + (out.error || ("HTTP " + r.status)), false);
+        } else {
+          showMsg("Solicitud enviada ✅ ID: " + out.business_id, true);
+          $("f").reset();
+          goStep(1);
+        }
+      }catch(err){
+        showMsg("Error: " + (err.message || "No se pudo enviar"), false);
+      }finally{
+        $("send").disabled = false;
+        $("send").textContent = "Enviar solicitud ✅";
       }
-
-      showMsg("Solicitud enviada ✅ ID: " + out.business_id, true);
-      f.reset();
     });
+
+    goStep(1);
   </script>
 </body>
 </html>
