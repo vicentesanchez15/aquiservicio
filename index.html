@@ -5,14 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Aquiservicio</title>
 
+  <meta name="robots" content="noindex,nofollow" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --navy:#0b1220;
       --navy2:#0f1a33;
+
       --txt:#0f172a;
       --mut:#64748b;
 
@@ -21,12 +24,12 @@
       --shadow:0 20px 70px rgba(2,6,23,.18);
       --r:20px;
 
-      --welcomeBlue:#0f2f6b; /* azul medianoche real */
-      --pillText:#0f172a;
-      --pillBg:rgba(56,189,248,.16);
-      --pillBd:rgba(56,189,248,.28);
-    }
+      --thanksText:#0f172a;
+      --thanksBg:rgba(56,189,248,.16);
+      --thanksBd:rgba(56,189,248,.28);
 
+      --welcomeBlue:#123a7a; /* azul (no negro) */
+    }
     *{box-sizing:border-box}
     body{
       margin:0;
@@ -42,7 +45,6 @@
       justify-content:center;
       padding:18px;
     }
-
     .shell{width:min(980px, 100%);}
     .card{
       background: var(--card);
@@ -66,17 +68,16 @@
       gap:10px;
     }
 
-    /* Logo centrado, apenas a la izquierda */
+    /* Logo centrado, ligeramente a la izquierda (por el ancho del SVG) */
     .wordmark{
-      width: min(450px, 86vw);
+      width: min(520px, 86vw);
       height:auto;
       display:block;
       margin: 0 auto;
-      transform: translateX(-12px);
-      filter: drop-shadow(0 16px 40px rgba(2,6,23,.14));
+      transform: translateX(-10px);
     }
 
-    /* Selector */
+    /* MUNICIPIO */
     .municipalityBox{
       width:100%;
       max-width:560px;
@@ -85,78 +86,59 @@
       flex-direction:column;
       align-items:center;
       gap:10px;
-      position:relative;
+      padding: 0 8px;
     }
     .municipalityBox label{
       font-size:13px;
       font-weight:900;
-      letter-spacing:.10em;
+      color: rgba(15,23,42,.75);
+      letter-spacing:.08em;
       text-transform:uppercase;
-      color: rgba(15,23,42,.72);
     }
-    .municipalityBox::after{
-      content:"▾";
-      position:absolute;
-      right:16px;
-      bottom:14px;
-      font-size:16px;
-      font-weight:900;
-      color: rgba(15,23,42,.60);
-      pointer-events:none;
-    }
-
     select{
       width:100%;
-      appearance:none;
-      -webkit-appearance:none;
-      -moz-appearance:none;
-      padding:14px 44px 14px 14px;
-      font-size:16px;
+      max-width:100%;
+      border-radius:16px;
+      padding:12px 12px;
+      border:1px solid rgba(15,23,42,.18);
+      background: rgba(2,6,23,.04); /* más oscuro, no azul chillón */
+      color: rgba(15,23,42,.88);
       font-weight:900;
-      border-radius:18px;
-      border:1px solid rgba(15,23,42,.16);
-      background: linear-gradient(180deg, rgba(15,23,42,.10), rgba(15,23,42,.06)); /* más oscuro/pro */
-      color: rgba(15,23,42,.95);
-      box-shadow: 0 10px 28px rgba(2,6,23,.10);
       outline:none;
-      cursor:pointer;
-      max-width:560px;
+      appearance:none;
     }
     select:focus{
-      box-shadow:0 0 0 4px var(--glow), 0 10px 28px rgba(2,6,23,.12);
-      border-color: rgba(56,189,248,.45);
+      box-shadow:0 0 0 4px var(--glow);
+      border-color: rgba(56,189,248,.35);
+      background:#fff;
     }
 
-    /* BIENVENIDOS animado (esto reemplaza “muchas gracias”) */
-    .welcomePill{
+    /* Animación “Gracias” arriba de Bienvenidos */
+    .thanks{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      font-size:15px;
+      font-size:13px;
       font-weight:900;
-      letter-spacing:.22px;
-      color: var(--pillText);
-      background: var(--pillBg);
-      border:1px solid var(--pillBd);
-      padding:10px 12px;
+      letter-spacing:.18px;
+      color: var(--thanksText);
+      background: var(--thanksBg);
+      border:1px solid var(--thanksBd);
+      padding:10px 14px;
       border-radius:999px;
-      backdrop-filter: blur(8px);
       user-select:none;
       white-space:nowrap;
       animation: floaty 2.2s ease-in-out infinite;
     }
-    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+    @keyframes floaty{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
 
-    /* Título grande (antes era welcome) */
-    .welcomeTitle{
+    .welcome{
       margin:0;
-      font-family:Poppins, Inter, system-ui, Arial;
       font-weight:900;
-      letter-spacing: .18em;
+      letter-spacing: .22em;
       font-size: 22px;
       color: var(--welcomeBlue);
       text-transform: uppercase;
-      line-height:1.1;
     }
 
     .subtitle{
@@ -165,10 +147,8 @@
       font-size:14.5px;
       line-height:1.45;
       font-weight:650;
-      max-width: 820px;
     }
 
-    /* Botones grandes */
     .btnGrid{
       display:grid;
       grid-template-columns: 1fr;
@@ -227,7 +207,6 @@
       margin-top:6px;
     }
 
-    /* Botones chicos */
     .smallActions{
       margin-top:12px;
       display:flex;
@@ -251,7 +230,6 @@
       background: linear-gradient(180deg, rgba(2,6,23,.06), rgba(2,6,23,.02));
     }
 
-    /* Reglas */
     .rules{
       margin-top:16px;
       border-radius: 22px;
@@ -271,14 +249,15 @@
       font-size:16px;
       font-weight:900;
       text-align:center;
-      letter-spacing:.2px;
+      letter-spacing:.18em;
       text-transform:uppercase;
     }
-    .rules .sub{
-      margin-top:6px;
+    .rules .subh{
+      margin:6px 0 8px;
+      font-size:12px;
+      font-weight:900;
       text-align:center;
-      font-weight:800;
-      color: rgba(15,23,42,.72);
+      color: rgba(15,23,42,.65);
     }
     .rules b{color:rgba(15,23,42,.98)}
     .rules ul{margin:10px 0 0; padding-left:18px}
@@ -291,21 +270,6 @@
       color: rgba(255,255,255,.65);
       font-weight:700;
     }
-
-    .toast{
-      max-width:860px;
-      margin:12px auto 0;
-      border-radius:18px;
-      border:1px solid rgba(15,23,42,.10);
-      background:#fff;
-      padding:12px;
-      font-weight:850;
-      color: rgba(15,23,42,.85);
-      display:none;
-      text-align:center;
-    }
-    .toast.show{display:block; animation: pop .22s ease-out;}
-    @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   </style>
 </head>
 
@@ -313,27 +277,28 @@
   <div class="shell">
     <div class="card">
       <div class="main">
+
         <div class="hero">
           <img class="wordmark" src="assets/logo.svg" alt="aquiservicio.com">
 
           <div class="municipalityBox">
-            <label for="city">MUNICIPIO</label>
-            <select id="city">
-              <option value="Navolato" selected>Navolato (Disponible)</option>
+            <label for="city">Municipio</label>
+            <select id="city" disabled>
+              <option>Cargando municipios…</option>
             </select>
           </div>
 
-          <!-- ✅ Animación ahora es BIENVENIDOS -->
-          <div class="welcomePill" id="welcomePill"> BIENVENIDOS </div>
+          <div class="thanks">🙏✨ MUCHAS GRACIAS POR SU APOYO ✨🙏</div>
 
-          <!-- ✅ Título grande debajo -->
+          <p class="welcome">BIENVENIDOS</p>
+
           <p class="subtitle">
             Elige lo que necesitas: <b>Comida</b>, <b>Servicios</b> o <b>Marketplace</b>.
           </p>
         </div>
 
         <div class="btnGrid">
-          <a class="bigBtn primary" href="comida.html" id="btnFood">
+          <a class="bigBtn primary" href="comida.html">
             <div class="l">
               <div class="t">🍔 Comida</div>
               <div class="s">Lo más buscado y verificado</div>
@@ -341,7 +306,7 @@
             <div class="arrow">→</div>
           </a>
 
-          <a class="bigBtn primary" href="servicios.html" id="btnServices">
+          <a class="bigBtn primary" href="servicios.html">
             <div class="l">
               <div class="t">🔧 Servicios</div>
               <div class="s">Plomería, mecánico, taxis…</div>
@@ -361,13 +326,13 @@
 
         <div class="smallActions">
           <a class="miniBtn primary" href="registrar.html">➕ Registrar mi negocio</a>
-          <a class="miniBtn" href="login.html" style="opacity:.7;pointer-events:none;">🔐 Iniciar sesión (próximamente)</a>
+          <a class="miniBtn" href="login.html">🔐 Iniciar sesión</a>
           <a class="miniBtn" href="no-encontre.html">💡 Sugerencias</a>
         </div>
 
         <div class="rules">
           <h3>REGLAS</h3>
-          <div class="sub">(para mantener la calidad)</div>
+          <div class="subh">(para mantener la calidad)</div>
           <ul>
             <li><b>Publicación sujeta a revisión</b>: se publica solo si cumple reglas.</li>
             <li><b>Pago al recibir</b> (si aplica): al entregar o al recoger, según el negocio.</li>
@@ -379,120 +344,78 @@
           </ul>
         </div>
 
-        <div class="toast" id="toast"></div>
       </div>
     </div>
 
     <div class="foot">Aquiservicio • Hecho para Sinaloa</div>
   </div>
 
-  <!-- Supabase JS v2 -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <script>
-    // =========================
-    // CONFIG (pega tus datos)
-    // =========================
-    const SUPABASE_URL = "https://rqsyexfjszecqoedojdb.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_7tEQH3atdOIWkWCpK49qKw_B8rSILgT";
-
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
     const citySelect = document.getElementById("city");
-    const toast = document.getElementById("toast");
 
-    // Fallback (por si Supabase falla, no se queda en "cargando")
-    const FALLBACK_MUNICIPIOS = [
-      {name:"Navolato", sort_order:1, active:true},
-      {name:"Culiacán", sort_order:2, active:false},
-      {name:"Mazatlán", sort_order:3, active:false},
-      {name:"Ahome", sort_order:4, active:false},
-      {name:"Guasave", sort_order:5, active:false},
-      {name:"Angostura", sort_order:6, active:false},
-      {name:"El Fuerte", sort_order:7, active:false},
-      {name:"Mocorito", sort_order:8, active:false},
-      {name:"Sinaloa", sort_order:9, active:false},
-      {name:"Badiraguato", sort_order:10, active:false},
-      {name:"Cosalá", sort_order:11, active:false},
-      {name:"Elota", sort_order:12, active:false},
-      {name:"Escuinapa", sort_order:13, active:false},
-      {name:"Rosario", sort_order:14, active:false},
-      {name:"San Ignacio", sort_order:15, active:false},
-      {name:"Salvador Alvarado", sort_order:16, active:false},
-      {name:"Concordia", sort_order:17, active:false},
-      {name:"Choix", sort_order:18, active:false},
-      {name:"Juan José Ríos", sort_order:19, active:false},
-      {name:"Eldorado", sort_order:20, active:false}
-    ];
-
-    function showToast(msg){
-      toast.textContent = msg;
-      toast.className = "toast show";
-      setTimeout(()=> toast.className = "toast", 3600);
+    function option(label, value, disabled=false){
+      const o = document.createElement("option");
+      o.textContent = label;
+      o.value = value;
+      o.disabled = disabled;
+      return o;
     }
 
-    function fillMunicipios(list){
-      const data = [...list].sort((a,b)=> (a.sort_order||999) - (b.sort_order||999));
-      citySelect.innerHTML = "";
-      data.forEach(m => {
-        const opt = document.createElement("option");
-        opt.value = m.name;
-        opt.textContent = m.active ? `${m.name} (Disponible)` : `${m.name} (Próximamente)`;
-        opt.disabled = !m.active;
-        citySelect.appendChild(opt);
-      });
-
-      // default/persist
-      const saved = localStorage.getItem("aq_city");
-      const savedOpt = saved ? [...citySelect.options].find(o => o.value === saved) : null;
-
-      if(savedOpt && !savedOpt.disabled){
-        citySelect.value = saved;
-      }else{
-        citySelect.value = "Navolato";
-      }
-      localStorage.setItem("aq_city", citySelect.value);
-
-      citySelect.onchange = () => {
-        const opt = citySelect.options[citySelect.selectedIndex];
-        if(opt.disabled){
-          citySelect.value = "Navolato";
-          showToast("Ese municipio estará disponible próximamente 🙂");
-          return;
-        }
-        localStorage.setItem("aq_city", citySelect.value);
-      };
-    }
-
-    async function loadMunicipios(){
-      // Pinta algo útil desde el inicio (para que no se quede “cargando”)
-      fillMunicipios(FALLBACK_MUNICIPIOS);
-
-      // Intentar Supabase
+    async function loadMunicipalities(){
       try{
-        const { data, error } = await sb
-          .from("municipios")
-          .select("name, active, sort_order")
-          .order("sort_order", { ascending: true });
+        const r = await fetch("/api/municipalities", { method:"GET" });
+        const out = await r.json();
 
-        if(error){
-          console.log("Supabase municipios error:", error);
-          showToast("No se pudo cargar municipios (usando lista local).");
+        citySelect.innerHTML = "";
+        const list = (out && out.data) ? out.data : [];
+
+        // Fallback si falla
+        if(!list.length){
+          citySelect.appendChild(option("Navolato (Disponible)", "Navolato", false));
+          citySelect.appendChild(option("Culiacán (Próximamente)", "Culiacán", true));
+          citySelect.disabled = false;
           return;
         }
-        if(!data || data.length === 0){
-          showToast("Municipios vacío (usando lista local).");
-          return;
+
+        // Guardado local
+        const saved = localStorage.getItem("aq_city");
+
+        // Regla: solo Navolato disponible hoy (aunque Supabase devuelva todos)
+        for(const m of list){
+          const name = m.name || m.municipio || "";
+          const isNav = name.toLowerCase().includes("navolato");
+          citySelect.appendChild(option(
+            isNav ? `${name} (Disponible)` : `${name} (Próximamente)`,
+            name,
+            !isNav
+          ));
         }
 
-        fillMunicipios(data);
-      }catch(err){
-        console.log("Supabase municipios catch:", err);
-        showToast("Sin conexión a Supabase (usando lista local).");
+        // seleccionar
+        if(saved && [...citySelect.options].some(o => o.value === saved && !o.disabled)){
+          citySelect.value = saved;
+        } else {
+          // primer disponible
+          const firstOk = [...citySelect.options].find(o => !o.disabled);
+          citySelect.value = firstOk ? firstOk.value : citySelect.options[0].value;
+        }
+
+        localStorage.setItem("aq_city", citySelect.value);
+        citySelect.disabled = false;
+
+        citySelect.addEventListener("change", () => {
+          localStorage.setItem("aq_city", citySelect.value);
+        });
+
+      }catch(_){
+        citySelect.innerHTML = "";
+        citySelect.appendChild(option("Navolato (Disponible)", "Navolato", false));
+        citySelect.appendChild(option("Culiacán (Próximamente)", "Culiacán", true));
+        citySelect.disabled = false;
       }
     }
 
-    loadMunicipios();
+    loadMunicipalities();
   </script>
 </body>
 </html>
